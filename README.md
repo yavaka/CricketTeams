@@ -7,3 +7,4 @@ Cricket teams is a web-base application that allows its users to create cricket 
 - React & Blazor
 # Features
 - Accounts - User should create an account in order to participate in a match or tournament.
+# Domain Driven Design
