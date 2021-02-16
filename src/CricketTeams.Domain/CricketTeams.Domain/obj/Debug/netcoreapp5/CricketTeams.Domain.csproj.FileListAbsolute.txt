@@ -1,0 +1,12 @@
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\bin\Debug\netcoreapp5\CricketTeams.Domain.deps.json
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\bin\Debug\netcoreapp5\CricketTeams.Domain.dll
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\bin\Debug\netcoreapp5\ref\CricketTeams.Domain.dll
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\bin\Debug\netcoreapp5\CricketTeams.Domain.pdb
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\obj\Debug\netcoreapp5\CricketTeams.Domain.csprojAssemblyReference.cache
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\obj\Debug\netcoreapp5\CricketTeams.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\obj\Debug\netcoreapp5\CricketTeams.Domain.AssemblyInfoInputs.cache
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\obj\Debug\netcoreapp5\CricketTeams.Domain.AssemblyInfo.cs
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\obj\Debug\netcoreapp5\CricketTeams.Domain.csproj.CoreCompileInputs.cache
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\obj\Debug\netcoreapp5\CricketTeams.Domain.dll
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\obj\Debug\netcoreapp5\ref\CricketTeams.Domain.dll
+D:\Programming\Projects\CricketTeams\src\CricketTeams.Domain\CricketTeams.Domain\obj\Debug\netcoreapp5\CricketTeams.Domain.pdb
