@@ -1,15 +1,15 @@
-﻿namespace CarRentalSystem.Domain.Exceptions
+﻿namespace CricketTeams.Domain.Exceptions
 {
     using System;
 
     public abstract class BaseDomainException : Exception
     {
-        private string? message;
+        private string? error;
 
-        public new string Message
+        public string Error
         {
-            get => this.message ?? base.Message;
-            set => this.message = value;
+            get => this.error ?? base.Message;
+            set => this.error = value;
         }
     }
 }

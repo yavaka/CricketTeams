@@ -1,4 +1,4 @@
-﻿namespace CarRentalSystem.Domain.Common
+﻿namespace CricketTeams.Domain.Common
 {
     public interface IAggregateRoot
     {
