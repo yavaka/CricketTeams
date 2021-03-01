@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using CricketTeams.Domain.Common;
 
-    internal class BowlingStyleData : IInitialData
+    public class BowlingStyleData : IInitialData
     {
         public Type EntityType => typeof(BowlingStyle);
 
