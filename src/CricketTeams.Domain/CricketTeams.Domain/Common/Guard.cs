@@ -66,7 +66,7 @@
         {
             var exception = new TException
             {
-                Message = message
+                Error = message
             };
 
             throw exception;
