@@ -3,6 +3,7 @@
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
 
+    using static ModelConstants.Common;
     using static ModelConstants.BowlingStyle;
 
     public class BowlingStyle : Entity<int>
