@@ -1,6 +1,8 @@
 ﻿namespace CricketTeams.Domain.Common
 {
+    using CricketTeams.Domain.Models;
     using Exceptions;
+    using System;
 
     public static class Guard
     {
@@ -59,6 +61,18 @@
             }
 
             ThrowException<TException>($"{name} must not be {unexpectedValue}.");
+        }
+
+        public static void ForValidUrl<TException>(string url, string name = "Value")
+            where TException : BaseDomainException, new()
+        {
+            if (url.Length <= ModelConstants.Common.MaxUrlLength &&
+                Uri.IsWellFormedUriString(url, UriKind.Absolute))
+            {
+                return;
+            }
+
+            ThrowException<TException>($"{name} must be a valid URL.");
         }
 
         private static void ThrowException<TException>(string message)
