@@ -35,5 +35,11 @@
             public const int MinNameLenght = 3;
             public const int MaxNameLenght = 30;
         }
+
+        public class Team
+        {
+            public const int MinNameLenght = 3;
+            public const int MaxNameLenght = 30;
+        }
     }
 }

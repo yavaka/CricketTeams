@@ -1,7 +1,10 @@
 ﻿namespace CricketTeams.Domain.Models.Teams
 {
     using CricketTeams.Domain.Common;
+    using CricketTeams.Domain.Exceptions;
     using System.Collections.Generic;
+
+    using static ModelConstants.Team;
 
     public class Team : Entity<int>, IAggregateRoot
     {
@@ -17,7 +20,7 @@
             Therapist therapist,
             GymTrainer gymTrainer)
         {
-            //Validations
+            Validate(name, logoUrl);
 
             this.Name = name;
             this.LogoUrl = logoUrl;
@@ -49,7 +52,7 @@
             this.History = default!;
             this.Therapist = default!;
             this.GymTrainer = default!;
-            this.Achievements = default!; 
+            this.Achievements = default!;
         }
 
         #region Properties
@@ -64,6 +67,28 @@
         public Therapist? Therapist { get; set; }
         public GymTrainer? GymTrainer { get; set; }
         public ICollection<Achievement> Achievements { get; set; }
+        #endregion
+
+        #region Validations
+
+        private void Validate(string name, string logoUrl)
+        {
+            ValidateName(name);
+            ValidateLogoUrl(logoUrl);
+        }
+
+        private void ValidateName(string name)
+            => Guard.ForStringLength<InvalidTeamException>(
+                name,
+                MinNameLenght,
+                MaxNameLenght,
+                nameof(this.Name));
+
+        private void ValidateLogoUrl(string logoUrl)
+            => Guard.ForValidUrl<InvalidTeamException>(
+                logoUrl,
+                nameof(this.LogoUrl));
+
         #endregion
     }
 }
