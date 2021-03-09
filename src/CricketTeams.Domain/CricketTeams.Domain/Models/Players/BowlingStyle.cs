@@ -6,7 +6,7 @@
     using static ModelConstants.Common;
     using static ModelConstants.BowlingStyle;
 
-    public class BowlingStyle : Entity<int>
+    public class BowlingStyle : ValueObject
     {
         internal BowlingStyle(string styleName, BowlingType bowlingType, string description)
         {
