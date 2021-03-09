@@ -7,6 +7,5 @@
         }
 
         public InvalidAchievementException(string error) => this.Error = error;
-    {
     }
 }
