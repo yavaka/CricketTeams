@@ -23,7 +23,6 @@
 
             this.Name = name;
             this.LogoUrl = logoUrl;
-            this.Captain = captain;
             this.Players = players;
             this.Stadium = stadium;
             this.Coach = coach;
@@ -36,15 +35,16 @@
 
         private Team(
             string name,
-            string logoUrl)
+            string logoUrl,
+            Players players,
+            Coach coach)
         {
             this.Name = name;
             this.LogoUrl = logoUrl;
+            this.Players = players;
+            this.Coach = coach;
 
-            this.Captain = default!;
-            this.Players = default!;
             this.Stadium = default!;
-            this.Coach = default!;
             this.History = default!;
             this.Therapist = default!;
             this.GymTrainer = default!;
@@ -52,21 +52,20 @@
         }
 
         #region Properties
-        public string Name { get; set; }
-        public string LogoUrl { get; set; }
-        public Player? Captain { get; set; }
-        public Players? Players { get; set; }
-        public Stadium? Stadium { get; set; }
-        public Coach? Coach { get; set; }
-        public History? History { get; set; }
-        public Therapist? Therapist { get; set; }
-        public GymTrainer? GymTrainer { get; set; }
+        public string Name { get; private set; }
+        public string LogoUrl { get; private set; }
+        public Players Players { get; private set; }
+        public Coach Coach { get; private set; }
+        public Stadium? Stadium { get; private set; }
+        public History? History { get; private set; }
+        public Therapist? Therapist { get; private set; }
+        public GymTrainer? GymTrainer { get; private set; }
         public ICollection<Achievement> Achievements { get; set; }
         #endregion
 
         #region Add & Update methods
 
-        public Team UpdateName(string name) 
+        public Team UpdateName(string name)
         {
             if (this.Name != name)
             {
@@ -76,20 +75,13 @@
             return this;
         }
 
-        public Team UpdateLogoUrl(string logoUrl) 
+        public Team UpdateLogoUrl(string logoUrl)
         {
             if (this.LogoUrl != logoUrl)
             {
                 ValidateLogoUrl(logoUrl);
                 this.LogoUrl = logoUrl;
             }
-            return this;
-        }
-
-        public Team UpdateCaptain(Player captain)
-        {
-            this.Captain = captain;
-
             return this;
         }
 
@@ -135,9 +127,44 @@
             return this;
         }
 
+        public Team AddBatsman(Player player)
+        {
+            this.Players.AddBatsman(player);
+
+            return this;
+        }
+
+        public Team AddBowler(Player bowler)
+        {
+            this.Players.AddBowler(bowler);
+
+            return this;
+        }
+
+        public Team AddCaptain(Player captain)
+        {
+            this.Players.AddCaptain(captain);
+
+            return this;
+        }
+
+        public Team AddWicketKeeper(Player wicketKeeper)
+        {
+            this.Players.AddWicketKeeper(wicketKeeper);
+
+            return this;
+        }
+
+        public Team AddAllRounder(Player allRounder)
+        {
+            this.Players.AddAllRounder(allRounder);
+
+            return this;
+        }
+
         //public Team AddAchievement()
         //{
-            
+
         //}
 
         #endregion
