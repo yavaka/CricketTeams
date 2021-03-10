@@ -7,7 +7,7 @@
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Players;
 
-    using static ModelConstants.Player;
+    using static ModelConstants.Common;
 
     public class Player : Entity<int>, IAggregateRoot
     {
@@ -107,7 +107,7 @@
 
         public Player UpdateNationality(string nationality)
         {
-            ValidateNationality(nationality);
+            //ValidateNationality(nationality);
             this.Nationality = nationality;
 
             return this;
@@ -192,7 +192,7 @@
         {
             this.ValidateNames(firstName, lastName);
             this.ValidateAge(age);
-            this.ValidateNationality(nationality);
+            //this.ValidateNationality(nationality);
             this.ValidateAvatarUrl(avatarUrl);
         }
 
@@ -200,14 +200,14 @@
         {
             Guard.ForStringLength<InvalidPlayerException>(
               firstName,
-              MinNameLength,
-              MaxNameLength,
+              MinNameLenght,
+              MaxNameLenght,
               nameof(this.FirstName));
 
             Guard.ForStringLength<InvalidPlayerException>(
               lastName,
-              MinNameLength,
-              MaxNameLength,
+              MinNameLenght,
+              MaxNameLenght,
               nameof(this.LastName));
         }
 
@@ -218,11 +218,11 @@
             MaxAge,
             nameof(this.Age));
 
-        private void ValidateNationality(string nationality)
-        {
-            // It should check an external db with all countries around the world
-            throw new NotImplementedException();
-        }
+        //private void ValidateNationality(string nationality)
+        //{
+        //    // It should check an external db with all countries around the world
+        //    throw new NotImplementedException();
+        //}
 
         private void ValidateAvatarUrl(string avatarUrl)
            => Guard.ForValidUrl<InvalidPlayerException>(

@@ -3,7 +3,6 @@
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
 
-    using static ModelConstants.Achievement;
     using static ModelConstants.Common;
 
     public class Achievement : ValueObject
@@ -50,8 +49,8 @@
         private void ValidateName(string name)
             => Guard.ForStringLength<InvalidAchievementException>(
                 name,
-                MinNameLenght,
-                MaxNameLenght,
+                ModelConstants.Achievement.MinNameLenght,
+                ModelConstants.Achievement.MinNameLenght,
                 nameof(this.Name));
 
         private void ValidateDescription(string description)

@@ -7,15 +7,13 @@
             public const int MinDescriptionLength = 2;
             public const int MaxDescriptionLength = 20;
 
-            public const int MaxUrlLength = 2048;
-        }
+            public const int MinNameLenght = 2;
+            public const int MaxNameLenght = 20;
 
-        public class Player
-        {
-            public const int MinNameLength = 2;
-            public const int MaxNameLength = 20;
             public const int MinAge = 1;
             public const int MaxAge = 100;
+
+            public const int MaxUrlLength = 2048;
         }
 
         public class BowlingStyle 
