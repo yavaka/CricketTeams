@@ -1,11 +1,11 @@
-﻿namespace CricketTeams.Domain.Models.Teams
+﻿namespace CricketTeams.Domain.Models.Coaches
 {
     using System.Linq;
     using System.Collections.Generic;
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Players;
-    
+
     using static ModelConstants.Common;
 
     public class Coach : Entity<int>
@@ -75,6 +75,104 @@
         public History? MatchesAsCoach { get; private set; }
         public ICollection<Achievement> Achievements { get; private set; }
 
+        #endregion
+
+        #region Update & Add methods
+
+        public Coach UpdateNames(string firstName, string lastName)
+        {
+            if (this.FirstName != firstName)
+            {
+                ValidateName(firstName, nameof(this.FirstName));
+                this.FirstName = firstName;
+            }
+
+            if (this.LastName != lastName)
+            {
+                ValidateName(lastName, nameof(this.LastName));
+                this.LastName = lastName;
+            }
+
+            return this;
+        }
+
+        public Coach UpdateNickname(string nickname)
+        {
+            if (this.Nickname != nickname)
+            {
+                ValidateName(nickname, nameof(this.Nickname));
+                this.Nickname = nickname;
+            }
+            return this;
+        }
+
+        public Coach UpdateAge(int age)
+        {
+            if (this.Age != age)
+            {
+                ValidateAge(age);
+                this.Age = age;
+            }
+            return this;
+        }
+
+        public Coach UpdateNationality(string nationality)
+        {
+            if (this.Nationality != nationality)
+            {
+                this.Nationality = nationality;
+            }
+            return this;
+        }
+
+        public Coach UpdateAvatarUrl(string avatarUrl)
+        {
+            if (this.AvatarUrl != avatarUrl)
+            {
+                ValidateAvatarUrl(avatarUrl);
+                this.AvatarUrl = avatarUrl;
+            }
+            return this;
+        }
+
+        public Coach UpdateBattingStyle(BattingStyle battingStyle)
+        {
+            if (this.BattingStyle != battingStyle)
+            {
+                this.BattingStyle = battingStyle;
+            }
+            return this;
+        }
+
+        public Coach UpdateBowlingStyle(BowlingStyle bowlingStyle)
+        {
+            ValidateBowlingStyle(bowlingStyle);
+
+            this.BowlingStyle = bowlingStyle;
+
+            return this;
+        }
+
+        public Coach UpdateMatchesAsCoach(History matchesAsCoach)
+        {
+            this.MatchesAsCoach = matchesAsCoach;
+
+            return this;
+        }
+
+        public Coach AddAchievement(
+            string name,
+            string description,
+            string imageUrl,
+            AchievementType achievementType)
+        {
+            var achievement = new Achievement(name, description, imageUrl, achievementType);
+
+            this.Achievements.Add(achievement);
+
+            return this;
+        }
+        
         #endregion
 
         #region Validations
