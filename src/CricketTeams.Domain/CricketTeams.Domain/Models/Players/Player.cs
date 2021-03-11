@@ -157,7 +157,7 @@
             string name,
             string description,
             string imageUrl,
-            AchievementType achievementType)
+            AchievementTypes achievementType)
         {
             var achievement = new Achievement(name, description, imageUrl, achievementType);
 
