@@ -19,12 +19,12 @@
             string nickname,
             int age,
             string nationality,
-            string avatarUrl,
+            string photoUrl,
             BattingStyle battingStyle,
             BowlingStyle bowlingStyle,
             History matchesAsCoach)
         {
-            this.Validate(firstName, lastName, nickname, age, avatarUrl);
+            this.Validate(firstName, lastName, nickname, age, photoUrl);
             this.ValidateBowlingStyle(bowlingStyle);
 
             this.FirstName = firstName;
@@ -32,7 +32,7 @@
             this.Nickname = nickname;
             this.Age = age;
             this.Nationality = nationality;
-            this.AvatarUrl = avatarUrl;
+            this.PhotoUrl = photoUrl;
             this.BattingStyle = battingStyle;
             this.BowlingStyle = bowlingStyle;
             this.MatchesAsCoach = matchesAsCoach;
@@ -46,14 +46,14 @@
             string nickname,
             int age,
             string nationality,
-            string avatarUrl)
+            string photoUrl)
         {
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Nickname = nickname;
             this.Age = age;
             this.Nationality = nationality;
-            this.AvatarUrl = avatarUrl;
+            this.PhotoUrl = photoUrl;
 
             this.BattingStyle = default!;
             this.BowlingStyle = default!;
@@ -69,7 +69,7 @@
         public string Nickname { get; private set; }
         public int Age { get; private set; }
         public string Nationality { get; private set; }
-        public string AvatarUrl { get; private set; }
+        public string PhotoUrl { get; private set; }
         public BattingStyle? BattingStyle { get; private set; }
         public BowlingStyle? BowlingStyle { get; private set; }
         public History? MatchesAsCoach { get; private set; }
@@ -125,12 +125,12 @@
             return this;
         }
 
-        public Coach UpdateAvatarUrl(string avatarUrl)
+        public Coach UpdatePhotoUrl(string photoUrl)
         {
-            if (this.AvatarUrl != avatarUrl)
+            if (this.PhotoUrl != photoUrl)
             {
-                ValidateAvatarUrl(avatarUrl);
-                this.AvatarUrl = avatarUrl;
+                ValidatePhotoUrl(photoUrl);
+                this.PhotoUrl = photoUrl;
             }
             return this;
         }
@@ -177,13 +177,13 @@
 
         #region Validations
 
-        private void Validate(string firstName, string lastName, string nickname, int age, string avatarUrl)
+        private void Validate(string firstName, string lastName, string nickname, int age, string photoUrl)
         {
             this.ValidateName(firstName, nameof(this.FirstName));
             this.ValidateName(lastName, nameof(this.LastName));
             this.ValidateName(nickname, nameof(this.Nickname));
             this.ValidateAge(age);
-            this.ValidateAvatarUrl(avatarUrl);
+            this.ValidatePhotoUrl(photoUrl);
         }
 
         private void ValidateName(string name, string propName)
@@ -206,10 +206,10 @@
         //    throw new NotImplementedException();
         //}
 
-        private void ValidateAvatarUrl(string avatarUrl)
+        private void ValidatePhotoUrl(string photoUrl)
            => Guard.ForValidUrl<InvalidCoachException>(
-               avatarUrl,
-               nameof(this.AvatarUrl));
+               photoUrl,
+               nameof(this.PhotoUrl));
 
         private void ValidateBowlingStyle(BowlingStyle bowlingStyle)
         {
