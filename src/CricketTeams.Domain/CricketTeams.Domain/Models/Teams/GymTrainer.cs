@@ -38,8 +38,8 @@
         private void ValidateName(string name, string propName)
             => Guard.ForStringLength<InvalidGymTrainerException>(
                 name,
-                MinNameLenght,
-                MaxNameLenght,
+                MinNameLength,
+                MaxNameLength,
                 propName);
 
         private void ValidateAge(int age)

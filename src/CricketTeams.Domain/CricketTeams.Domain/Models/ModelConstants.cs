@@ -7,8 +7,8 @@
             public const int MinDescriptionLength = 2;
             public const int MaxDescriptionLength = 20;
 
-            public const int MinNameLenght = 2;
-            public const int MaxNameLenght = 20;
+            public const int MinNameLength = 2;
+            public const int MaxNameLength = 20;
 
             public const int MinAge = 1;
             public const int MaxAge = 100;
@@ -30,14 +30,23 @@
 
         public class Achievement 
         {
-            public const int MinNameLenght = 3;
-            public const int MaxNameLenght = 30;
+            public const int MinNameLength = 3;
+            public const int MaxNameLength = 30;
         }
 
         public class Team
         {
-            public const int MinNameLenght = 3;
-            public const int MaxNameLenght = 30;
+            public const int MinNameLength = 3;
+            public const int MaxNameLength = 30;
+        }
+
+        public class Stadium 
+        {
+            public const int MinOwnerLength = 3;
+            public const int MaxOwnerLength = 20;
+
+            public const int MinCapacityLength = 100;
+            public const int MaxCapacityLength = 200000;
         }
     }
 }

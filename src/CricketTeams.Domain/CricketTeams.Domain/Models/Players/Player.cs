@@ -200,14 +200,14 @@
         {
             Guard.ForStringLength<InvalidPlayerException>(
               firstName,
-              MinNameLenght,
-              MaxNameLenght,
+              MinNameLength,
+              MaxNameLength,
               nameof(this.FirstName));
 
             Guard.ForStringLength<InvalidPlayerException>(
               lastName,
-              MinNameLenght,
-              MaxNameLenght,
+              MinNameLength,
+              MaxNameLength,
               nameof(this.LastName));
         }
 

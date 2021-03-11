@@ -189,8 +189,8 @@
         private void ValidateName(string name, string propName)
             => Guard.ForStringLength<InvalidCoachException>(
               name,
-              MinNameLenght,
-              MaxNameLenght,
+              MinNameLength,
+              MaxNameLength,
               propName);
 
         private void ValidateAge(int age)

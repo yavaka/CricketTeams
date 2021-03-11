@@ -153,13 +153,25 @@
             return this;
         }
 
+        public Team AddStadium(
+            string name,
+            string address,
+            int capacity,
+            string websiteUrl,
+            string owner)
+        {
+            this.Stadium = new Stadium(name, address, capacity, websiteUrl, owner);
+
+            return this;
+        }
+
         public Team AddGymTrainer(
             string firstName,
             string lastName,
             int age,
             string photoUrl)
         {
-            var trainer = new GymTrainer(firstName, lastName, age, photoUrl);
+            this.GymTrainer = new GymTrainer(firstName, lastName, age, photoUrl);
 
             return this;
         }
@@ -190,8 +202,8 @@
         private void ValidateName(string name)
             => Guard.ForStringLength<InvalidTeamException>(
                 name,
-                MinNameLenght,
-                MaxNameLenght,
+                MinNameLength,
+                MaxNameLength,
                 nameof(this.Name));
 
         private void ValidateLogoUrl(string logoUrl)
