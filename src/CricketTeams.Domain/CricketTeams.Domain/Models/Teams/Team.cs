@@ -2,6 +2,7 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Coaches;
     using System.Collections.Generic;
 
     using static ModelConstants.Team;
@@ -11,12 +12,10 @@
         internal Team(
             string name,
             string logoUrl,
-            Player captain,
             Players players,
             Stadium stadium,
             Coach coach,
             History history,
-            Therapist therapist,
             GymTrainer gymTrainer)
         {
             Validate(name, logoUrl);
@@ -27,7 +26,6 @@
             this.Stadium = stadium;
             this.Coach = coach;
             this.History = history;
-            this.Therapist = therapist;
             this.GymTrainer = gymTrainer;
 
             this.Achievements = new List<Achievement>();
@@ -46,21 +44,21 @@
 
             this.Stadium = default!;
             this.History = default!;
-            this.Therapist = default!;
             this.GymTrainer = default!;
             this.Achievements = default!;
         }
 
         #region Properties
+        
         public string Name { get; private set; }
         public string LogoUrl { get; private set; }
         public Players Players { get; private set; }
         public Coach Coach { get; private set; }
         public Stadium? Stadium { get; private set; }
         public History? History { get; private set; }
-        public Therapist? Therapist { get; private set; }
         public GymTrainer? GymTrainer { get; private set; }
         public ICollection<Achievement> Achievements { get; set; }
+
         #endregion
 
         #region Add & Update methods
@@ -113,13 +111,6 @@
             return this;
         }
 
-        public Team UpdateTherapist(Therapist therapist)
-        {
-            this.Therapist = therapist;
-
-            return this;
-        }
-
         public Team UpdateGymTrainer(GymTrainer gymTrainer)
         {
             this.GymTrainer = gymTrainer;
@@ -162,10 +153,19 @@
             return this;
         }
 
-        //public Team AddAchievement()
-        //{
+        public Team AddAchievement(
+           string name,
+           string description,
+           string imageUrl,
+           AchievementType achievementType)
+        {
+            var achievement = new Achievement(name, description, imageUrl, achievementType);
 
-        //}
+            this.Achievements.Add(achievement);
+
+            return this;
+        }
+
 
         #endregion
 
