@@ -49,7 +49,7 @@
         }
 
         #region Properties
-        
+
         public string Name { get; private set; }
         public string LogoUrl { get; private set; }
         public Players Players { get; private set; }
@@ -153,6 +153,17 @@
             return this;
         }
 
+        public Team AddGymTrainer(
+            string firstName,
+            string lastName,
+            int age,
+            string photoUrl)
+        {
+            var trainer = new GymTrainer(firstName, lastName, age, photoUrl);
+
+            return this;
+        }
+
         public Team AddAchievement(
            string name,
            string description,
@@ -165,7 +176,6 @@
 
             return this;
         }
-
 
         #endregion
 
