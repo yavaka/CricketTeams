@@ -28,6 +28,7 @@
             this.History = history;
             this.GymTrainer = gymTrainer;
 
+            this.Sponsors = new List<Sponsor>();
             this.Achievements = new List<Achievement>();
         }
 
@@ -45,6 +46,7 @@
             this.Stadium = default!;
             this.History = default!;
             this.GymTrainer = default!;
+            this.Sponsors = default!;
             this.Achievements = default!;
         }
 
@@ -57,7 +59,8 @@
         public Stadium? Stadium { get; private set; }
         public History? History { get; private set; }
         public GymTrainer? GymTrainer { get; private set; }
-        public ICollection<Achievement> Achievements { get; set; }
+        public ICollection<Sponsor> Sponsors{ get; private set; }
+        public ICollection<Achievement> Achievements { get; private set; }
 
         #endregion
 
@@ -176,11 +179,23 @@
             return this;
         }
 
+        public Team AddSponsor(
+            string name,
+            string websiteUrl,
+            SponsorTypes sponsorType) 
+        {
+            var sponsor = new Sponsor(name, websiteUrl, sponsorType);
+
+            this.Sponsors.Add(sponsor);
+
+            return this;
+        }
+
         public Team AddAchievement(
            string name,
            string description,
            string imageUrl,
-           AchievementType achievementType)
+           AchievementTypes achievementType)
         {
             var achievement = new Achievement(name, description, imageUrl, achievementType);
 
