@@ -48,5 +48,16 @@
             public const int MinCapacityLength = 100;
             public const int MaxCapacityLength = 200000;
         }
+
+        public class Match 
+        {
+            public const int StandardInnings = 2;
+            public const int MinInnings = 2;
+            public const int MaxInnings = 4;
+
+            public const int DefaultOvers = 20;
+            public const int MinOvers = 2;
+            public const int MaxOvers = 20;
+        }
     }
 }
