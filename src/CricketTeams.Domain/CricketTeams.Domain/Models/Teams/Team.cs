@@ -59,7 +59,7 @@
         public Stadium? Stadium { get; private set; }
         public History? History { get; private set; }
         public GymTrainer? GymTrainer { get; private set; }
-        public ICollection<Sponsor> Sponsors{ get; private set; }
+        public ICollection<Sponsor> Sponsors { get; private set; }
         public ICollection<Achievement> Achievements { get; private set; }
 
         #endregion
@@ -149,6 +149,13 @@
             return this;
         }
 
+        public Team AddTwelfth(Player twelfth)
+        {
+            this.Players.AddTwelfth(twelfth);
+
+            return this;
+        }
+
         public Team AddAllRounder(Player allRounder)
         {
             this.Players.AddAllRounder(allRounder);
@@ -182,7 +189,7 @@
         public Team AddSponsor(
             string name,
             string websiteUrl,
-            SponsorTypes sponsorType) 
+            SponsorTypes sponsorType)
         {
             var sponsor = new Sponsor(name, websiteUrl, sponsorType);
 
