@@ -13,6 +13,8 @@
             Team teamB,
             int innings,
             int overs,
+            Umpire firstUmpire,
+            Umpire secondUmpire,
             Score score,
             Statistic statistic,
             BallTypes ballType,
@@ -24,6 +26,8 @@
             this.TeamB = teamB;
             this.Innings = innings;
             this.Overs = overs;
+            this.FirstUmpire = firstUmpire;
+            this.SecondUmpire = secondUmpire;
             this.Score = score;
             this.Statistic = statistic;
             this.BallType = ballType;
@@ -41,6 +45,8 @@
             this.Innings = innings;
             this.Overs = overs;
 
+            this.FirstUmpire = default!;
+            this.SecondUmpire = default!;
             this.Score = default!;
             this.Statistic = default!;
             this.BallType = default!;
@@ -69,6 +75,8 @@
         public int Overs { get; private set; } = DefaultOvers;
         public bool InProgress { get; private set; } = false;
         public bool Ended { get; private set; } = false;
+        public Umpire? FirstUmpire{ get; private set; }
+        public Umpire? SecondUmpire{ get; private set; }
         public Score? Score { get; private set; }
         public Statistic? Statistic { get; private set; }
         public BallTypes? BallType { get; private set; }
@@ -83,10 +91,8 @@
         }
 
         private void ValidateInnings(int innings)
-            => Guard.AgainstOutOfRange<InvalidMatchException>(
+            => Guard.AgainstNegativeValue<InvalidMatchException>(
                 innings,
-                MinInnings,
-                MaxInnings,
                 nameof(this.Innings));
 
         private void ValidateOvers(int overs)

@@ -87,13 +87,20 @@
         #endregion
 
         #region Add & Update methods
-        
+
         public Player UpdateNames(string firstName, string lastName)
         {
-            ValidateNames(firstName, lastName);
-            this.FirstName = firstName;
-            this.LastName = lastName;
+            if (this.FirstName != firstName)
+            {
+                ValidateName(firstName, nameof(this.FirstName));
+                this.FirstName = firstName;
+            }
 
+            if (this.LastName != lastName)
+            {
+                ValidateName(lastName, nameof(this.LastName));
+                this.LastName = lastName;
+            }
             return this;
         }
 
@@ -190,26 +197,19 @@
             string nationality,
             string photoUrl)
         {
-            this.ValidateNames(firstName, lastName);
+            ValidateName(firstName, nameof(this.FirstName));
+            ValidateName(lastName, nameof(this.LastName));
             this.ValidateAge(age);
             //this.ValidateNationality(nationality);
             this.ValidatePhotoUrl(photoUrl);
         }
 
-        private void ValidateNames(string firstName, string lastName)
-        {
-            Guard.ForStringLength<InvalidPlayerException>(
-              firstName,
-              MinNameLength,
-              MaxNameLength,
-              nameof(this.FirstName));
-
-            Guard.ForStringLength<InvalidPlayerException>(
-              lastName,
-              MinNameLength,
-              MaxNameLength,
-              nameof(this.LastName));
-        }
+        private void ValidateName(string name, string propName)
+            => Guard.ForStringLength<InvalidUmpireException>(
+                name,
+                MinNameLength,
+                MaxNameLength,
+                propName);
 
         private void ValidateAge(int age)
         => Guard.AgainstOutOfRange<InvalidPlayerException>(
