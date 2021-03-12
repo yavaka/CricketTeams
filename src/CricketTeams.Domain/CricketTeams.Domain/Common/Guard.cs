@@ -75,6 +75,28 @@
             ThrowException<TException>($"{name} must be a valid URL.");
         }
 
+        public static void ForNegativeValue<TException>(int actualValue, int min, string name = "Value")
+            where TException : BaseDomainException, new()
+        {
+            if (actualValue >= 0)
+            {
+                return;
+            }
+
+            ThrowException<TException>($"{name} must be equal or more than zero.");
+        }
+
+        public static void ForNegativeValue<TException>(decimal actualValue, decimal min, string name = "Value")
+            where TException : BaseDomainException, new()
+        {
+            if (actualValue >= 0)
+            {
+                return;
+            }
+
+            ThrowException<TException>($"{name} must be equal or more than zero.");
+        }
+
         private static void ThrowException<TException>(string message)
             where TException : BaseDomainException, new()
         {
