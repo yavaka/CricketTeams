@@ -6,7 +6,7 @@
     
     using static ModelConstants.Match;
 
-    public class Match
+    public class Match : Entity<int>, IAggregateRoot
     {
         internal Match(
             Team teamA,
