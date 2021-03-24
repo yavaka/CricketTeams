@@ -1,4 +1,5 @@
-﻿using CricketTeams.Domain.Models.Matches;
+﻿using CricketTeams.Domain.Exceptions;
+using CricketTeams.Domain.Models.Matches;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,17 @@ namespace CricketTeams.Domain.Models.Players.MatchStat
 
             this.FieldingPosition = fieldingPosition;
 
+            this.PlayersOut = new Dictionary<Player, PlayerOutTypes>();
+        }
+
+        public FieldingPosition FieldingPosition { get; private set; }
+        public IDictionary<Player,PlayerOutTypes> PlayersOut { get; private set; }
+
+        public MatchFieldingPosition PlayerOut(Player player, PlayerOutTypes outType) 
+        {
+            this.PlayersOut.Add(player, outType);
+
+            return this;
         }
 
         private void ValidateFieldingPosition(FieldingPosition fieldingPosition)
@@ -33,8 +45,5 @@ namespace CricketTeams.Domain.Models.Players.MatchStat
 
             throw new InvalidFieldingPositionException($"{positionName} is not valid fielding position. Allowed values are: {allowedPositionNames}");
         }
-
-        public FieldingPosition FieldingPosition { get; private set; }
-        public IDictionary<Player,PlayerOutTypes> PlayersOut { get; private set; }
     }
 }
