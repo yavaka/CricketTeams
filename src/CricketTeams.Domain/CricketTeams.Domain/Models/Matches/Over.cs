@@ -92,6 +92,18 @@
             return this;
         }
 
+        public Over EndOver() 
+        {
+            var totalBallsAllowed = MaxBallsPerOver + this.ExtraBalls;
+            if (totalBallsAllowed > this.Balls.Count)
+            {
+                throw new InvalidOverException($"Over is still in progress, {totalBallsAllowed - this.Balls.Count} balls left.");
+            }
+            this.IsOverEnd = true;
+
+            return this;
+        }
+
         private void DismissBatsman()
         {
             var dismissedBatsman = this.CurrentBall.BatsmanOut?.Value!;
