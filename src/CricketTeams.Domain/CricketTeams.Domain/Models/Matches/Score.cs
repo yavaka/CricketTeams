@@ -3,7 +3,6 @@
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using System.Collections.Generic;
-    using System.Linq;
 
     public class Score : ValueObject
     {
@@ -20,56 +19,70 @@
 
         public int OversPerInning { get; private set; }
         public int NumberOfInnings { get; set; }
-        public bool IsMatchEnd { get; private set; } = false;
         public ScoreInning CurrentInning { get; private set; }
         public ICollection<ScoreInning> Innings { get; private set; }
+        public bool IsMatchEnd { get; private set; } = false;
+
+        public Score UpdateBall(Ball ball)
+        {
+            this.CurrentInning.UpdateBall(ball);
+
+            return this;
+        }
+
+        public Score UpdateBall(Ball ball, Player batsman)
+        {
+            this.CurrentInning.UpdateBall(ball, batsman);
+
+            return this;
+        }
+
+        public Score UpdateCurrentOver(Over over)
+        {
+            this.CurrentInning.UpdateCurrentOver(over);
+
+            return this;
+        }
+
+        public Score UpdateCurrentInning(ScoreInning inning)
+        {
+            if (this.Innings.Count > this.NumberOfInnings)
+            {
+                EndMatch();
+                throw new InvalidScoreException($"Max innings for this match was reached, Match was ended.");
+            }
+            EndInning();
+
+            this.CurrentInning = inning;
+
+            return this;
+        }
 
         public Score EndMatch()
         {
-            ValidateIsMatchEnd();
+            if (this.Innings.Count < this.NumberOfInnings)
+            {
+                throw new InvalidScoreException($"Match still in progress.");
+            }
 
             this.IsMatchEnd = true;
 
             return this;
         }
 
-        public Score EndCurrentInning()
+        private void EndInning()
         {
-            if (this.CurrentInning.IsCompleted)
+            if (this.CurrentInning == default!)
             {
-                ValidateInning();
-
-                this.Innings.Add(
-                    this.CurrentInning != null ?
-                    this.CurrentInning :
-                    throw new InvalidScoreException("Invalid inning!"));
-
-                if (this.Innings.Any(i => i == default))
-                {
-                    CreateInning();
-                }
+                throw new InvalidInningException($"Set value of {nameof(this.CurrentInning)}");
             }
-            return this;
+
+            this.CurrentInning.EndInning();
+
+            AddInning();
         }
 
-        private void CreateInning()
-            => this.CurrentInning = new ScoreInning();
-
-
-        private void ValidateInning()
-        {
-            if (this.Innings.Count > this.NumberOfInnings)
-            {
-                throw new InvalidScoreException($"Maximum number of innings can be {this.NumberOfInnings}");
-            }
-        }
-
-        private void ValidateIsMatchEnd()
-        {
-            if (this.Innings.Any(i => i == default))
-            {
-                throw new InvalidScoreException($"Match is still in progress.");
-            }
-        }
+        private void AddInning()
+            => this.Innings.Add(this.CurrentInning);
     }
 }
