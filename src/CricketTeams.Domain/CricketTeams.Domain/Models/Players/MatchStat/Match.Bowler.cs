@@ -1,7 +1,7 @@
 ﻿namespace CricketTeams.Domain.Models.Players.MatchStat
 {
     using CricketTeams.Domain.Common;
-    
+
     public class MatchBowler : ValueObject
     {
         internal MatchBowler(int wideBalls, int wickets)
@@ -13,7 +13,7 @@
         public int WideBalls { get; private set; }
         public int Wickets { get; private set; }
 
-        public MatchBowler IncreaseWideBalls() 
+        public MatchBowler IncreaseWideBalls()
         {
             this.WideBalls++;
 

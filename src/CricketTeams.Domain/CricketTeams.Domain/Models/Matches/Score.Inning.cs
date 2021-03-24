@@ -1,10 +1,10 @@
 ﻿namespace CricketTeams.Domain.Models.Matches
 {
-    using System.Linq;
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Teams;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class ScoreInning : ValueObject
     {
@@ -33,7 +33,7 @@
         /// <summary>
         /// Update the current ball
         /// </summary>
-        public ScoreInning UpdateBall(Ball newBall) 
+        public ScoreInning UpdateBall(Ball newBall)
         {
             ValidateAreAllBatsmenDismissed();
 
@@ -45,9 +45,9 @@
         /// <summary>
         /// Update the current ball when there is a batsman out from the previous ball
         /// </summary>
-        public ScoreInning UpdateBall(Ball newBall, Player batsman) 
+        public ScoreInning UpdateBall(Ball newBall, Player batsman)
         {
-            ValidateAreAllBatsmenDismissed();           
+            ValidateAreAllBatsmenDismissed();
 
             ValidateBatsman(batsman);
 
@@ -55,17 +55,17 @@
             {
                 this.CurrentOver.UpdateStriker(batsman);
             }
-            else if(this.CurrentOver.IsNonStrikerOut)
+            else if (this.CurrentOver.IsNonStrikerOut)
             {
                 this.CurrentOver.UpdateNonStriker(batsman);
-            }    
+            }
 
             this.CurrentOver.UpdateCurrentBall(newBall);
-            
+
             return this;
         }
 
-        public ScoreInning UpdateCurrentOver(Over over) 
+        public ScoreInning UpdateCurrentOver(Over over)
         {
             ValidateAreAllBatsmenDismissed();
 
@@ -75,7 +75,7 @@
                 throw new InvalidInningException($"Max over for this inning was reached, Inning was ended.");
             }
             EndOver();
-            
+
             this.CurrentOver = over;
 
             return this;
@@ -93,14 +93,14 @@
             }
             return this;
         }
-        
-        private void EndOver() 
+
+        private void EndOver()
         {
             if (this.CurrentOver == default!)
             {
                 throw new InvalidInningException($"Set value of {nameof(this.CurrentOver)}");
             }
-            
+
             this.CurrentOver.EndOver();
 
             this.TotalRuns += this.CurrentOver.TotalRuns;

@@ -2,7 +2,7 @@
 {
     public class ModelConstants
     {
-        public class Common 
+        public class Common
         {
             public const int MinDescriptionLength = 2;
             public const int MaxDescriptionLength = 20;
@@ -16,7 +16,7 @@
             public const int MaxUrlLength = 2048;
         }
 
-        public class BowlingStyle 
+        public class BowlingStyle
         {
             public const int MinStyleNameLength = 3;
             public const int MaxStyleNameLength = 30;
@@ -28,7 +28,7 @@
             public const int MaxPositionName = 10;
         }
 
-        public class Achievement 
+        public class Achievement
         {
             public const int MinNameLength = 3;
             public const int MaxNameLength = 30;
@@ -40,7 +40,7 @@
             public const int MaxNameLength = 30;
         }
 
-        public class Stadium 
+        public class Stadium
         {
             public const int MinOwnerLength = 3;
             public const int MaxOwnerLength = 20;
@@ -49,7 +49,7 @@
             public const int MaxCapacityLength = 200000;
         }
 
-        public class Match 
+        public class Match
         {
             public const int StandardInnings = 2;
             public const int MinInnings = 2;
@@ -65,7 +65,7 @@
             public const int MaxBallsPerOver = 6;
         }
 
-        public class Ball 
+        public class Ball
         {
             public const int MinRuns = 0;
             public const int MaxRuns = 20;
@@ -73,7 +73,7 @@
             public const int MaxBallsPerOver = 6;
         }
 
-        public class MatchStat 
+        public class MatchStat
         {
             public const int DefaultSix = 0;
             public const int DefaultFour = 0;

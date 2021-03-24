@@ -4,7 +4,7 @@
     using CricketTeams.Domain.Models.Matches;
     using System.Collections.Generic;
     using static Models.ModelConstants.MatchStat;
-    
+
     public class MatchStat : ValueObject
     {
         internal MatchStat()
@@ -18,7 +18,7 @@
         public MatchBowler Bowler { get; private set; }
         public MatchFieldingPosition FieldingPosition { get; private set; }
 
-        public MatchStat TakeOutBatsman(Player player, PlayerOutTypes outType) 
+        public MatchStat TakeOutBatsman(Player player, PlayerOutTypes outType)
         {
             this.FieldingPosition.PlayerOut(player, outType);
 

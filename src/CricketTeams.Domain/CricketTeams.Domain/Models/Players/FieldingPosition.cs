@@ -8,14 +8,14 @@
 
     public class FieldingPosition : Entity<int>
     {
-        internal FieldingPosition(string positionName, string description) 
+        internal FieldingPosition(string positionName, string description)
         {
             this.Validate(positionName, description);
 
             this.PositionName = positionName;
             this.Description = description;
         }
-        
+
         public string PositionName { get; private set; }
         public string Description { get; private set; }
 

@@ -1,7 +1,7 @@
 ﻿namespace CricketTeams.Domain.Models.Matches
 {
     using CricketTeams.Domain.Common;
-    
+
     public class PlayerOutTypes : Enumeration
     {
         public static readonly PlayerOutTypes Wicket = new PlayerOutTypes(1, "Wicket");

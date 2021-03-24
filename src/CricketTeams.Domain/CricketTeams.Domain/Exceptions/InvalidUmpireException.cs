@@ -1,6 +1,6 @@
 ﻿namespace CricketTeams.Domain.Exceptions
 {
-    class InvalidUmpireException: BaseDomainException
+    class InvalidUmpireException : BaseDomainException
     {
         public InvalidUmpireException()
         {

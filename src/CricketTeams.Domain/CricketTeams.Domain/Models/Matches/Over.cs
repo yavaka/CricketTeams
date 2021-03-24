@@ -71,7 +71,7 @@
             return this;
         }
 
-        public Over EndOver() 
+        public Over EndOver()
         {
             this.IsOverEnd = true;
 

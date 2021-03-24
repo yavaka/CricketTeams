@@ -6,7 +6,7 @@
 
     public abstract class ValueObject
     {
-        private readonly BindingFlags privateBindingFlags = 
+        private readonly BindingFlags privateBindingFlags =
             BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
         public override bool Equals(object? other)

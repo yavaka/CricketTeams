@@ -2,7 +2,6 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
-    using System;
     using System.Collections.Generic;
 
     public class Score : ValueObject
@@ -38,7 +37,7 @@
             return this;
         }
 
-        public Score UpdateCurrentOver(Over over)
+        public Score UpdateOver(Over over)
         {
             this.CurrentInning.UpdateCurrentOver(over);
 

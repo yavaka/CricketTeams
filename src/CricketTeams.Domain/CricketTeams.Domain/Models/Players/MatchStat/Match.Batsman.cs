@@ -10,7 +10,7 @@
             int numberOfSix,
             int numberOfFour,
             bool isPlayerOut,
-            KeyValuePair<Player,PlayerOutTypes> playerOut) 
+            KeyValuePair<Player, PlayerOutTypes> playerOut)
         {
             this.NumberOfSix = numberOfSix;
             this.NumberOfFour = numberOfFour;
@@ -18,7 +18,7 @@
             this.PlayerOut = playerOut;
         }
 
-        private MatchBatsman() 
+        private MatchBatsman()
         {
             this.NumberOfSix = default!;
             this.NumberOfFour = default!;
@@ -39,17 +39,17 @@
         /// <summary>
         /// Player who took out this player and the type of out 
         /// </summary>
-        public KeyValuePair<Player,PlayerOutTypes> PlayerOut { get; set; }
+        public KeyValuePair<Player, PlayerOutTypes> PlayerOut { get; set; }
 
         public MatchBatsman IncreaseSix()
-        { 
+        {
             this.NumberOfSix++;
             this.TotalRuns += 6;
 
             return this;
         }
 
-        public MatchBatsman IncreaseFour() 
+        public MatchBatsman IncreaseFour()
         {
             this.NumberOfFour++;
             this.TotalRuns += 4;
@@ -57,7 +57,7 @@
             return this;
         }
 
-        public MatchBatsman DismissPlayer(KeyValuePair<Player, PlayerOutTypes> playerOut) 
+        public MatchBatsman DismissPlayer(KeyValuePair<Player, PlayerOutTypes> playerOut)
         {
             this.PlayerOut = playerOut;
             this.IsPlayerOut = true;

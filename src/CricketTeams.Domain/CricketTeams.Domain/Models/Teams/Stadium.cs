@@ -2,9 +2,8 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
-    
-    using static ModelConstants.Stadium;
     using static ModelConstants.Common;
+    using static ModelConstants.Stadium;
 
     public class Stadium : ValueObject
     {

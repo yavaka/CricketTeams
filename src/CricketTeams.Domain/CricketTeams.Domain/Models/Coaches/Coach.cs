@@ -1,11 +1,10 @@
 ﻿namespace CricketTeams.Domain.Models.Coaches
 {
-    using System.Linq;
-    using System.Collections.Generic;
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Players;
-
+    using System.Collections.Generic;
+    using System.Linq;
     using static ModelConstants.Common;
 
     public class Coach : Entity<int>
@@ -172,7 +171,7 @@
 
             return this;
         }
-        
+
         #endregion
 
         #region Validations

@@ -16,7 +16,7 @@
             this.AllRounders = new List<Player>();
         }
 
-        private Players(Player captain, Player wicketKeeper) 
+        private Players(Player captain, Player wicketKeeper)
         {
             this.Captain = captain;
             this.WicketKeeper = wicketKeeper;
@@ -29,7 +29,7 @@
 
         public Player Captain { get; private set; }
         public Player WicketKeeper { get; private set; }
-        public Player? Twelfth { get; private set; } 
+        public Player? Twelfth { get; private set; }
         public ICollection<Player> Batsmen { get; private set; }
         public ICollection<Player> Bowlers { get; private set; }
         public ICollection<Player> AllRounders { get; private set; }

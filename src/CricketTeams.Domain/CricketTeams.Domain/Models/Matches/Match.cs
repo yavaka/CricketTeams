@@ -3,7 +3,6 @@
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Teams;
-
     using static ModelConstants.Match;
 
     public class Match : Entity<int>, IAggregateRoot
@@ -11,45 +10,40 @@
         internal Match(
             Team teamA,
             Team teamB,
-            int innings,
+            int numberOfInnings,
             int overs,
             Umpire firstUmpire,
             Umpire secondUmpire,
             Score score,
             Statistic statistic,
-            BallTypes ballType,
             Award winnerAward)
         {
-            Validate(innings, overs);
+            Validate(numberOfInnings, overs);
 
             this.TeamA = teamA;
             this.TeamB = teamB;
-            this.Innings = innings;
+            this.NumberOfInnings = numberOfInnings;
             this.Overs = overs;
             this.FirstUmpire = firstUmpire;
             this.SecondUmpire = secondUmpire;
             this.Score = score;
             this.Statistic = statistic;
-            this.BallType = ballType;
             this.WinnerAward = winnerAward;
         }
 
         private Match(
             Team teamA,
-            Team teamB,
-            int innings,
-            int overs)
+            Team teamB)
         {
             this.TeamA = teamA;
             this.TeamB = teamB;
-            this.Innings = innings;
-            this.Overs = overs;
 
+            this.Overs = default!;
+            this.NumberOfInnings = default!;
             this.FirstUmpire = default!;
             this.SecondUmpire = default!;
             this.Score = default!;
             this.Statistic = default!;
-            this.BallType = default!;
             this.WinnerAward = default!;
         }
 
@@ -57,21 +51,7 @@
 
         public Team TeamA { get; private set; }
         public Team TeamB { get; private set; }
-
-        private int _innings = StandardInnings;
-        public int Innings
-        {
-            get => this._innings;
-            private set
-            {
-                if (value % 2 == 1)
-                {
-                    throw new InvalidMatchException("Invalid innings value! Possible values are even numbers.");
-                }
-                this._innings = value;
-            }
-        }
-
+        public int NumberOfInnings { get; private set; } = StandardInnings;
         public int Overs { get; private set; } = DefaultOvers;
         public bool InProgress { get; private set; } = false;
         public bool Ended { get; private set; } = false;
@@ -79,10 +59,105 @@
         public Umpire? SecondUmpire { get; private set; }
         public Score? Score { get; private set; }
         public Statistic? Statistic { get; private set; }
-        public BallTypes? BallType { get; private set; }
         public Award? WinnerAward { get; private set; }
 
         #endregion
+
+        public Match StartMatch()
+        {
+            this.InProgress = true;
+
+            return this;
+        }
+
+        public Match UpdateFirstUmpire(Umpire umpire)
+        {
+            this.FirstUmpire = umpire;
+
+            return this;
+        }
+
+        public Match UpdateSecondUmpire(Umpire umpire)
+        {
+            this.SecondUmpire = umpire;
+
+            return this;
+        }
+
+        #region Score methods
+
+        public Match UpdateScore(Score score)
+        {
+            this.Score = score;
+
+            return this;
+        }
+
+        public Match UpdateBall(Ball ball)
+        {
+            ValidateIsScoreDefault();
+
+            this.Score!.UpdateBall(ball);
+
+            return this;
+        }
+
+        public Match UpdateBall(Ball ball, Player batsmen)
+        {
+            ValidateIsScoreDefault();
+
+            this.Score!.UpdateBall(ball, batsmen);
+
+            return this;
+        }
+
+        public Match UpdateOver(Over over)
+        {
+            ValidateIsScoreDefault();
+
+            this.Score!.UpdateOver(over);
+
+            return this;
+        }
+
+        public Match UpdateInning(ScoreInning inning)
+        {
+            ValidateIsScoreDefault();
+
+            this.Score!.UpdateCurrentInning(inning);
+
+            return this;
+        }
+
+        #endregion
+
+        public Match UpdateStatistic(Statistic stat)
+        {
+            this.Statistic = stat;
+
+            return this;
+        }
+
+        public Match UpdateAward(Award award)
+        {
+            this.WinnerAward = award;
+
+            return this;
+        }
+
+        public Match EndMatch()
+        {
+            ValidateIsScoreDefault();
+
+            this.Score!.EndMatch();
+
+            this.Ended = true;
+            this.InProgress = false;
+
+            return this;
+        }
+
+        #region Validations
 
         private void Validate(int innings, int overs)
         {
@@ -93,7 +168,7 @@
         private void ValidateInnings(int innings)
             => Guard.AgainstNegativeValue<InvalidMatchException>(
                 innings,
-                nameof(this.Innings));
+                nameof(this.NumberOfInnings));
 
         private void ValidateOvers(int overs)
             => Guard.AgainstOutOfRange<InvalidMatchException>(
@@ -102,21 +177,15 @@
                 MaxOvers,
                 nameof(this.Overs));
 
-        public Match EndMatch()
+        private void ValidateIsScoreDefault()
         {
-            this.InProgress = false;
-            this.Ended = true;
-
-            if (this.Score! != default!)
+            if (this.Score! == default!)
             {
-                this.Score.EndMatch();
+                throw new InvalidScoreException($"Set new {nameof(this.Score)}");
             }
-            else
-            {
-                throw new InvalidMatchException("Scoring has not been initialised.");
-            }
-            return this;
         }
+
+        #endregion
     }
 }
 
@@ -125,16 +194,7 @@
  * - match date
  * - man of the match if the match ended
  * - totalMatchTime
- * - each over to be tracked and listed
  * - depending on how many innings are there record the time for each inning
  * - tossWinner
  * - tossDecision
  */
-
-//public Match StartMatch()
-//{
-//    this.InProgress = true;
-
-//    return this;
-//}
-

@@ -1,7 +1,7 @@
 ﻿namespace CricketTeams.Domain.Models
 {
     using CricketTeams.Domain.Common;
-    
+
     public class BattingStyle : Enumeration
     {
         public static readonly BattingStyle LeftHand = new BattingStyle(1, "Left hand");

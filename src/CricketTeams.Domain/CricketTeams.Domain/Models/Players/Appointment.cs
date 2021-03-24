@@ -1,9 +1,8 @@
 ﻿namespace CricketTeams.Domain.Models
 {
-    using System;
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
-
+    using System;
     using static ModelConstants.Common;
 
     public class Appointment : ValueObject
@@ -13,7 +12,7 @@
             string service,
             string appointmentWith,
             DateTime startDate,
-            DateTime endDate) 
+            DateTime endDate)
         {
             Validate(description, service, appointmentWith);
 
@@ -37,7 +36,7 @@
             this.EndDate = default!;
         }
 
-        public string Description { get;private set; }
+        public string Description { get; private set; }
         public string Service { get; private set; }
         public string AppointmentWith { get; private set; }
         public DateTime? StartDate { get; private set; }

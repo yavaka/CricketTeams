@@ -25,7 +25,7 @@
         private Achievement(
             string name,
             string description,
-            string imageUrl) 
+            string imageUrl)
         {
             this.Name = name;
             this.Description = description;

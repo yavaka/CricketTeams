@@ -69,7 +69,7 @@
             var valueMatches = this.Value.Equals(otherValue.Value);
 
             return typeMatches && valueMatches;
-         }
+        }
 
         public override int GetHashCode() => (this.GetType().ToString() + this.Value).GetHashCode();
 

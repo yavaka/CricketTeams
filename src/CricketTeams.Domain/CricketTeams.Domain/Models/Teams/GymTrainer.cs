@@ -2,7 +2,7 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
-    
+
     using static ModelConstants.Common;
 
     public class GymTrainer : ValueObject

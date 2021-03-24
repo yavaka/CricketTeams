@@ -1,6 +1,5 @@
 ﻿using CricketTeams.Domain.Exceptions;
 using CricketTeams.Domain.Models.Matches;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,9 +20,9 @@ namespace CricketTeams.Domain.Models.Players.MatchStat
         }
 
         public FieldingPosition FieldingPosition { get; private set; }
-        public IDictionary<Player,PlayerOutTypes> PlayersOut { get; private set; }
+        public IDictionary<Player, PlayerOutTypes> PlayersOut { get; private set; }
 
-        public MatchFieldingPosition PlayerOut(Player player, PlayerOutTypes outType) 
+        public MatchFieldingPosition PlayerOut(Player player, PlayerOutTypes outType)
         {
             this.PlayersOut.Add(player, outType);
 

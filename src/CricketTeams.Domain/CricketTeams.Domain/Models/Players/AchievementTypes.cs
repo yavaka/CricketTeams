@@ -1,7 +1,7 @@
 ﻿namespace CricketTeams.Domain.Models
 {
     using CricketTeams.Domain.Common;
-    
+
     public class AchievementTypes : Enumeration
     {
         public static readonly AchievementTypes Trophy = new AchievementTypes(1, nameof(Trophy));

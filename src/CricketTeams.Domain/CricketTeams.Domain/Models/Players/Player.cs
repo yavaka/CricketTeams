@@ -1,12 +1,11 @@
 ﻿namespace CricketTeams.Domain.Models
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Players;
-
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using static ModelConstants.Common;
 
     public class Player : Entity<int>, IAggregateRoot
@@ -134,7 +133,7 @@
             return this;
         }
 
-        public Player UpdateBowlingStyle(BowlingStyle bowlingStyle) 
+        public Player UpdateBowlingStyle(BowlingStyle bowlingStyle)
         {
             ValidateBowlingStyle(bowlingStyle);
             this.BowlingStyle = bowlingStyle;
@@ -142,7 +141,7 @@
             return this;
         }
 
-        public Player UpdateFieldingPosition(FieldingPosition fieldingPosition) 
+        public Player UpdateFieldingPosition(FieldingPosition fieldingPosition)
         {
             ValidateFieldingPosition(fieldingPosition);
             this.FieldingPosition = fieldingPosition;
@@ -150,7 +149,7 @@
             return this;
         }
 
-        public Player UpdateHistory(History history) 
+        public Player UpdateHistory(History history)
         {
             this.History = history;
 
@@ -175,7 +174,7 @@
             string service,
             string appointmentWith,
             DateTime startDate,
-            DateTime endDate) 
+            DateTime endDate)
         {
             var appointment = new Appointment(description, service, appointmentWith, startDate, endDate);
 

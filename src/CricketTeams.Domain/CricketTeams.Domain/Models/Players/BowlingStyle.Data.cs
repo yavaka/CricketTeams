@@ -1,8 +1,8 @@
 ﻿namespace CricketTeams.Domain.Models.Players
 {
+    using CricketTeams.Domain.Common;
     using System;
     using System.Collections.Generic;
-    using CricketTeams.Domain.Common;
 
     public class BowlingStyleData : IInitialData
     {
