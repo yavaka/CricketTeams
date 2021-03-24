@@ -60,6 +60,11 @@
             public const int MaxOvers = 20;
         }
 
+        public class Over
+        {
+            public const int MaxBallsPerOver = 6;
+        }
+
         public class Ball 
         {
             public const int MinRuns = 0;

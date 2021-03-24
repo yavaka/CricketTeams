@@ -17,7 +17,7 @@
             bool four,
             bool wideBall,
             bool noBall,
-            KeyValuePair<KeyValuePair<Player, PlayerOutTypes>, Player> playerOut)
+            KeyValuePair<KeyValuePair<Player, PlayerOutTypes>, Player> batsmanOut)
         {
             Validate(runs, six, four, wideBall, noBall);
 
@@ -30,7 +30,7 @@
             this.WideBall = wideBall;
             this.NoBall = noBall;
             this.IsPlayerOut = true;
-            this.PlayerOut = playerOut;
+            this.BatsmanOut = batsmanOut;
         }
 
         private Ball(
@@ -53,7 +53,7 @@
             this.NoBall = noBall;
 
             this.IsPlayerOut = default!;
-            this.PlayerOut = default!;
+            this.BatsmanOut = default!;
         }
 
         public Player Bowler { get; set; }
@@ -77,7 +77,7 @@
         /// type of out (catch, wicket, bye or other).
         /// The value is the player who is out.
         /// </summary>
-        public KeyValuePair<KeyValuePair<Player, PlayerOutTypes>, Player>? PlayerOut { get; private set; }
+        public KeyValuePair<KeyValuePair<Player, PlayerOutTypes>, Player>? BatsmanOut { get; private set; }
 
         private void Validate(
             int runs,
@@ -133,6 +133,15 @@
                 MinRuns,
                 MaxRuns,
                 nameof(this.Runs));
+
+        private void ValidateBatsman(Player batsman)
+        {
+            if (batsman != this.Striker || batsman != this.NonStriker)
+            {
+                throw new InvalidBallException($"Invalid batsman. Valid batsmen are: {this.Striker.FullName} or {this.NonStriker.FullName}.");
+            }
+        }
+
 
         private bool IsAnyTrue(bool six, bool four, bool wideBall, bool noBall)
             => six is true || four is true || wideBall is true || noBall is true ?
