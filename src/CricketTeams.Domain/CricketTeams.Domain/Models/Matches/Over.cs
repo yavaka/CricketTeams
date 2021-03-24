@@ -61,21 +61,29 @@
             var totalBallsAllowed = MaxBallsPerOver + this.ExtraBalls;
             if (totalBallsAllowed < this.Balls.Count)
             {
-                throw new InvalidOverException($"Max balls for this over was reached.");
+                EndOver();
+                throw new InvalidOverException($"Max balls for this over was reached, Over was ended.");
             }
+            EndBall();
 
             this.CurrentBall = ball;
 
             return this;
         }
 
-        public Over EndBall()
+        public Over EndOver() 
+        {
+            this.IsOverEnd = true;
+
+            return this;
+        }
+
+        private void EndBall()
         {
             if (this.CurrentBall == default!)
             {
                 throw new InvalidOverException($"Set value of {nameof(this.CurrentBall)}");
             }
-
             AddBall();
 
             if (this.CurrentBall.IsPlayerOut)
@@ -86,22 +94,6 @@
             {
                 CalculateRuns();
             }
-
-            this.CurrentBall = default!;
-
-            return this;
-        }
-
-        public Over EndOver() 
-        {
-            var totalBallsAllowed = MaxBallsPerOver + this.ExtraBalls;
-            if (totalBallsAllowed > this.Balls.Count)
-            {
-                throw new InvalidOverException($"Over is still in progress, {totalBallsAllowed - this.Balls.Count} balls left.");
-            }
-            this.IsOverEnd = true;
-
-            return this;
         }
 
         private void DismissBatsman()

@@ -8,6 +8,9 @@
 
     public class Ball : ValueObject
     {
+        /// <summary>
+        /// When one batsman is out
+        /// </summary>
         internal Ball(
             Player bowler,
             Player striker,
@@ -33,7 +36,10 @@
             this.BatsmanOut = batsmanOut;
         }
 
-        private Ball(
+        /// <summary>
+        /// When the batsmen are not out
+        /// </summary>
+        internal Ball(
             Player bowler,
             Player striker,
             Player nonStriker,
@@ -43,6 +49,8 @@
             bool wideBall,
             bool noBall)
         {
+            Validate(runs, six, four, wideBall, noBall);
+
             this.Bowler = bowler;
             this.Striker = striker;
             this.NonStriker = nonStriker;
@@ -51,9 +59,6 @@
             this.Four = four;
             this.WideBall = wideBall;
             this.NoBall = noBall;
-
-            this.IsPlayerOut = default!;
-            this.BatsmanOut = default!;
         }
 
         public Player Bowler { get; set; }
