@@ -69,7 +69,7 @@
         {
             ValidateAreAllBatsmenDismissed();
 
-            if (OversPerInning == this.Overs.Count)
+            if (this.OversPerInning == this.Overs.Count)
             {
                 EndInning();
                 throw new InvalidInningException($"Max over for this inning was reached, Inning was ended.");
