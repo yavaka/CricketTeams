@@ -59,5 +59,23 @@
             public const int MinOvers = 2;
             public const int MaxOvers = 20;
         }
+
+        public class Ball 
+        {
+            public const int MinRuns = 0;
+            public const int MaxRuns = 20;
+
+            public const int MaxBallsPerOver = 6;
+        }
+
+        public class MatchStat 
+        {
+            public const int DefaultSix = 0;
+            public const int DefaultFour = 0;
+            public const bool DefaultIsPlayerOut = false;
+
+            public const int DefaultWideBalls = 0;
+            public const int DefaultWickets = 0;
+        }
     }
 }

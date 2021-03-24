@@ -43,9 +43,18 @@
                     this.CurrentInning != null ?
                     this.CurrentInning :
                     throw new InvalidScoreException("Invalid inning!"));
+
+                if (this.Innings.Any(i => i == default))
+                {
+                    CreateInning();
+                }
             }
             return this;
         }
+
+        private void CreateInning()
+            => this.CurrentInning = new ScoreInning();
+
 
         private void ValidateInning()
         {
@@ -57,7 +66,7 @@
 
         private void ValidateIsMatchEnd()
         {
-            if (this.Innings.All(i => i == default))
+            if (this.Innings.Any(i => i == default))
             {
                 throw new InvalidScoreException($"Match is still in progress.");
             }

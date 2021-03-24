@@ -74,13 +74,10 @@
         public int Age { get; private set; }
         public string Nationality { get; private set; }
         public string PhotoUrl { get; private set; }
+        public History History { get; private set; }
         public BattingStyle? BattingStyle { get; private set; }
         public BowlingStyle? BowlingStyle { get; private set; }
         public FieldingPosition? FieldingPosition { get; private set; }
-        /// <summary>
-        /// The history prop should be completed after matches model
-        /// </summary>
-        public History? History { get; private set; }
         public ICollection<Achievement> Achievements { get; private set; }
         public ICollection<Appointment> Appointments { get; private set; }
         //public IEnumerable<Match> UpcomingMatches { get; private set; }

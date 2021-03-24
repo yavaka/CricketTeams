@@ -6,4 +6,8 @@
 	  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Models\Matches\Over.cs~RF385b2751.TMP" />
+  </ItemGroup>
+
 </Project>

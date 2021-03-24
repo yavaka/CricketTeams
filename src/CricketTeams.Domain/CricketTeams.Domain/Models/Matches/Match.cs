@@ -3,7 +3,7 @@
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Teams;
-    
+
     using static ModelConstants.Match;
 
     public class Match : Entity<int>, IAggregateRoot
@@ -38,7 +38,7 @@
             Team teamA,
             Team teamB,
             int innings,
-            int overs) 
+            int overs)
         {
             this.TeamA = teamA;
             this.TeamB = teamB;
@@ -64,9 +64,9 @@
             get => this._innings;
             private set
             {
-                if (value == 3)
+                if (value % 2 == 1)
                 {
-                    throw new InvalidMatchException("Invalid innings value! Possible values are 2 and 4.");
+                    throw new InvalidMatchException("Invalid innings value! Possible values are even numbers.");
                 }
                 this._innings = value;
             }
@@ -75,8 +75,8 @@
         public int Overs { get; private set; } = DefaultOvers;
         public bool InProgress { get; private set; } = false;
         public bool Ended { get; private set; } = false;
-        public Umpire? FirstUmpire{ get; private set; }
-        public Umpire? SecondUmpire{ get; private set; }
+        public Umpire? FirstUmpire { get; private set; }
+        public Umpire? SecondUmpire { get; private set; }
         public Score? Score { get; private set; }
         public Statistic? Statistic { get; private set; }
         public BallTypes? BallType { get; private set; }
@@ -101,6 +101,22 @@
                 MinOvers,
                 MaxOvers,
                 nameof(this.Overs));
+
+        public Match EndMatch()
+        {
+            this.InProgress = false;
+            this.Ended = true;
+
+            if (this.Score! != default!)
+            {
+                this.Score.EndMatch();
+            }
+            else
+            {
+                throw new InvalidMatchException("Scoring has not been initialised.");
+            }
+            return this;
+        }
     }
 }
 
@@ -112,6 +128,7 @@
  * - each over to be tracked and listed
  * - depending on how many innings are there record the time for each inning
  * - tossWinner
+ * - tossDecision
  */
 
 //public Match StartMatch()
@@ -120,3 +137,4 @@
 
 //    return this;
 //}
+
