@@ -3,6 +3,7 @@
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Teams;
+    using CricketTeams.Domain.Models.Stadiums;
     using static ModelConstants.Match;
 
     public class Match : Entity<int>, IAggregateRoot
@@ -56,6 +57,7 @@
         public Umpire? SecondUmpire { get; private set; }
         public Score? Score { get; private set; }
         public Statistic? Statistic { get; private set; }
+        public Stadium? MyProperty { get; private set; }
 
         #endregion
 

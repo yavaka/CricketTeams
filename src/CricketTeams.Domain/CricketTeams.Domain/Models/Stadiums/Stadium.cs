@@ -1,11 +1,11 @@
-﻿namespace CricketTeams.Domain.Models.Teams
+﻿namespace CricketTeams.Domain.Models.Stadiums
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using static ModelConstants.Common;
     using static ModelConstants.Stadium;
 
-    public class Stadium : ValueObject
+    public class Stadium : Entity<int>
     {
         internal Stadium(
             string name,
@@ -32,7 +32,7 @@
         private void Validate(string name, string address, int capacity, string websiteUrl, string owner)
         {
             ValidateName(name);
-            ValidateAddress(address);
+            //ValidateAddress(address);
             ValidateCapacity(capacity);
             ValidateWebsiteUrl(websiteUrl);
             ValidateOwner(owner);

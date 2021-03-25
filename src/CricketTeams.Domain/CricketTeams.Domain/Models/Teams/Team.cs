@@ -3,6 +3,7 @@
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Coaches;
+    using CricketTeams.Domain.Models.Stadiums;
     using System.Collections.Generic;
 
     using static ModelConstants.Team;
