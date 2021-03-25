@@ -15,8 +15,7 @@
             Umpire firstUmpire,
             Umpire secondUmpire,
             Score score,
-            Statistic statistic,
-            Award winnerAward)
+            Statistic statistic)
         {
             Validate(numberOfInnings, overs);
 
@@ -28,7 +27,6 @@
             this.SecondUmpire = secondUmpire;
             this.Score = score;
             this.Statistic = statistic;
-            this.WinnerAward = winnerAward;
         }
 
         private Match(
@@ -44,7 +42,6 @@
             this.SecondUmpire = default!;
             this.Score = default!;
             this.Statistic = default!;
-            this.WinnerAward = default!;
         }
 
         #region Properties
@@ -59,7 +56,6 @@
         public Umpire? SecondUmpire { get; private set; }
         public Score? Score { get; private set; }
         public Statistic? Statistic { get; private set; }
-        public Award? WinnerAward { get; private set; }
 
         #endregion
 
@@ -138,13 +134,6 @@
             return this;
         }
 
-        public Match UpdateAward(Award award)
-        {
-            this.WinnerAward = award;
-
-            return this;
-        }
-
         public Match EndMatch()
         {
             ValidateIsScoreDefault();
@@ -188,7 +177,6 @@
         #endregion
     }
 }
-
 /*
  * Statistic
  * - match date
@@ -198,3 +186,4 @@
  * - tossWinner
  * - tossDecision
  */
+

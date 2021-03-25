@@ -20,8 +20,7 @@
             string nationality,
             string photoUrl,
             BattingStyle battingStyle,
-            BowlingStyle bowlingStyle,
-            History matchesAsCoach)
+            BowlingStyle bowlingStyle)
         {
             this.Validate(firstName, lastName, nickname, age, photoUrl);
             this.ValidateBowlingStyle(bowlingStyle);
@@ -34,7 +33,6 @@
             this.PhotoUrl = photoUrl;
             this.BattingStyle = battingStyle;
             this.BowlingStyle = bowlingStyle;
-            this.MatchesAsCoach = matchesAsCoach;
 
             this.Achievements = new List<Achievement>();
         }
@@ -56,7 +54,6 @@
 
             this.BattingStyle = default!;
             this.BowlingStyle = default!;
-            this.MatchesAsCoach = default!;
             this.Achievements = default!;
         }
 
@@ -71,7 +68,6 @@
         public string PhotoUrl { get; private set; }
         public BattingStyle? BattingStyle { get; private set; }
         public BowlingStyle? BowlingStyle { get; private set; }
-        public History? MatchesAsCoach { get; private set; }
         public ICollection<Achievement> Achievements { get; private set; }
 
         #endregion
@@ -148,13 +144,6 @@
             ValidateBowlingStyle(bowlingStyle);
 
             this.BowlingStyle = bowlingStyle;
-
-            return this;
-        }
-
-        public Coach UpdateMatchesAsCoach(History matchesAsCoach)
-        {
-            this.MatchesAsCoach = matchesAsCoach;
 
             return this;
         }
