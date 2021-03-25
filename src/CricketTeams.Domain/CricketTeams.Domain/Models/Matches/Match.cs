@@ -16,7 +16,8 @@
             Umpire firstUmpire,
             Umpire secondUmpire,
             Score score,
-            Statistic statistic)
+            Statistic statistic,
+            Stadium stadium)
         {
             Validate(numberOfInnings, overs);
 
@@ -28,6 +29,7 @@
             this.SecondUmpire = secondUmpire;
             this.Score = score;
             this.Statistic = statistic;
+            this.Stadium = stadium;
         }
 
         private Match(
@@ -43,6 +45,7 @@
             this.SecondUmpire = default!;
             this.Score = default!;
             this.Statistic = default!;
+            this.Stadium = default!;
         }
 
         #region Properties
@@ -57,7 +60,7 @@
         public Umpire? SecondUmpire { get; private set; }
         public Score? Score { get; private set; }
         public Statistic? Statistic { get; private set; }
-        public Stadium? MyProperty { get; private set; }
+        public Stadium? Stadium { get; private set; }
 
         #endregion
 
@@ -132,6 +135,13 @@
         public Match UpdateStatistic(Statistic stat)
         {
             this.Statistic = stat;
+
+            return this;
+        }
+
+        public Match UpdateStadium(Stadium stadium)
+        {
+            this.Stadium = stadium;
 
             return this;
         }
