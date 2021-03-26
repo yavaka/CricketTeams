@@ -1,8 +1,7 @@
-﻿namespace CricketTeams.Domain.Models
+﻿namespace CricketTeams.Domain.Models.Players
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
-    using CricketTeams.Domain.Models.Players;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,7 +15,7 @@
         private static readonly IEnumerable<FieldingPosition> AllowedFieldingPositions
              = new FieldingPositionData().GetData().Cast<FieldingPosition>();
 
-        internal Player(
+        public Player(
             string firstName,
             string lastName,
             int age,
@@ -79,7 +78,6 @@
         public FieldingPosition? FieldingPosition { get; private set; }
         public ICollection<Achievement> Achievements { get; private set; }
         public ICollection<Appointment> Appointments { get; private set; }
-        //public IEnumerable<Match> UpcomingMatches { get; private set; }
         #endregion
 
         #region Add & Update methods

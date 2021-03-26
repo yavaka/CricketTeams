@@ -5,6 +5,7 @@
     using CricketTeams.Domain.Models.Players;
     using System.Collections.Generic;
     using System.Linq;
+
     using static ModelConstants.Common;
 
     public class Coach : Entity<int>

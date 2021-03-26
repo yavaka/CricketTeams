@@ -1,6 +1,7 @@
 ﻿namespace CricketTeams.Domain.Models.Teams
 {
     using CricketTeams.Domain.Common;
+    using CricketTeams.Domain.Models.Players;
     using System.Collections.Generic;
 
     public class Players : ValueObject

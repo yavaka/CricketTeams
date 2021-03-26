@@ -4,11 +4,13 @@
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Teams;
     using CricketTeams.Domain.Models.Stadiums;
+    using CricketTeams.Domain.Models.Players;
+
     using static ModelConstants.Match;
 
     public class Match : Entity<int>, IAggregateRoot
     {
-        internal Match(
+        public Match(
             Team teamA,
             Team teamB,
             int numberOfInnings,

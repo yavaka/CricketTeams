@@ -44,6 +44,36 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "netcoreapp5",
+          "dependencies": {
+            "Bogus": {
+              "target": "Package",
+              "version": "[33.0.2, )"
+            },
+            "FakeItEasy": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "FakeItEasy.Analyzer.CSharp": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            },
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[5.10.3, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.9.1, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.4.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

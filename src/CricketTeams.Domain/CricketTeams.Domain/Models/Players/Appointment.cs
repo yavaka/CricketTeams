@@ -1,4 +1,4 @@
-﻿namespace CricketTeams.Domain.Models
+﻿namespace CricketTeams.Domain.Models.Players
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;

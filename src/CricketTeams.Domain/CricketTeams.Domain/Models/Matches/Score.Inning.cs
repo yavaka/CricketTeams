@@ -2,6 +2,7 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
     using System.Collections.Generic;
     using System.Linq;

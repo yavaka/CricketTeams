@@ -2,6 +2,7 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Players;
     using System.Collections.Generic;
 
     public class Score : ValueObject

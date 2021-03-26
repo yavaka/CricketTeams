@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CricketTeams.Domain", "Cric
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{175B8572-447A-4623-94D6-8D67A6D8F0D6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EB05DEBF-AC7B-4725-833B-D0E90CE2B8D5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "Domain.Tests\Domain.Tests.csproj", "{AC2EFFBF-828F-4D71-9AA3-7AF5B4F74BED}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,17 +17,12 @@ Global
 		{0EA39C4F-17AF-4E94-BBBE-D713E00312C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EA39C4F-17AF-4E94-BBBE-D713E00312C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EA39C4F-17AF-4E94-BBBE-D713E00312C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC2EFFBF-828F-4D71-9AA3-7AF5B4F74BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC2EFFBF-828F-4D71-9AA3-7AF5B4F74BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC2EFFBF-828F-4D71-9AA3-7AF5B4F74BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC2EFFBF-828F-4D71-9AA3-7AF5B4F74BED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0EA39C4F-17AF-4E94-BBBE-D713E00312C9} = {175B8572-447A-4623-94D6-8D67A6D8F0D6}
-		{AC2EFFBF-828F-4D71-9AA3-7AF5B4F74BED} = {EB05DEBF-AC7B-4725-833B-D0E90CE2B8D5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BB2EA00D-B810-428F-BBBD-B4E0C0FDC84B}
