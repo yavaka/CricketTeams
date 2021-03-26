@@ -2,6 +2,7 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
+
     using static ModelConstants.BowlingStyle;
     using static ModelConstants.Common;
 
@@ -14,14 +15,6 @@
             this.StyleName = styleName;
             this.Description = description;
             this.BowlingType = bowlingType;
-        }
-
-        private BowlingStyle(string styleName, string description)
-        {
-            this.StyleName = styleName;
-            this.Description = description;
-
-            this.BowlingType = default!;
         }
 
         public string StyleName { get; private set; }
