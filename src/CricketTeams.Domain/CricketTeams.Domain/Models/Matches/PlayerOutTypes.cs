@@ -1,6 +1,7 @@
 ﻿namespace CricketTeams.Domain.Models.Matches
 {
     using CricketTeams.Domain.Common;
+    using CricketTeams.Domain.Models.Players;
 
     public class PlayerOutTypes : Enumeration
     {
@@ -11,7 +12,7 @@
         public static readonly PlayerOutTypes HitBallTwice = new PlayerOutTypes(5, "Hit ball twice");
 
         private PlayerOutTypes(int value)
-            : this(value, FromValue<BowlingType>(value).Name)
+            : this(value, FromValue<BowlingTypes>(value).Name)
         {
         }
 

@@ -8,7 +8,7 @@
         public readonly TossDecisions Bowling = new TossDecisions(2,"Bowling");
 
         private TossDecisions(int value) 
-            : this(value, FromValue<BowlingType>(value).Name)
+            : this(value, FromValue<TossDecisions>(value).Name)
         {
         }
 

@@ -25,7 +25,7 @@
         {
             // Arrange
             var first = new EntityFakes.MockEntity("First").SetId(1);
-            var second = new EntityFakes.MockEntity("Second").SetId(1);
+            var second = new EntityFakes.MockEntity("Second").SetId(2);
 
             // Act
             var result = first == second;

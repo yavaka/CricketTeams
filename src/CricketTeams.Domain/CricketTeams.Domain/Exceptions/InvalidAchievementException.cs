@@ -1,6 +1,6 @@
 ﻿namespace CricketTeams.Domain.Exceptions
 {
-    class InvalidAchievementException : BaseDomainException
+    public class InvalidAchievementException : BaseDomainException
     {
         public InvalidAchievementException()
         {

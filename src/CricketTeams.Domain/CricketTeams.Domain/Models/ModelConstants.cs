@@ -4,8 +4,8 @@
     {
         public class Common
         {
-            public const int MinDescriptionLength = 2;
-            public const int MaxDescriptionLength = 20;
+            public const int MinDescriptionLength = 10;
+            public const int MaxDescriptionLength = 200;
 
             public const int MinNameLength = 2;
             public const int MaxNameLength = 20;

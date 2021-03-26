@@ -21,13 +21,13 @@
 
         private void Validate(string positionName, string description)
         {
-            Guard.ForStringLength<InvalidPlayerException>(
+            Guard.ForStringLength<InvalidFieldingPositionException>(
                 positionName,
                 MinPositionName,
                 MaxPositionName,
                 nameof(this.PositionName));
 
-            Guard.ForStringLength<InvalidPlayerException>(
+            Guard.ForStringLength<InvalidFieldingPositionException>(
                 description,
                 MinDescriptionLength,
                 MaxDescriptionLength,

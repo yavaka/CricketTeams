@@ -7,7 +7,7 @@
 
     public class BowlingStyle : ValueObject
     {
-        internal BowlingStyle(string styleName, BowlingType bowlingType, string description)
+        internal BowlingStyle(string styleName, BowlingTypes bowlingType, string description)
         {
             this.Validate(styleName, description);
 
@@ -25,18 +25,18 @@
         }
 
         public string StyleName { get; private set; }
-        public BowlingType BowlingType { get; private set; }
+        public BowlingTypes BowlingType { get; private set; }
         public string Description { get; private set; }
 
         private void Validate(string styleName, string description)
         {
-            Guard.ForStringLength<InvalidPlayerException>(
+            Guard.ForStringLength<InvalidBowlingStyleException>(
                 styleName,
                 MinStyleNameLength,
                 MaxStyleNameLength,
                 nameof(this.StyleName));
 
-            Guard.ForStringLength<InvalidPlayerException>(
+            Guard.ForStringLength<InvalidBowlingStyleException>(
                 description,
                 MinDescriptionLength,
                 MaxDescriptionLength,

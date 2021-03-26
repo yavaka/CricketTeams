@@ -199,7 +199,7 @@
         }
 
         private void ValidateName(string name, string propName)
-            => Guard.ForStringLength<InvalidUmpireException>(
+            => Guard.ForStringLength<InvalidPlayerException>(
                 name,
                 MinNameLength,
                 MaxNameLength,

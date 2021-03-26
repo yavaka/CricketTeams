@@ -1,10 +1,10 @@
-﻿using CricketTeams.Domain.Exceptions;
-using CricketTeams.Domain.Models.Matches;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CricketTeams.Domain.Models.Players.MatchStat
+﻿namespace CricketTeams.Domain.Models.Players.MatchStat
 {
+    using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Matches;
+    using System.Collections.Generic;
+    using System.Linq;
+    
     public class MatchFieldingPosition
     {
         private static readonly IEnumerable<FieldingPosition> AllowedFieldingPositions
