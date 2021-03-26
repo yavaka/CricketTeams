@@ -5,7 +5,7 @@
         public class Common
         {
             public const int MinDescriptionLength = 10;
-            public const int MaxDescriptionLength = 200;
+            public const int MaxDescriptionLength = 500;
 
             public const int MinNameLength = 2;
             public const int MaxNameLength = 20;
@@ -25,7 +25,7 @@
         public class FieldingPosition
         {
             public const int MinPositionName = 3;
-            public const int MaxPositionName = 10;
+            public const int MaxPositionName = 30;
         }
 
         public class Achievement

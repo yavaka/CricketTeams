@@ -68,7 +68,7 @@
         #region Properties
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
-        public string FullName => this.FirstName + this.LastName;
+        public string FullName => $"{this.FirstName} {this.LastName}";
         public int Age { get; private set; }
         public string Nationality { get; private set; }
         public string PhotoUrl { get; private set; }
@@ -193,9 +193,9 @@
         {
             ValidateName(firstName, nameof(this.FirstName));
             ValidateName(lastName, nameof(this.LastName));
-            this.ValidateAge(age);
+            ValidateAge(age);
             //this.ValidateNationality(nationality);
-            this.ValidatePhotoUrl(photoUrl);
+            ValidatePhotoUrl(photoUrl);
         }
 
         private void ValidateName(string name, string propName)

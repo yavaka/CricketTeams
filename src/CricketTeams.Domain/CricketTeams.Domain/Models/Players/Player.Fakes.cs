@@ -38,7 +38,7 @@
                         BattingStyle.LeftHand,
                         A.Dummy<BowlingStyle>(),
                         A.Dummy<FieldingPosition>(),
-                        A.Dummy<History>()))
+                        new History()))
                     .Generate()
                     .SetId(id);
 
