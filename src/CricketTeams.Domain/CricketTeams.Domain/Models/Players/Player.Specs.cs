@@ -96,5 +96,132 @@
         }
 
         //TODO: Unit tests of nationality
+
+        [Fact]
+        public void UpdateBowlingStyleShouldSetBowlingStyle() 
+        {
+            //Arrange
+            var bowlingStyle = A.Dummy<BowlingStyle>();
+            
+            //Act
+            this._player!.UpdateBowlingStyle(bowlingStyle);
+
+            //Assert
+            this._player!.BowlingStyle
+                .Should()
+                .BeEquivalentTo(bowlingStyle);
+        }
+
+        [Fact]
+        public void InvalidBowlingStyleNameShouldThrowException() 
+        {
+            //Arrange
+            var bowlingStyle = new BowlingStyle(
+                "Invalid bowling", 
+                BowlingTypes.FastBowling,
+                "Some invalid bowling style");
+
+            //Act
+            Action act = ()
+               => this._player!.UpdateBowlingStyle(bowlingStyle);
+
+            //Assert
+            act.Should().Throw<InvalidPlayerException>();
+        }
+
+        [Fact]
+        public void UpdateFieldingPositionShouldSetBowlingStyle()
+        {
+            //Arrange
+            var fieldingPosition = A.Dummy<FieldingPosition>();
+
+            //Act
+            this._player!.UpdateFieldingPosition(fieldingPosition);
+
+            //Assert
+            this._player!.FieldingPosition
+                .Should()
+                .BeEquivalentTo(fieldingPosition);
+        }
+
+        [Fact]
+        public void InvalidFieldingPositionNameShouldThrowException()
+        {
+            //Arrange
+            var fieldingPosition = new FieldingPosition(
+                "Invalid position",
+                "Some invalid fieliding position");
+
+            //Act
+            Action act = ()
+               => this._player!.UpdateFieldingPosition(fieldingPosition);
+
+            //Assert
+            act.Should().Throw<InvalidPlayerException>();
+        }
+
+        [Fact]
+        public void AddAchievementShouldAddAchievementAtAchievements() 
+        {
+            //Arrange
+            var achievement = A.Dummy<Achievement>();
+
+            //Act
+            this._player!.AddAchievement(
+                achievement.Name, 
+                achievement.Description, 
+                achievement.ImageUrl, 
+                achievement.AchievementType);
+
+            //Assert
+            this._player!.Achievements
+                .Should()
+                .Contain(achievement);
+        }
+
+        [Fact]
+        public void AddAchievementWithInvalidNameShouldThrowException() 
+        {
+            //Act
+            Action act = () 
+                => this._player!.AddAchievement(
+                    "I",
+                    "Invalid name test",
+                    "http://invalid.name",
+                    AchievementTypes.Medal);
+
+            //Assert
+            act.Should().Throw<InvalidAchievementException>();
+        }
+
+        [Fact]
+        public void AddAchievementWithInvalidDescriptionShouldThrowException() 
+        {
+            //Act
+            Action act = ()
+                => this._player!.AddAchievement(
+                    "Invalid description",
+                    "Invalid",
+                    "http://invalid.description",
+                    AchievementTypes.Medal);
+
+            //Assert
+            act.Should().Throw<InvalidAchievementException>();
+        }
+
+        [Fact]
+        public void AddAchievementWithInvalidImageUrlShouldThrowException()
+        {
+            //Act
+            Action act = ()
+                => this._player!.AddAchievement(
+                    "Invalid image url",
+                    "Invalid image url should throw exception",
+                    "invalid.url",
+                    AchievementTypes.Medal);
+
+            //Assert
+            act.Should().Throw<InvalidAchievementException>();
+        }
     }
 }

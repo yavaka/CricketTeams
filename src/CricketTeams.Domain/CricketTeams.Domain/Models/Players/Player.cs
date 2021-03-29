@@ -2,7 +2,6 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using static ModelConstants.Common;
@@ -41,7 +40,6 @@
             this.History = history;
 
             this.Achievements = new List<Achievement>();
-            this.Appointments = new List<Appointment>();
         }
 
         private Player(
@@ -62,7 +60,6 @@
             this.FieldingPosition = default!;
             this.History = default!;
             this.Achievements = default!;
-            this.Appointments = default!;
         }
 
         #region Properties
@@ -77,7 +74,6 @@
         public BowlingStyle? BowlingStyle { get; private set; }
         public FieldingPosition? FieldingPosition { get; private set; }
         public ICollection<Achievement> Achievements { get; private set; }
-        public ICollection<Appointment> Appointments { get; private set; }
         #endregion
 
         #region Add & Update methods
@@ -134,6 +130,7 @@
         public Player UpdateBowlingStyle(BowlingStyle bowlingStyle)
         {
             ValidateBowlingStyle(bowlingStyle);
+
             this.BowlingStyle = bowlingStyle;
 
             return this;
@@ -163,20 +160,6 @@
             var achievement = new Achievement(name, description, imageUrl, achievementType);
 
             this.Achievements.Add(achievement);
-
-            return this;
-        }
-
-        public Player BookAppointment(
-            string description,
-            string service,
-            string appointmentWith,
-            DateTime startDate,
-            DateTime endDate)
-        {
-            var appointment = new Appointment(description, service, appointmentWith, startDate, endDate);
-
-            this.Appointments.Add(appointment);
 
             return this;
         }
