@@ -38,14 +38,14 @@
         public ICollection<Player> Bowlers { get; private set; }
         public ICollection<Player> AllRounders { get; private set; }
 
-        public Players AddCaptain(Player captain)
+        public Players UpdateCaptain(Player captain)
         {
             this.Captain = captain;
 
             return this;
         }
 
-        public Players AddWicketKeeper(Player wicketKeeper)
+        public Players UpdateWicketKeeper(Player wicketKeeper)
         {
             this.WicketKeeper = wicketKeeper;
 
@@ -88,7 +88,7 @@
 
         private void ValidateIsBatsmanExist(Player batsman)
         {
-            if (this.Batsmen.Any(b => b.Id == batsman.Id))
+            if (this.Batsmen.Any(b => b == batsman && b.FullName == batsman.FullName))
             {
                 throw new InvalidTeamPlayersException($"Batsman {batsman.FullName} already in this team.");
             }
@@ -96,7 +96,7 @@
 
         private void ValidateIsBowlerExist(Player bowler) 
         {
-            if (this.Bowlers.Any(b =>b.Id == bowler.Id))
+            if (this.Bowlers.Any(b =>b == bowler && b.FullName == bowler.FullName))
             {
                 throw new InvalidTeamPlayersException($"Bowler {bowler.FullName} already in this team.");
             }
@@ -104,7 +104,7 @@
 
         private void ValidateIsAllRounderExist(Player allRounder) 
         {
-            if (this.AllRounders.Any(r => r.Id == allRounder.Id))
+            if (this.AllRounders.Any(r => r == allRounder && r.FullName == allRounder.FullName))
             {
                 throw new InvalidTeamPlayersException($"All rounder {allRounder.FullName} already in this team.");
             }

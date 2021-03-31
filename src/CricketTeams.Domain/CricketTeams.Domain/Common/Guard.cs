@@ -97,6 +97,17 @@
             ThrowException<TException>($"{name} must be equal or more than zero.");
         }
 
+        public static void AgainstNotInitializedValueType<TException>(object? obj, string name = "Value")
+            where TException : BaseDomainException, new()
+        {
+            if (obj != default!)
+            {
+                return;
+            }
+
+            ThrowException<TException>($"{name} not initialized.");
+        }
+
         private static void ThrowException<TException>(string message)
             where TException : BaseDomainException, new()
         {
