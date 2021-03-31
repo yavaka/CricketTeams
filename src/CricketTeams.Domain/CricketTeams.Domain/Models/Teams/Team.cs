@@ -45,7 +45,6 @@
 
             this.Stadium = default!;
             this.History = default!;
-            this.GymTrainer = default!;
             this.Sponsors = default!;
             this.Achievements = default!;
         }
@@ -92,13 +91,6 @@
             return this;
         }
 
-        public Team UpdateStadium(Stadium stadium)
-        {
-            this.Stadium = stadium;
-
-            return this;
-        }
-
         public Team UpdateCoach(Coach coach)
         {
             this.Coach = coach;
@@ -120,34 +112,6 @@
             return this;
         }
 
-        public Team AddBowler(Player bowler)
-        {
-            this.Players.AddBowler(bowler);
-
-            return this;
-        }
-
-        public Team AddCaptain(Player captain)
-        {
-            this.Players.AddCaptain(captain);
-
-            return this;
-        }
-
-        public Team AddWicketKeeper(Player wicketKeeper)
-        {
-            this.Players.AddWicketKeeper(wicketKeeper);
-
-            return this;
-        }
-
-        public Team AddTwelfth(Player twelfth)
-        {
-            this.Players.AddTwelfth(twelfth);
-
-            return this;
-        }
-
         public Team AddAllRounder(Player allRounder)
         {
             this.Players.AddAllRounder(allRounder);
@@ -155,25 +119,37 @@
             return this;
         }
 
-        public Team AddStadium(
-            string name,
-            string address,
-            int capacity,
-            string websiteUrl,
-            string owner)
+        public Team AddBowler(Player bowler)
         {
-            this.Stadium = new Stadium(name, address, capacity, websiteUrl, owner);
+            this.Players.AddBowler(bowler);
 
             return this;
         }
 
-        public Team AddGymTrainer(
-            string firstName,
-            string lastName,
-            int age,
-            string photoUrl)
+        public Team UpdateCaptain(Player captain)
         {
-            this.GymTrainer = new GymTrainer(firstName, lastName, age, photoUrl);
+            this.Players.UpdateCaptain(captain);
+
+            return this;
+        }
+
+        public Team UpdateWicketKeeper(Player wicketKeeper)
+        {
+            this.Players.UpdateWicketKeeper(wicketKeeper);
+
+            return this;
+        }
+
+        public Team UpdateTwelfth(Player twelfth)
+        {
+            this.Players.UpdateTwelfth(twelfth);
+
+            return this;
+        }
+
+        public Team UpdateStadium(Stadium stadium)
+        {
+            this.Stadium = stadium;
 
             return this;
         }
