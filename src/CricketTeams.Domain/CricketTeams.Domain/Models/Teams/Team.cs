@@ -17,8 +17,7 @@
             Players players,
             Stadium stadium,
             Coach coach,
-            History history,
-            GymTrainer gymTrainer)
+            History history)
         {
             Validate(name, logoUrl);
 
@@ -28,7 +27,6 @@
             this.Stadium = stadium;
             this.Coach = coach;
             this.History = history;
-            this.GymTrainer = gymTrainer;
 
             this.Sponsors = new List<Sponsor>();
             this.Achievements = new List<Achievement>();
@@ -60,7 +58,6 @@
         public Coach Coach { get; private set; }
         public Stadium? Stadium { get; private set; }
         public History? History { get; private set; }
-        public GymTrainer? GymTrainer { get; private set; }
         public ICollection<Sponsor> Sponsors { get; private set; }
         public ICollection<Achievement> Achievements { get; private set; }
 
@@ -112,13 +109,6 @@
         public Team UpdateHistory(History history)
         {
             this.History = history;
-
-            return this;
-        }
-
-        public Team UpdateGymTrainer(GymTrainer gymTrainer)
-        {
-            this.GymTrainer = gymTrainer;
 
             return this;
         }

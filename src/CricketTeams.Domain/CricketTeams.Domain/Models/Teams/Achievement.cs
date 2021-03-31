@@ -51,7 +51,7 @@
             => Guard.ForStringLength<InvalidAchievementException>(
                 name,
                 ModelConstants.Achievement.MinNameLength,
-                ModelConstants.Achievement.MinNameLength,
+                ModelConstants.Achievement.MaxNameLength,
                 nameof(this.Name));
 
         private void ValidateDescription(string description)

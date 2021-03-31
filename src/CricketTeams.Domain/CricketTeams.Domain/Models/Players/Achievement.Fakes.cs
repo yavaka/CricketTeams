@@ -20,7 +20,8 @@
                         f.Name.FindName(),
                         f.Lorem.Sentence(),
                         f.Image.PlaceImgUrl(),
-                        AchievementTypes.Medal));
+                        AchievementTypes.Medal))
+                .Generate();
         }
     }
 }
