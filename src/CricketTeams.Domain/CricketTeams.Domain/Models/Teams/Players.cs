@@ -1,8 +1,11 @@
 ﻿namespace CricketTeams.Domain.Models.Teams
 {
     using CricketTeams.Domain.Common;
+    using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Players;
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Players : ValueObject
     {
@@ -58,13 +61,17 @@
 
         public Players AddBatsman(Player batsman)
         {
+            ValidateIsBatsmanExist(batsman);
+            
             this.Batsmen.Add(batsman);
 
             return this;
         }
-
+       
         public Players AddBowler(Player bowler)
         {
+            ValidateIsBowlerExist(bowler);
+
             this.Bowlers.Add(bowler);
 
             return this;
@@ -72,9 +79,35 @@
 
         public Players AddAllRounder(Player allRounder)
         {
+            ValidateIsAllRounderExist(allRounder);
+
             this.AllRounders.Add(allRounder);
 
             return this;
+        }
+
+        private void ValidateIsBatsmanExist(Player batsman)
+        {
+            if (this.Batsmen.Any(b => b.Id == batsman.Id))
+            {
+                throw new InvalidTeamPlayersException($"Batsman {batsman.FullName} already in this team.");
+            }
+        }
+
+        private void ValidateIsBowlerExist(Player bowler) 
+        {
+            if (this.Bowlers.Any(b =>b.Id == bowler.Id))
+            {
+                throw new InvalidTeamPlayersException($"Bowler {bowler.FullName} already in this team.");
+            }
+        }
+
+        private void ValidateIsAllRounderExist(Player allRounder) 
+        {
+            if (this.AllRounders.Any(r => r.Id == allRounder.Id))
+            {
+                throw new InvalidTeamPlayersException($"All rounder {allRounder.FullName} already in this team.");
+            }
         }
     }
 }
