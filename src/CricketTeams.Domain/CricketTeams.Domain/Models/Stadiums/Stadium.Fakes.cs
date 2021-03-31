@@ -4,6 +4,7 @@
     using CricketTeams.Domain.Common;
     using FakeItEasy;
     using System;
+    using System.Linq;
 
     public class StadiumFakes : IDummyFactory
     {
@@ -18,11 +19,11 @@
             public static Stadium GetStadium(int id = 1)
                 => new Faker<Stadium>()
                     .CustomInstantiator(f => new Stadium(
-                        f.Name.FindName(),
+                        f.Random.String(5),
                         f.Address.FullAddress(),
                         f.Random.Number(100, 100000),
                         f.Internet.Url(),
-                        f.Company.CompanyName()))
+                        f.Random.String(5)))
                     .Generate()
                     .SetId(id);
         }

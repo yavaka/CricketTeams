@@ -6,9 +6,6 @@
     using System;
     using Xunit;
 
-    using static CricketTeams.Domain.Models.Players.PlayerFakes;
-    using static ModelConstants.Common;
-
     public class PlayerSpecs
     {
         private Player _player;
