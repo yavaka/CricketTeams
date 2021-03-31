@@ -45,6 +45,7 @@
 
             this.Stadium = default!;
             this.History = default!;
+            this.GymTrainer = default!;
             this.Sponsors = default!;
             this.Achievements = default!;
         }
@@ -125,7 +126,28 @@
 
             return this;
         }
-        
+
+        public Team AddCaptain(Player captain)
+        {
+            this.Players.AddCaptain(captain);
+
+            return this;
+        }
+
+        public Team AddWicketKeeper(Player wicketKeeper)
+        {
+            this.Players.AddWicketKeeper(wicketKeeper);
+
+            return this;
+        }
+
+        public Team AddTwelfth(Player twelfth)
+        {
+            this.Players.AddTwelfth(twelfth);
+
+            return this;
+        }
+
         public Team AddAllRounder(Player allRounder)
         {
             this.Players.AddAllRounder(allRounder);
@@ -133,24 +155,25 @@
             return this;
         }
 
-        public Team UpdateCaptain(Player captain)
+        public Team AddStadium(
+            string name,
+            string address,
+            int capacity,
+            string websiteUrl,
+            string owner)
         {
-            this.Players.UpdateCaptain(captain);
+            this.Stadium = new Stadium(name, address, capacity, websiteUrl, owner);
 
             return this;
         }
 
-
-        public Team UpdateWicketKeeper(Player wicketKeeper)
+        public Team AddGymTrainer(
+            string firstName,
+            string lastName,
+            int age,
+            string photoUrl)
         {
-            this.Players.UpdateWicketKeeper(wicketKeeper);
-
-            return this;
-        }
-
-        public Team UpdateTwelfth(Player twelfth)
-        {
-            this.Players.AddTwelfth(twelfth);
+            this.GymTrainer = new GymTrainer(firstName, lastName, age, photoUrl);
 
             return this;
         }
