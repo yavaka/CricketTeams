@@ -112,6 +112,7 @@
                 MinAge,
                 MaxAge,
                 nameof(this.Age));
+
         private void ValidateMatchesAsReferee(int matchesAsReferee, string propName)
             => Guard.AgainstNegativeValue<InvalidUmpireException>(
                 matchesAsReferee,
