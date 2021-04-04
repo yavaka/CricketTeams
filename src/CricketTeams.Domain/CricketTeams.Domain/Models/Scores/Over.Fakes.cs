@@ -10,19 +10,21 @@
     {
         public static class Data
         {
-            public static IEnumerable<Over> GetOvers(int count = 20)
+            public static IEnumerable<Over> GetOvers(
+                Player bowler, 
+                Player striker, 
+                Player nonStriker, 
+                int count = 20)
                 => Enumerable
                     .Range(1, count)
-                    .Select(i => GetOver())
+                    .Select(i => GetOver(bowler,striker,nonStriker))
                     .ToList();
 
-            public static Over GetOver()
-            {
-                var bowler = A.Dummy<Player>();
-                var striker = A.Dummy<Player>();
-                var nonStriker = A.Dummy<Player>();
-
-                var over = new Faker<Over>()
+            public static Over GetOver(
+                Player bowler, 
+                Player striker, 
+                Player nonStriker)
+                => new Faker<Over>()
                     .CustomInstantiator(f => new Over(
                         bowler,
                         striker,
@@ -37,9 +39,6 @@
                             false,
                             false)))
                     .Generate();
-
-                return over;
-            }
         }
     }
 }

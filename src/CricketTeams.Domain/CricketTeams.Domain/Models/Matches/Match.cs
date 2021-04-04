@@ -7,6 +7,7 @@
     using CricketTeams.Domain.Models.Players;
 
     using static ModelConstants.Match;
+    using CricketTeams.Domain.Models.Scores;
 
     public class Match : Entity<int>, IAggregateRoot
     {
@@ -66,6 +67,8 @@
 
         #endregion
 
+        #region Add & Update methods
+        
         public Match StartMatch()
         {
             this.InProgress = true;
@@ -83,6 +86,33 @@
         public Match UpdateSecondUmpire(Umpire umpire)
         {
             this.SecondUmpire = umpire;
+
+            return this;
+        }
+
+
+        public Match UpdateStatistic(Statistic stat)
+        {
+            this.Statistic = stat;
+
+            return this;
+        }
+
+        public Match UpdateStadium(Stadium stadium)
+        {
+            this.Stadium = stadium;
+
+            return this;
+        }
+
+        public Match EndMatch()
+        {
+            ValidateIsScoreDefault();
+
+            this.Score!.EndMatch();
+
+            this.Ended = true;
+            this.InProgress = false;
 
             return this;
         }
@@ -133,32 +163,8 @@
         }
 
         #endregion
-
-        public Match UpdateStatistic(Statistic stat)
-        {
-            this.Statistic = stat;
-
-            return this;
-        }
-
-        public Match UpdateStadium(Stadium stadium)
-        {
-            this.Stadium = stadium;
-
-            return this;
-        }
-
-        public Match EndMatch()
-        {
-            ValidateIsScoreDefault();
-
-            this.Score!.EndMatch();
-
-            this.Ended = true;
-            this.InProgress = false;
-
-            return this;
-        }
+        
+        #endregion
 
         #region Validations
 

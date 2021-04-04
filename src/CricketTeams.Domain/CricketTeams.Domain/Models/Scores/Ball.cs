@@ -141,15 +141,6 @@
                 MaxRuns,
                 nameof(this.Runs));
 
-        private void ValidateBatsman(Player batsman)
-        {
-            if (batsman != this.Striker || batsman != this.NonStriker)
-            {
-                throw new InvalidBallException($"Invalid batsman. Valid batsmen are: {this.Striker.FullName} or {this.NonStriker.FullName}.");
-            }
-        }
-
-
         private bool IsAnyTrue(bool six, bool four, bool wideBall, bool noBall)
             => six is true || four is true || wideBall is true || noBall is true ?
                 true :

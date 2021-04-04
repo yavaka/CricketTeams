@@ -5,6 +5,7 @@
     using CricketTeams.Domain.Models.Teams;
     using FakeItEasy;
     using System;
+    using System.Linq;
 
     public class ScoreFakes : IDummyFactory
     {
@@ -25,10 +26,9 @@
                     .CustomInstantiator(f => new Score(
                         oversPerInning: 20,
                         numberOfInnings: 2,
-                        new ScoreInning(
+                        InningFakes.Data.GetInning(
                             teamA,
-                            teamB,
-                            OverFakes.Data.GetOver())))
+                            teamB)))
                     .Generate()
                     .SetId(id);
 

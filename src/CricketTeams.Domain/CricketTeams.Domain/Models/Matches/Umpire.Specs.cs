@@ -1,15 +1,11 @@
-﻿using CricketTeams.Domain.Exceptions;
-using FakeItEasy;
-using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace CricketTeams.Domain.Models.Matches
+﻿namespace CricketTeams.Domain.Models.Matches
 {
+    using CricketTeams.Domain.Exceptions;
+    using FakeItEasy;
+    using FluentAssertions;
+    using System;
+    using Xunit;
+
     public class UmpireSpecs
     {
         private Umpire _umpire;
@@ -18,7 +14,7 @@ namespace CricketTeams.Domain.Models.Matches
             => this._umpire = A.Dummy<Umpire>();
 
         [Fact]
-        public void UpdateNamesShouldSetFirstAndLastName() 
+        public void UpdateNamesShouldSetFirstAndLastName()
         {
             var fName = "Test";
             var lName = "User";
@@ -40,7 +36,7 @@ namespace CricketTeams.Domain.Models.Matches
         public void InvalidNamesShouldThrowException()
         {
             //Act
-            Action act = () 
+            Action act = ()
                 => this._umpire.UpdateNames("i", "First and last name are invalid should throw exception.");
 
             //Assert
@@ -48,7 +44,7 @@ namespace CricketTeams.Domain.Models.Matches
         }
 
         [Fact]
-        public void UpdateAgeShouldSetAge() 
+        public void UpdateAgeShouldSetAge()
         {
             var age = 20;
 
