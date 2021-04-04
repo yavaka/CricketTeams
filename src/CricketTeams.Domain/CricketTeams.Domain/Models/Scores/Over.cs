@@ -1,4 +1,4 @@
-﻿namespace CricketTeams.Domain.Models.Matches
+﻿namespace CricketTeams.Domain.Models.Scores
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;

@@ -37,6 +37,21 @@
         public ICollection<Player> Batsmen { get; private set; }
         public ICollection<Player> Bowlers { get; private set; }
         public ICollection<Player> AllRounders { get; private set; }
+        public ICollection<Player> AllPlayers
+        {
+            get
+            {
+                var allPlayers = this.Batsmen
+                    .Concat(this.Bowlers)
+                    .Concat(this.AllRounders)
+                    .ToList();
+
+                allPlayers.Add(this.Captain);
+                allPlayers.Add(this.WicketKeeper);
+
+                return allPlayers;
+            }
+        }
 
         public Players UpdateCaptain(Player captain)
         {
@@ -62,12 +77,12 @@
         public Players AddBatsman(Player batsman)
         {
             ValidateIsBatsmanExist(batsman);
-            
+
             this.Batsmen.Add(batsman);
 
             return this;
         }
-       
+
         public Players AddBowler(Player bowler)
         {
             ValidateIsBowlerExist(bowler);
@@ -94,7 +109,7 @@
             }
         }
 
-        private void ValidateIsBowlerExist(Player bowler) 
+        private void ValidateIsBowlerExist(Player bowler)
         {
             if (this.Bowlers.Any(b => b == bowler && b.FullName == bowler.FullName))
             {
@@ -102,7 +117,7 @@
             }
         }
 
-        private void ValidateIsAllRounderExist(Player allRounder) 
+        private void ValidateIsAllRounderExist(Player allRounder)
         {
             if (this.AllRounders.Any(r => r == allRounder && r.FullName == allRounder.FullName))
             {

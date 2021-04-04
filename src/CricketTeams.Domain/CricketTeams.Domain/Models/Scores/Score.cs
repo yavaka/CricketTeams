@@ -1,13 +1,13 @@
-﻿namespace CricketTeams.Domain.Models.Matches
+﻿namespace CricketTeams.Domain.Models.Scores
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Players;
     using System.Collections.Generic;
 
-    public class Score : ValueObject
+    public class Score : Entity<int>
     {
-        internal Score(
+        public Score(
             int oversPerInning,
             int numberOfInnings,
             ScoreInning currentInning)

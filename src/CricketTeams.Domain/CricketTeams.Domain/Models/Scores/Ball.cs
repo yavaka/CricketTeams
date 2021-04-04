@@ -1,7 +1,8 @@
-﻿namespace CricketTeams.Domain.Models.Matches
+﻿namespace CricketTeams.Domain.Models.Scores
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
     using System.Collections.Generic;
 
