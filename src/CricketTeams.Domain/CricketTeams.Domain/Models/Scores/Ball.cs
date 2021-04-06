@@ -84,7 +84,18 @@
         /// type of out (catch, wicket, bye or other).
         /// The value is the player who is out.
         /// </summary>
-        public KeyValuePair<KeyValuePair<Player, PlayerOutTypes>, Player>? BatsmanOut { get; private set; }
+        public KeyValuePair<KeyValuePair<Player, PlayerOutTypes>, Player>? BatsmanOut 
+        {
+            get => BatsmanOut;
+            private set 
+            {
+                if (value is not null)
+                {
+                    this.IsPlayerOut = true;
+                }
+                this.BatsmanOut = value;
+            }
+        }
 
         private void Validate(
             int runs,
@@ -115,13 +126,13 @@
 
         private void ValidateAreRunsCorrect(int runs, bool six, bool four)
         {
-            if (runs > 6 && six is true || runs > 6 && six is true)
+            if (runs > 0 && six is true)
             {
-                throw new InvalidBallException("When the batsman score six, it must be added 6 runs.");
+                throw new InvalidBallException("When the batsman score six, it must be added 6 runs only.");
             }
-            else if (runs > 4 && four is true || runs > 4 && four is true)
+            else if (runs > 0 && four is true)
             {
-                throw new InvalidBallException("When the batsman score four, it must be added 4 runs.");
+                throw new InvalidBallException("When the batsman score four, it must be added 4 runs only.");
             }
         }
 
@@ -135,10 +146,8 @@
         }
 
         private void ValidateRuns(int runs)
-            => Guard.AgainstOutOfRange<InvalidBallException>(
+            => Guard.AgainstNegativeValue<InvalidBallException>(
                 runs,
-                MinRuns,
-                MaxRuns,
                 nameof(this.Runs));
 
         private bool IsAnyTrue(bool six, bool four, bool wideBall, bool noBall)

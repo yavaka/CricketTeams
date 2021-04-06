@@ -5,7 +5,6 @@
     using CricketTeams.Domain.Models.Teams;
     using FakeItEasy;
     using System;
-    using System.Linq;
 
     public class ScoreFakes : IDummyFactory
     {

@@ -7,9 +7,9 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class ScoreInning : ValueObject
+    public class Inning : ValueObject
     {
-        internal ScoreInning(
+        internal Inning(
             Team battingTeam,
             Team bowlingTeam,
             Over currentOver)
@@ -34,7 +34,7 @@
         /// <summary>
         /// Update the current ball
         /// </summary>
-        public ScoreInning UpdateBall(Ball newBall)
+        public Inning UpdateBall(Ball newBall)
         {
             ValidateAreAllBatsmenDismissed();
 
@@ -46,7 +46,7 @@
         /// <summary>
         /// Update the current ball when there is a batsman out from the previous ball
         /// </summary>
-        public ScoreInning UpdateBall(Ball newBall, Player batsman)
+        public Inning UpdateBall(Ball newBall, Player batsman)
         {
             ValidateAreAllBatsmenDismissed();
 
@@ -66,7 +66,7 @@
             return this;
         }
 
-        public ScoreInning UpdateCurrentOver(Over over)
+        public Inning UpdateCurrentOver(Over over)
         {
             ValidateAreAllBatsmenDismissed();
 
@@ -82,7 +82,7 @@
             return this;
         }
 
-        public ScoreInning EndInning()
+        public Inning EndInning()
         {
             if (this.Overs.Count == this.OversPerInning)
             {

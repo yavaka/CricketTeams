@@ -10,18 +10,18 @@
         public Score(
             int oversPerInning,
             int numberOfInnings,
-            ScoreInning currentInning)
+            Inning currentInning)
         {
             this.OversPerInning = oversPerInning;
             this.NumberOfInnings = numberOfInnings;
             this.CurrentInning = currentInning;
-            this.Innings = new ScoreInning[this.NumberOfInnings];
+            this.Innings = new Inning[this.NumberOfInnings];
         }
 
         public int OversPerInning { get; private set; }
         public int NumberOfInnings { get; set; }
-        public ScoreInning CurrentInning { get; private set; }
-        public ICollection<ScoreInning> Innings { get; private set; }
+        public Inning CurrentInning { get; private set; }
+        public ICollection<Inning> Innings { get; private set; }
         public bool IsMatchEnd { get; private set; } = false;
 
         public Score UpdateBall(Ball ball)
@@ -31,9 +31,15 @@
             return this;
         }
 
-        public Score UpdateBall(Ball ball, Player batsman)
+        /// <summary>
+        /// Update ball when there is a batsman out
+        /// </summary>
+        /// <param name="ball"></param>
+        /// <param name="newBatsman"></param>
+        /// <returns></returns>
+        public Score UpdateBall(Ball ball, Player newBatsman)
         {
-            this.CurrentInning.UpdateBall(ball, batsman);
+            this.CurrentInning.UpdateBall(ball, newBatsman);
 
             return this;
         }
@@ -45,7 +51,7 @@
             return this;
         }
 
-        public Score UpdateCurrentInning(ScoreInning inning)
+        public Score UpdateCurrentInning(Inning inning)
         {
             if (this.Innings.Count > this.NumberOfInnings)
             {

@@ -8,9 +8,9 @@
     {
         public static class Data
         {
-            public static ScoreInning GetInning(Team teamA, Team teamB)
-                => new Faker<ScoreInning>()
-                    .CustomInstantiator(f => new ScoreInning(
+            public static Inning GetInning(Team teamA, Team teamB)
+                => new Faker<Inning>()
+                    .CustomInstantiator(f => new Inning(
                         teamA,
                         teamB,
                         OverFakes.Data.GetOver(
@@ -23,5 +23,4 @@
                     .Generate();
         }
     }
-}
 }

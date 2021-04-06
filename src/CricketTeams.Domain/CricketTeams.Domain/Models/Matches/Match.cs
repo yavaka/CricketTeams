@@ -153,7 +153,7 @@
             return this;
         }
 
-        public Match UpdateInning(ScoreInning inning)
+        public Match UpdateInning(Inning inning)
         {
             ValidateIsScoreDefault();
 
