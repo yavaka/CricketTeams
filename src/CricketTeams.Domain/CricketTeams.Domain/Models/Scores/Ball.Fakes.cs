@@ -1,7 +1,10 @@
 ﻿using Bogus;
+using CricketTeams.Domain.Common;
 using CricketTeams.Domain.Models.Matches;
 using CricketTeams.Domain.Models.Players;
+using FakeItEasy;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CricketTeams.Domain.Models.Scores
 {
@@ -9,6 +12,16 @@ namespace CricketTeams.Domain.Models.Scores
     {
         public static class Data
         {
+            /// <summary>
+            /// Get balls without dismissed players
+            /// </summary>
+            public static IEnumerable<Ball> GetBalls(int count = 6)
+                => Enumerable
+                    .Range(1, count)
+                    .Select(b => 
+                        GetBall(A.Dummy<Player>(), A.Dummy<Player>(), A.Dummy<Player>()))
+                    .ToList();
+
             /// <summary>
             /// Get ball with runs only
             /// </summary>
@@ -20,7 +33,7 @@ namespace CricketTeams.Domain.Models.Scores
                     bowler,
                     striker,
                     nonStriker,
-                    runs: f.Random.Number(0,9),
+                    runs: f.Random.Number(0, 9),
                     six: false,
                     four: false,
                     wideBall: false,
@@ -28,12 +41,14 @@ namespace CricketTeams.Domain.Models.Scores
 
             /// <summary>
             /// Get ball with striker out
+            /// Bowler catched the striker
             /// </summary>
             public static Ball GetBallWithStrikerDismiss(
                 Player bowler,
                 Player striker,
                 Player nonStriker)
-                => new Ball(
+            {
+                return new Ball(
                     bowler,
                     striker,
                     nonStriker,
@@ -42,9 +57,29 @@ namespace CricketTeams.Domain.Models.Scores
                     four: false,
                     wideBall: false,
                     noBall: false,
-                    new KeyValuePair<KeyValuePair<Player, PlayerOutTypes>, Player>(
-                        new KeyValuePair<Player, PlayerOutTypes>(bowler,PlayerOutTypes.Wicket),
-                        striker));
+                    bowler,
+                    striker,
+                    PlayerOutTypes.Catch);
+            }
+
+            public static Ball GetBallWithNonStrikerDismiss(
+                Player bowler,
+                Player striker,
+                Player nonStriker)
+            {
+                return new Ball(
+                    bowler,
+                    striker,
+                    nonStriker,
+                    runs: 0,
+                    six: false,
+                    four: false,
+                    wideBall: false,
+                    noBall: false,
+                    bowler,
+                    nonStriker,
+                    PlayerOutTypes.Catch);
+            }
         }
     }
 }

@@ -22,7 +22,9 @@
             bool four,
             bool wideBall,
             bool noBall,
-            KeyValuePair<KeyValuePair<Player, PlayerOutTypes>, Player> batsmanOut)
+            Player bowlingTeamPlayer,
+            Player dismissedBatsman,
+            PlayerOutTypes playerOutType)
         {
             Validate(runs, six, four, wideBall, noBall);
 
@@ -34,8 +36,10 @@
             this.Four = four;
             this.WideBall = wideBall;
             this.NoBall = noBall;
-            this.IsPlayerOut = true;
-            this.BatsmanOut = batsmanOut;
+            this.IsBatsmanOut = true;
+            this.BowlingTeamPlayer = bowlingTeamPlayer;
+            this.DismissedBatsman = dismissedBatsman;
+            this.OutType = playerOutType;
         }
 
         /// <summary>
@@ -77,26 +81,19 @@
         /// How many times a given player hit 4 in this over
         /// </summary>
         public bool Four { get; private set; } = false;
-        public bool IsPlayerOut { get; private set; } = false;
+        
+        #region dismiss player
+        
+        public bool IsBatsmanOut { get; private set; } = false;
         /// <summary>
-        /// The key is key value pair where the key is the bowler, 
-        /// wicket keeper or other player from fielding team and the value is the 
-        /// type of out (catch, wicket, bye or other).
-        /// The value is the player who is out.
+        /// Player id from the bowling team that dismissed one of the batsmen 
         /// </summary>
-        public KeyValuePair<KeyValuePair<Player, PlayerOutTypes>, Player>? BatsmanOut 
-        {
-            get => BatsmanOut;
-            private set 
-            {
-                if (value is not null)
-                {
-                    this.IsPlayerOut = true;
-                }
-                this.BatsmanOut = value;
-            }
-        }
+        public Player? BowlingTeamPlayer { get; private set; }
+        public Player? DismissedBatsman { get; private set; }
+        public PlayerOutTypes? OutType{ get; set; }
 
+        #endregion
+        
         private void Validate(
             int runs,
             bool six,
@@ -138,8 +135,8 @@
 
         private void ValidateIsPlayerOut(int runs, bool six, bool four, bool wideBall, bool noBall)
         {
-            if (this.IsPlayerOut is true && IsAnyTrue(six, four, wideBall, noBall) ||
-                this.IsPlayerOut is true && runs > 0)
+            if (this.IsBatsmanOut is true && IsAnyTrue(six, four, wideBall, noBall) ||
+                this.IsBatsmanOut is true && runs > 0)
             {
                 throw new InvalidBallException("When batsman is out he cannot do runs and the bowler recieve wide or no ball.");
             }

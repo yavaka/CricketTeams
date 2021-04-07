@@ -2,9 +2,11 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
+    using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using static ModelConstants.Over;
 
     public class Over : ValueObject
@@ -25,9 +27,7 @@
 
         public Player Bowler { get; set; }
         public Player Striker { get; private set; }
-        public bool IsStrikerOut { get; private set; } = false;
         public Player NonStriker { get; private set; }
-        public bool IsNonStrikerOut { get; private set; } = false;
         public int TotalRuns { get; private set; }
         public int ExtraBalls { get; private set; }
         public Ball CurrentBall { get; private set; }
@@ -35,39 +35,77 @@
         public ICollection<Player> BatsmenOut { get; private set; }
         public bool IsOverEnd { get; private set; } = false;
 
-        public Over UpdateStriker(Player striker)
+        public Over UpdateCurrentBall(int runs, bool six, bool four, bool wideBall, bool noBall)
         {
-            if (this.IsStrikerOut)
-            {
-                this.Striker = striker;
+            ValidateIsOverEnd();
 
-                this.IsStrikerOut = false;
-            }
+            AddLastBall();
+
+            this.CurrentBall = new Ball(this.Bowler, this.Striker, this.NonStriker, runs, six, four, wideBall, noBall);
+
+            UpdateOverStats();
+
             return this;
         }
 
-        public Over UpdateNonStriker(Player nonStriker)
+        /// <param name="isStrikerOut">If true striker is out else non striker is out.</param>
+        /// <param name="newBatsman">The batsman to be replaced with the one who is out.</param>
+        /// <param name="bowlingTeamPlayer">The player from the bowling team who dismissed the batsman</param>
+        /// <param name="dismissedBatsman">The batsman who is out. It must be the striker or the non striker.</param>
+        /// <param name="batsmanOutType">The type of how the batsman has been dismissed.</param>
+        /// <returns></returns>
+        public Over UpdateCurrentBallWithDismissedBatsman(
+            bool isStrikerOut,
+            Player newBatsman,
+            int runs, bool six, bool four, bool wideBall, bool noBall,
+            Player bowlingTeamPlayer,
+            Player dismissedBatsman,
+            PlayerOutTypes batsmanOutType)
         {
-            if (this.IsNonStrikerOut)
+            ValidateIsOverEnd();
+
+            AddLastBall();
+
+            if (isStrikerOut)
             {
-                this.NonStriker = nonStriker;
+                if (this.Striker.Age != dismissedBatsman.Age && 
+                    this.Striker.FullName != dismissedBatsman.FullName)
+                {
+                    throw new InvalidOverException($"Dismissed batsman is {this.Striker.FullName}.");
+                }
 
-                this.IsNonStrikerOut = false;
+                this.CurrentBall = new Ball(
+                    this.Bowler,
+                    newBatsman,
+                    this.NonStriker,
+                    runs, six, four, wideBall, noBall,
+                    bowlingTeamPlayer,
+                    dismissedBatsman,
+                    batsmanOutType);
+
+                this.Striker = newBatsman;
             }
-            return this;
-        }
-
-        public Over UpdateCurrentBall(Ball ball)
-        {
-            var totalBallsAllowed = MaxBallsPerOver + this.ExtraBalls;
-            if (totalBallsAllowed < this.Balls.Count)
+            else
             {
-                EndOver();
-                throw new InvalidOverException($"Max balls for this over was reached, Over was ended.");
-            }
-            EndBall();
+                if (this.NonStriker.Age != dismissedBatsman.Age && 
+                    this.NonStriker.FullName != dismissedBatsman.FullName)
+                {
+                    throw new InvalidOverException($"Dismissed batsman is {this.NonStriker.FullName}.");
+                }
 
-            this.CurrentBall = ball;
+                this.CurrentBall = new Ball(
+                    this.Bowler,
+                    this.Striker,
+                    newBatsman,
+                    runs, six, four, wideBall, noBall,
+                    bowlingTeamPlayer,
+                    dismissedBatsman,
+                    batsmanOutType);
+
+                this.NonStriker = newBatsman;
+            }
+
+            UpdateOverStats();
 
             return this;
         }
@@ -79,15 +117,9 @@
             return this;
         }
 
-        private void EndBall()
+        private void UpdateOverStats()
         {
-            if (this.CurrentBall == default!)
-            {
-                throw new InvalidOverException($"Set value of {nameof(this.CurrentBall)}");
-            }
-            AddBall();
-
-            if (this.CurrentBall.IsPlayerOut)
+            if (this.CurrentBall.IsBatsmanOut)
             {
                 DismissBatsman();
             }
@@ -99,18 +131,9 @@
 
         private void DismissBatsman()
         {
-            var dismissedBatsman = this.CurrentBall.BatsmanOut?.Value!;
+            var dismissedBatsman = this.CurrentBall.DismissedBatsman!;
 
             this.BatsmenOut.Add(dismissedBatsman);
-
-            if (this.Striker == dismissedBatsman)
-            {
-                this.IsStrikerOut = true;
-            }
-            else if (this.NonStriker == dismissedBatsman)
-            {
-                this.IsNonStrikerOut = true;
-            }
         }
 
         private void CalculateRuns()
@@ -142,7 +165,7 @@
         }
 
         /// <summary>
-        /// Set the non striker for the next ball
+        /// Set the non striker for the next ball to be striker
         /// </summary>
         private Player SetNonStriker()
             => this.Striker == this.CurrentBall.Striker ?
@@ -150,14 +173,25 @@
                this.CurrentBall.Striker;
 
         /// <summary>
-        /// Set the striker for the next ball
+        /// Set the striker for the next ball to be non striker
         /// </summary>
         private Player SetStriker()
             => this.CurrentBall.Runs % 2 is 0 ?
                this.CurrentBall.Striker :
                this.CurrentBall.NonStriker;
 
-        private void AddBall()
+        private void AddLastBall()
             => this.Balls.Add(CurrentBall);
+
+
+        private void ValidateIsOverEnd()
+        {
+            var totalBallsAllowed = MaxBallsPerOver + this.ExtraBalls;
+            if (totalBallsAllowed == this.Balls.Count)
+            {
+                EndOver();
+                throw new InvalidOverException($"Max balls for this over was reached, Over was ended.");
+            }
+        }
     }
 }
