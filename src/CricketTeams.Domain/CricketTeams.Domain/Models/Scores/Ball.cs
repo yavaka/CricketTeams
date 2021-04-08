@@ -5,6 +5,8 @@
     using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
 
+    using static ModelConstants.Ball;
+
     public class Ball : ValueObject
     {
         /// <summary>
@@ -99,7 +101,7 @@
         public bool Six { get; private set; }
         public bool Four { get; private set; }
 
-        #region dismiss player
+        #region Dismissed batsman
 
         public bool IsBatsmanOut { get; private set; }
         /// <summary>
@@ -128,8 +130,10 @@
         }
 
         private void ValidateRuns(int runs)
-            => Guard.AgainstNegativeValue<InvalidBallException>(
+            => Guard.AgainstOutOfRange<InvalidBallException>(
                 runs,
+                MinRuns,
+                MaxRuns,
                 nameof(this.Runs));
     }
 }

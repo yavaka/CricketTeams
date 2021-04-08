@@ -20,9 +20,9 @@
 
         public static class Data
         {
-            public static IEnumerable<Player> GetPlayers(int count = 10)
+            public static IEnumerable<Player> GetPlayers(int start = 1, int numberOfPlayers = 10)
                 => Enumerable
-                    .Range(1, count)
+                    .Range(start, numberOfPlayers)
                     .Select(i => GetPlayer(i))
                     .ToList();
 

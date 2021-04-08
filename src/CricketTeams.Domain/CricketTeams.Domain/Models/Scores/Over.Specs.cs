@@ -17,9 +17,9 @@
 
         public OverSpecs()
         {
-            this._bowler = A.Dummy<Player>();
-            this._striker = A.Dummy<Player>();
-            this._nonStriker = A.Dummy<Player>();
+            this._bowler = PlayerFakes.Data.GetPlayer(1);
+            this._striker = PlayerFakes.Data.GetPlayer(2);
+            this._nonStriker = PlayerFakes.Data.GetPlayer(3);
 
             this._over = OverFakes.Data.GetOver(
                 this._bowler,
@@ -31,7 +31,6 @@
         public void UpdateBallShouldSetBallAndIncreaseTotalRuns()
         {
             //Arrange
-            var currentBall = this._over.CurrentBall;
             var ball = BallFakes.Data.GetBallWithRuns(this._bowler, this._striker, this._nonStriker);
 
             //Act
@@ -81,27 +80,6 @@
 
             //Assert
             this._over.TotalRuns.Should().Be(4);
-        }
-
-        [Fact]
-        public void UpdateCurrentBallWhenOverEndShouldThrowException()
-        {
-            //Arrange
-            var balls = BallFakes.Data.GetBalls();
-
-            Action act = default!;
-
-            //Act
-            act = () =>
-            {
-                foreach (var ball in balls)
-                {
-                    this._over.UpdateCurrentBallWithRuns(ball.Runs);
-                }
-            };
-
-            //Assert
-            act.Should().Throw<InvalidOverException>();
         }
 
         [Fact]
@@ -171,7 +149,13 @@
                 ball.DismissedBatsman!,
                 ball.OutType!);
 
-            ball = BallFakes.Data.GetBallWithStrikerDismiss(this._bowler, newStrike, this._nonStriker);
+            var expectedBall = new Ball(
+                ball.Bowler,
+                newStrike,
+                ball.NonStriker,
+                ball.BowlingTeamPlayer!,
+                ball.DismissedBatsman!,
+                ball.OutType!);
 
             //Assert
             this._over.BatsmenOut
@@ -180,11 +164,11 @@
 
             this._over.Striker
                 .Should()
-                .Be(newStrike);
+                .BeEquivalentTo(newStrike);
 
             this._over.CurrentBall
                 .Should()
-                .Be(ball);
+                .BeEquivalentTo(expectedBall);
         }
 
         [Fact]
@@ -204,8 +188,13 @@
                 ball.DismissedBatsman!,
                 ball.OutType!);
 
-            var expectedBall = BallFakes.Data
-                .GetBallWithNonStrikerDismiss(this._bowler, this._striker, newStrike);
+            var expectedBall = new Ball(
+                ball.Bowler,
+                ball.Striker,
+                newStrike,
+                ball.BowlingTeamPlayer!,
+                ball.DismissedBatsman!,
+                ball.OutType!);
 
             //Assert
             this._over.BatsmenOut
@@ -291,33 +280,5 @@
             //Assert
             act.Should().Throw<InvalidBallException>();
         }
-
-        //[Fact]
-        //public void UpdateBallWith()
-        //{
-        //    //Arrange
-
-        //    //Act
-
-        //    //Assert
-        //}
-
-        //[Fact]
-        //public void TestNameException()
-        //{
-        //    //Act
-
-        //    //Assert
-        //}
-
-        //[Fact]
-        //public void TestName() 
-        //{
-        //    //Arrange
-
-        //    //Act
-
-        //    //Assert
-        //}
     }
 }

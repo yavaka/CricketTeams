@@ -1,6 +1,5 @@
 ﻿namespace CricketTeams.Domain.Models.Scores
 {
-    using Bogus;
     using CricketTeams.Domain.Models.Players;
     using System.Collections.Generic;
     using System.Linq;
@@ -23,12 +22,23 @@
                 Player bowler,
                 Player striker,
                 Player nonStriker)
-                => new Faker<Over>()
-                    .CustomInstantiator(f => new Over(
-                        bowler,
-                        striker,
-                        nonStriker))
-                    .Generate();
+                => new Over(bowler, striker, nonStriker);
+
+            public static Over GetEndedOver(
+                Player bowler,
+                Player striker,
+                Player nonStriker) 
+            {
+                var balls = BallFakes.Data.GetBalls(6);
+
+                var over = new Over(bowler, striker, nonStriker);
+
+                foreach (var ball in balls)
+                {
+                    over.UpdateCurrentBallWithRuns(ball.Runs);
+                }
+                return over;
+            }
         }
     }
 }

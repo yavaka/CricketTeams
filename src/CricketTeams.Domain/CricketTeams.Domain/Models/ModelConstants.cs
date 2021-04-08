@@ -68,7 +68,7 @@
         public class Ball
         {
             public const int MinRuns = 0;
-            public const int MaxRuns = 20;
+            public const int MaxRuns = 9;
 
             public const int MaxBallsPerOver = 6;
         }

@@ -18,10 +18,10 @@
         {
             public static Players GetPlayers()
             {
-                var captain = A.Dummy<Player>();
-                var wicketKeeper = A.Dummy<Player>();
-                var twelftman = A.Dummy<Player>();
-                var restOfPlayers = PlayerFakes.Data.GetPlayers();
+                var restOfPlayers = PlayerFakes.Data.GetPlayers(3,9);
+                var captain = PlayerFakes.Data.GetPlayer(1);
+                var wicketKeeper = PlayerFakes.Data.GetPlayer(2);
+                var twelftman = PlayerFakes.Data.GetPlayer(12);
 
                 var players = new Faker<Players>()
                     .CustomInstantiator(f => new Players(
@@ -30,6 +30,7 @@
                         twelftman)).Generate();
 
                 players.AddAllRounder(captain);
+                players.AddBatsman(captain);
                 players.AddBatsman(wicketKeeper);
 
                 foreach (var batsman in restOfPlayers)

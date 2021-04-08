@@ -2,8 +2,10 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -12,73 +14,152 @@
         internal Inning(
             Team battingTeam,
             Team bowlingTeam,
-            Over currentOver)
+            int oversPerInning)
         {
+            ValidateOversPerInning(oversPerInning);
+
             this.BattingTeam = battingTeam;
             this.BowlingTeam = bowlingTeam;
-            this.CurrentOver = currentOver;
-
             this.TotalBatsmenOut = new List<Player>();
             this.Overs = new List<Over>();
+
+            this.CurrentOver = default!;
         }
 
         public Team BattingTeam { get; private set; }
         public Team BowlingTeam { get; private set; }
         public int OversPerInning { get; private set; }
         public int TotalRuns { get; private set; }
-        public Over CurrentOver { get; private set; }
+        public Over? CurrentOver { get; private set; }
         public ICollection<Over> Overs { get; private set; }
         public ICollection<Player> TotalBatsmenOut { get; private set; }
         public bool IsInningEnd { get; private set; } = false;
 
-        /// <summary>
-        /// Update the current ball
-        /// </summary>
-        public Inning UpdateBall(Ball newBall)
-        {
-            ValidateAreAllBatsmenDismissed();
+        #region Over methods
 
-            this.CurrentOver.UpdateCurrentBall(newBall);
+        public Inning UpdateCurrentBallWithRuns(int runs)
+        {
+            ValidateIsOverSet();
+
+            this.CurrentOver!.UpdateCurrentBallWithRuns(runs);
 
             return this;
         }
 
-        /// <summary>
-        /// Update the current ball when there is a batsman out from the previous ball
-        /// </summary>
-        public Inning UpdateBall(Ball newBall, Player batsman)
+        public Inning UpdateCurrentBallWithSix()
         {
-            ValidateAreAllBatsmenDismissed();
+            ValidateIsOverSet();
 
-            ValidateBatsman(batsman);
-
-            if (this.CurrentOver.IsStrikerOut)
-            {
-                this.CurrentOver.UpdateStriker(batsman);
-            }
-            else if (this.CurrentOver.IsNonStrikerOut)
-            {
-                this.CurrentOver.UpdateNonStriker(batsman);
-            }
-
-            this.CurrentOver.UpdateCurrentBall(newBall);
+            this.CurrentOver!.UpdateCurrentBallWithSix();
 
             return this;
         }
 
-        public Inning UpdateCurrentOver(Over over)
+        public Inning UpdateCurrentBallWithFour()
         {
-            ValidateAreAllBatsmenDismissed();
+            ValidateIsOverSet();
 
-            if (this.OversPerInning == this.Overs.Count)
+            this.CurrentOver!.UpdateCurrentBallWithFour();
+
+            return this;
+        }
+
+        public Inning UpdateCurrentBallWithNoBall(int runs)
+        {
+            ValidateIsOverSet();
+
+            this.CurrentOver!.UpdateCurrentBallWithNoBall(runs);
+
+            return this;
+        }
+
+        public Inning UpdateCurrentBallWithWideBall(int runs)
+        {
+            ValidateIsOverSet();
+
+            this.CurrentOver!.UpdateCurrentBallWithWideBall(runs);
+
+            return this;
+        }
+
+        public Inning UpdateCurrentBallWithDismissedBatsman(
+            bool isStrikerOut,
+            Player newBatsman,
+            Player bowlingTeamPlayer,
+            Player dismissedBatsman,
+            PlayerOutTypes batsmanOutType)
+        {
+            ValidateIsOverSet();
+            ValidateBatsman(newBatsman);
+            ValidateBowlingTeamPlayer(bowlingTeamPlayer);
+
+            this.CurrentOver!.UpdateCurrentBallWithDismissedBatsman(
+                isStrikerOut, 
+                newBatsman, 
+                bowlingTeamPlayer,
+                dismissedBatsman,
+                batsmanOutType);
+
+            return this;
+        }
+
+        #endregion
+
+        #region Inning methods
+
+        public Inning UpdateCurrentOver(Player bowler, Player striker, Player nonStriker)
+        {
+            AddLastOver();
+
+            Validate(bowler, striker, nonStriker);
+
+            if (this.CurrentOver is not null)
             {
-                EndInning();
-                throw new InvalidInningException($"Max over for this inning was reached, Inning was ended.");
+                // Create new over with batsmen from the last ball 
+                // of the previous over if one was not out.
+                var lastBall = this.CurrentOver.Balls.Last();
+                if (lastBall.IsBatsmanOut is false)
+                {
+                    this.CurrentOver = new Over(bowler, lastBall.Striker, lastBall.NonStriker);
+                }
+                else
+                {
+                    throw new InvalidInningException($"Batsman needed. Use {nameof(UpdateCurrentOverWithBatsman)} method.");
+                }
             }
-            EndOver();
+            else
+            {
+                this.CurrentOver = new Over(bowler, striker, nonStriker);
+            }
+            return this;
+        }
 
-            this.CurrentOver = over;
+        public Inning UpdateCurrentOverWithBatsman(Player bowler, Player newBatsman)
+        {
+            ValidateIsOverSet();
+            AddLastOver();
 
+            Validate(bowler: bowler);
+
+            var lastBall = this.CurrentOver!.Balls.Last();
+            if (lastBall.IsBatsmanOut)
+            {
+                ValidateBatsman(newBatsman);
+
+                //Set new batsman on a striker position
+                if (lastBall.DismissedBatsman!.Equals(lastBall.Striker))
+                {
+                    this.CurrentOver = new Over(bowler, newBatsman, lastBall.NonStriker);
+                }
+                else // Set new batsman on a non striker position
+                {
+                    this.CurrentOver = new Over(bowler, lastBall.Striker, newBatsman);
+                }
+            }
+            else
+            {
+                throw new InvalidInningException("Batsmen are not out.");
+            }
             return this;
         }
 
@@ -95,22 +176,61 @@
             return this;
         }
 
-        private void EndOver()
+        private void UpdateInningStat()
         {
-            if (this.CurrentOver == default!)
-            {
-                throw new InvalidInningException($"Set value of {nameof(this.CurrentOver)}");
-            }
+            this.TotalRuns += this.CurrentOver!.TotalRuns;
 
-            this.CurrentOver.EndOver();
-
-            this.TotalRuns += this.CurrentOver.TotalRuns;
-
-            AddOver();
+            AddLastOver();
         }
 
-        private void AddOver()
-            => this.Overs.Add(this.CurrentOver);
+        private void AddLastOver()
+        {
+            if (this.CurrentOver is not null)
+            {
+                this.Overs.Add(this.CurrentOver);
+            }
+        }
+
+        #endregion
+
+        #region Validations
+
+        private void Validate(Player? bowler = null, Player? striker = null, Player? nonStriker = null)
+        {
+            if (this.CurrentOver is not null)
+            {
+                ValidateIsInningEnd();
+                ValidateAreAllBatsmenDismissed();
+                ValidateIsCurrentOverEnd();
+            }
+            if (bowler is not null)
+            {
+                ValidateBowlingTeamPlayer(bowler);
+            }
+            if (striker is not null)
+            {
+                ValidateBatsman(striker);
+            }
+            if (nonStriker is not null)
+            {
+                ValidateBatsman(nonStriker);
+            }
+        }
+
+        private void ValidateIsInningEnd()
+        {
+            if (this.IsInningEnd)
+            {
+                throw new InvalidOverException("Inning ended.");
+            }
+
+            if (this.OversPerInning == this.Overs.Count)
+            {
+                AddLastOver();
+                UpdateInningStat();
+                EndInning();
+            }
+        }
 
         private void ValidateAreAllBatsmenDismissed()
         {
@@ -127,14 +247,58 @@
         /// <param name="batsman"></param>
         private void ValidateBatsman(Player batsman)
         {
-            if (this.BattingTeam.Players.Batsmen.Any(b => b.FullName != batsman.FullName))
+            if (!this.BattingTeam.Players.AllPlayers.Any(b => b.Equals(batsman)))
             {
-                throw new InvalidInningException($"{batsman.FullName} is not from the batting team. The batting team is: {string.Join(", ", this.BattingTeam.Players.Batsmen)}");
+                throw new InvalidInningException($"{batsman.FullName} is not part of the batting team. The batting team is: {string.Join(", ", this.BattingTeam.Players.Batsmen)}");
             }
-            if (this.CurrentOver.BatsmenOut.Any(b => b.FullName == batsman.FullName))
+            if (this.CurrentOver is not null && this.CurrentOver.BatsmenOut.Any(b => b.FullName == batsman.FullName))
             {
-                throw new InvalidInningException($"Batsman {batsman.FullName} is out.");
+                throw new InvalidInningException($"{batsman.FullName} is out.");
             }
         }
+
+        /// <summary>
+        /// Validate is the bowler from the bowling team and 
+        /// is he same as this from last over
+        /// </summary>
+        private void ValidateBowlingTeamPlayer(Player fielder)
+        {
+            if (!this.BowlingTeam.Players.AllPlayers.Any(p => p.Equals(fielder)))
+            {
+                throw new InvalidInningException($"{fielder.FullName} is not part of bowling team.");
+            }
+            if (this.CurrentOver is not null && this.CurrentOver.Bowler.Equals(fielder))
+            {
+                throw new InvalidInningException($"One bowler cannot play two overs in row.");
+            }
+        }
+
+        private void ValidateIsCurrentOverEnd()
+        {
+            if (!this.CurrentOver!.IsOverEnd)
+            {
+                throw new InvalidInningException("Over in progress.");
+            }
+        }
+
+        private void ValidateOversPerInning(int oversPerInning)
+        {
+            IReadOnlyCollection<int> allowedOversPerInning = new int[] { 10, 15, 20 };
+
+            if (!allowedOversPerInning.Any(o => o == oversPerInning))
+            {
+                throw new InvalidInningException($"Invalid allowed overs per inning. Expected value can be: {string.Join(", ", allowedOversPerInning)}.");
+            }
+        }
+
+        private void ValidateIsOverSet()
+        {
+            if (this.CurrentOver is null)
+            {
+                throw new InvalidInningException($"Current over not initialised. Use {nameof(UpdateCurrentOver)} method.");
+            }
+        }
+
+        #endregion
     }
 }

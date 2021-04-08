@@ -4,9 +4,9 @@
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using static ModelConstants.Over;
 
     public class Over : ValueObject
@@ -16,12 +16,14 @@
             Player striker,
             Player nonStriker)
         {
+            ValidateBatsmen(striker, nonStriker);
+
             this.Bowler = bowler;
             this.Striker = striker;
             this.NonStriker = nonStriker;
             this.Balls = new List<Ball>();
             this.BatsmenOut = new List<Player>();
-            
+
             this.CurrentBall = default!;
         }
 
@@ -38,7 +40,7 @@
         public Over UpdateCurrentBallWithRuns(int runs)
         {
             AddLastBall();
-            
+
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(this.Bowler, this.Striker, this.NonStriker, runs);
@@ -51,7 +53,7 @@
         public Over UpdateCurrentBallWithSix()
         {
             AddLastBall();
-            
+
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(
@@ -69,7 +71,7 @@
         public Over UpdateCurrentBallWithFour()
         {
             AddLastBall();
-            
+
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(
@@ -87,7 +89,7 @@
         public Over UpdateCurrentBallWithNoBall(int runs)
         {
             AddLastBall();
-            
+
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(
@@ -106,7 +108,7 @@
         public Over UpdateCurrentBallWithWideBall(int runs)
         {
             AddLastBall();
-            
+
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(
@@ -136,7 +138,7 @@
             PlayerOutTypes batsmanOutType)
         {
             AddLastBall();
-            
+
             ValidateIsOverEnd();
             ValidateIsNoBall();
 
@@ -182,12 +184,8 @@
             return this;
         }
 
-        public Over EndOver()
+        private Over EndOver()
         {
-            if (this.Balls.Count < (MaxBallsPerOver + this.ExtraBalls))
-            {
-                throw new InvalidOverException($"Over in progress. {(MaxBallsPerOver + this.ExtraBalls) - this.Balls.Count} balls left.");
-            }
             this.IsOverEnd = true;
 
             return this;
@@ -279,8 +277,8 @@
             var totalBallsAllowed = (MaxBallsPerOver + this.ExtraBalls) - 1;
             if (totalBallsAllowed == this.Balls.Count)
             {
-                UpdateOverStats();
                 AddLastBall();
+                UpdateOverStats();
                 EndOver();
             }
         }
@@ -290,6 +288,14 @@
             if (this.Balls.Count > 0 && this.Balls.Last().NoBall is true)
             {
                 throw new InvalidOverException("Batsmen cannot be out when there was a no ball in the last ball.");
+            }
+        }
+
+        private void ValidateBatsmen(Player striker, Player nonStriker)
+        {
+            if (striker == nonStriker)
+            {
+                throw new InvalidOverException("Cannot add same striker and non striker.");
             }
         }
     }

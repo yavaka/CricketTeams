@@ -37,21 +37,7 @@
         public ICollection<Player> Batsmen { get; private set; }
         public ICollection<Player> Bowlers { get; private set; }
         public ICollection<Player> AllRounders { get; private set; }
-        public ICollection<Player> AllPlayers
-        {
-            get
-            {
-                var allPlayers = this.Batsmen
-                    .Concat(this.Bowlers)
-                    .Concat(this.AllRounders)
-                    .ToList();
-
-                allPlayers.Add(this.Captain);
-                allPlayers.Add(this.WicketKeeper);
-
-                return allPlayers;
-            }
-        }
+        public ICollection<Player> AllPlayers => Batsmen;
 
         public Players UpdateCaptain(Player captain)
         {

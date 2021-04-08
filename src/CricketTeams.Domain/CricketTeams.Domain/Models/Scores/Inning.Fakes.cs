@@ -13,13 +13,7 @@
                     .CustomInstantiator(f => new Inning(
                         teamA,
                         teamB,
-                        OverFakes.Data.GetOver(
-                                bowler: 
-                                    teamB.Players.Bowlers.Last(),
-                                striker: 
-                                    teamA.Players.Batsmen.First(),
-                                nonStriker: 
-                                    teamA.Players.Batsmen.First(i => i.Id == 2))))
+                        20))
                     .Generate();
         }
     }

@@ -19,7 +19,10 @@ namespace CricketTeams.Domain.Models.Scores
                 => Enumerable
                     .Range(1, count)
                     .Select(b => 
-                        GetBallWithRuns(A.Dummy<Player>(), A.Dummy<Player>(), A.Dummy<Player>()))
+                        GetBallWithRuns(
+                            PlayerFakes.Data.GetPlayer(1), 
+                            PlayerFakes.Data.GetPlayer(2),
+                            PlayerFakes.Data.GetPlayer(3)))
                     .ToList();
 
             /// <summary>
