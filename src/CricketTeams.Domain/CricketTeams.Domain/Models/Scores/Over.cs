@@ -14,15 +14,15 @@
         internal Over(
             Player bowler,
             Player striker,
-            Player nonStriker,
-            Ball currentBall)
+            Player nonStriker)
         {
             this.Bowler = bowler;
             this.Striker = striker;
             this.NonStriker = nonStriker;
-            this.CurrentBall = currentBall;
             this.Balls = new List<Ball>();
             this.BatsmenOut = new List<Player>();
+            
+            this.CurrentBall = default!;
         }
 
         public Player Bowler { get; set; }
@@ -30,18 +30,92 @@
         public Player NonStriker { get; private set; }
         public int TotalRuns { get; private set; }
         public int ExtraBalls { get; private set; }
-        public Ball CurrentBall { get; private set; }
+        public Ball? CurrentBall { get; private set; }
         public ICollection<Ball> Balls { get; private set; }
         public ICollection<Player> BatsmenOut { get; private set; }
-        public bool IsOverEnd { get; private set; } = false;
+        public bool IsOverEnd { get; private set; }
 
-        public Over UpdateCurrentBall(int runs, bool six, bool four, bool wideBall, bool noBall)
+        public Over UpdateCurrentBallWithRuns(int runs)
         {
+            AddLastBall();
+            
             ValidateIsOverEnd();
 
-            AddLastBall();
+            this.CurrentBall = new Ball(this.Bowler, this.Striker, this.NonStriker, runs);
 
-            this.CurrentBall = new Ball(this.Bowler, this.Striker, this.NonStriker, runs, six, four, wideBall, noBall);
+            UpdateOverStats();
+
+            return this;
+        }
+
+        public Over UpdateCurrentBallWithSix()
+        {
+            AddLastBall();
+            
+            ValidateIsOverEnd();
+
+            this.CurrentBall = new Ball(
+                this.Bowler,
+                this.Striker,
+                this.NonStriker,
+                six: true,
+                four: false);
+
+            UpdateOverStats();
+
+            return this;
+        }
+
+        public Over UpdateCurrentBallWithFour()
+        {
+            AddLastBall();
+            
+            ValidateIsOverEnd();
+
+            this.CurrentBall = new Ball(
+                this.Bowler,
+                this.Striker,
+                this.NonStriker,
+                six: false,
+                four: true);
+
+            UpdateOverStats();
+
+            return this;
+        }
+
+        public Over UpdateCurrentBallWithNoBall(int runs)
+        {
+            AddLastBall();
+            
+            ValidateIsOverEnd();
+
+            this.CurrentBall = new Ball(
+                this.Bowler,
+                this.Striker,
+                this.NonStriker,
+                runs,
+                noBall: true,
+                wideBall: false);
+
+            UpdateOverStats();
+
+            return this;
+        }
+
+        public Over UpdateCurrentBallWithWideBall(int runs)
+        {
+            AddLastBall();
+            
+            ValidateIsOverEnd();
+
+            this.CurrentBall = new Ball(
+                 this.Bowler,
+                this.Striker,
+                this.NonStriker,
+                runs,
+                noBall: false,
+                wideBall: true);
 
             UpdateOverStats();
 
@@ -57,18 +131,18 @@
         public Over UpdateCurrentBallWithDismissedBatsman(
             bool isStrikerOut,
             Player newBatsman,
-            int runs, bool six, bool four, bool wideBall, bool noBall,
             Player bowlingTeamPlayer,
             Player dismissedBatsman,
             PlayerOutTypes batsmanOutType)
         {
-            ValidateIsOverEnd();
-
             AddLastBall();
+            
+            ValidateIsOverEnd();
+            ValidateIsNoBall();
 
             if (isStrikerOut)
             {
-                if (this.Striker.Age != dismissedBatsman.Age && 
+                if (this.Striker.Age != dismissedBatsman.Age &&
                     this.Striker.FullName != dismissedBatsman.FullName)
                 {
                     throw new InvalidOverException($"Dismissed batsman is {this.Striker.FullName}.");
@@ -78,7 +152,6 @@
                     this.Bowler,
                     newBatsman,
                     this.NonStriker,
-                    runs, six, four, wideBall, noBall,
                     bowlingTeamPlayer,
                     dismissedBatsman,
                     batsmanOutType);
@@ -87,7 +160,7 @@
             }
             else
             {
-                if (this.NonStriker.Age != dismissedBatsman.Age && 
+                if (this.NonStriker.Age != dismissedBatsman.Age &&
                     this.NonStriker.FullName != dismissedBatsman.FullName)
                 {
                     throw new InvalidOverException($"Dismissed batsman is {this.NonStriker.FullName}.");
@@ -97,7 +170,6 @@
                     this.Bowler,
                     this.Striker,
                     newBatsman,
-                    runs, six, four, wideBall, noBall,
                     bowlingTeamPlayer,
                     dismissedBatsman,
                     batsmanOutType);
@@ -112,6 +184,10 @@
 
         public Over EndOver()
         {
+            if (this.Balls.Count < (MaxBallsPerOver + this.ExtraBalls))
+            {
+                throw new InvalidOverException($"Over in progress. {(MaxBallsPerOver + this.ExtraBalls) - this.Balls.Count} balls left.");
+            }
             this.IsOverEnd = true;
 
             return this;
@@ -119,7 +195,7 @@
 
         private void UpdateOverStats()
         {
-            if (this.CurrentBall.IsBatsmanOut)
+            if (this.CurrentBall!.IsBatsmanOut)
             {
                 DismissBatsman();
             }
@@ -131,16 +207,15 @@
 
         private void DismissBatsman()
         {
-            var dismissedBatsman = this.CurrentBall.DismissedBatsman!;
+            var dismissedBatsman = this.CurrentBall!.DismissedBatsman!;
 
             this.BatsmenOut.Add(dismissedBatsman);
         }
 
         private void CalculateRuns()
         {
-            if (this.CurrentBall.WideBall || this.CurrentBall.NoBall)
+            if (this.CurrentBall!.WideBall || this.CurrentBall!.NoBall)
             {
-                //When there are runs made by the batsmen these runs are added to the team total score
                 if (this.CurrentBall.Runs > 0)
                 {
                     this.Striker = SetStriker();
@@ -152,12 +227,18 @@
                 }
                 this.TotalRuns++;
             }
+            else if (this.CurrentBall.Runs > 0)
+            {
+                this.Striker = SetStriker();
+                this.NonStriker = SetNonStriker();
+
+                this.TotalRuns += this.CurrentBall.Runs;
+            }
 
             if (this.CurrentBall.Six)
             {
                 this.TotalRuns += 6;
             }
-
             if (this.CurrentBall.Four)
             {
                 this.TotalRuns += 4;
@@ -168,7 +249,7 @@
         /// Set the non striker for the next ball to be striker
         /// </summary>
         private Player SetNonStriker()
-            => this.Striker == this.CurrentBall.Striker ?
+            => this.Striker == this.CurrentBall!.Striker ?
                this.CurrentBall.NonStriker :
                this.CurrentBall.Striker;
 
@@ -176,21 +257,39 @@
         /// Set the striker for the next ball to be non striker
         /// </summary>
         private Player SetStriker()
-            => this.CurrentBall.Runs % 2 is 0 ?
+            => this.CurrentBall!.Runs % 2 is 0 ?
                this.CurrentBall.Striker :
                this.CurrentBall.NonStriker;
 
         private void AddLastBall()
-            => this.Balls.Add(CurrentBall);
-
+        {
+            if (!(this.CurrentBall is null))
+            {
+                this.Balls.Add(CurrentBall!);
+            }
+        }
 
         private void ValidateIsOverEnd()
         {
-            var totalBallsAllowed = MaxBallsPerOver + this.ExtraBalls;
+            if (this.IsOverEnd)
+            {
+                throw new InvalidOverException("Over ended.");
+            }
+
+            var totalBallsAllowed = (MaxBallsPerOver + this.ExtraBalls) - 1;
             if (totalBallsAllowed == this.Balls.Count)
             {
+                UpdateOverStats();
+                AddLastBall();
                 EndOver();
-                throw new InvalidOverException($"Max balls for this over was reached, Over was ended.");
+            }
+        }
+
+        private void ValidateIsNoBall()
+        {
+            if (this.Balls.Count > 0 && this.Balls.Last().NoBall is true)
+            {
+                throw new InvalidOverException("Batsmen cannot be out when there was a no ball in the last ball.");
             }
         }
     }

@@ -27,8 +27,7 @@
                     .CustomInstantiator(f => new Over(
                         bowler,
                         striker,
-                        nonStriker,
-                        BallFakes.Data.GetBall(bowler,striker,nonStriker)))
+                        nonStriker))
                     .Generate();
         }
     }

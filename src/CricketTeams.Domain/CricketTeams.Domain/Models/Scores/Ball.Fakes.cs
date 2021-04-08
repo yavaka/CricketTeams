@@ -19,13 +19,13 @@ namespace CricketTeams.Domain.Models.Scores
                 => Enumerable
                     .Range(1, count)
                     .Select(b => 
-                        GetBall(A.Dummy<Player>(), A.Dummy<Player>(), A.Dummy<Player>()))
+                        GetBallWithRuns(A.Dummy<Player>(), A.Dummy<Player>(), A.Dummy<Player>()))
                     .ToList();
 
             /// <summary>
             /// Get ball with runs only
             /// </summary>
-            public static Ball GetBall(
+            public static Ball GetBallWithRuns(
                 Player bowler,
                 Player striker,
                 Player nonStriker)
@@ -33,11 +33,7 @@ namespace CricketTeams.Domain.Models.Scores
                     bowler,
                     striker,
                     nonStriker,
-                    runs: f.Random.Number(0, 9),
-                    six: false,
-                    four: false,
-                    wideBall: false,
-                    noBall: false));
+                    runs: f.Random.Number(0, 9)));
 
             /// <summary>
             /// Get ball with striker out
@@ -52,11 +48,6 @@ namespace CricketTeams.Domain.Models.Scores
                     bowler,
                     striker,
                     nonStriker,
-                    runs: 0,
-                    six: false,
-                    four: false,
-                    wideBall: false,
-                    noBall: false,
                     bowler,
                     striker,
                     PlayerOutTypes.Catch);
@@ -71,15 +62,36 @@ namespace CricketTeams.Domain.Models.Scores
                     bowler,
                     striker,
                     nonStriker,
-                    runs: 0,
-                    six: false,
-                    four: false,
-                    wideBall: false,
-                    noBall: false,
                     bowler,
                     nonStriker,
                     PlayerOutTypes.Catch);
             }
+
+            public static Ball GetBallWithWideBall(
+                Player bowler,
+                Player striker,
+                Player nonStriker)
+                => new Faker<Ball>()
+                    .CustomInstantiator(f => new Ball(
+                        bowler,
+                        striker,
+                        nonStriker,
+                        runs: f.Random.Number(0, 9),
+                        noBall: false,
+                        wideBall: true));
+
+            public static Ball GetBallWithNoBall(
+                Player bowler,
+                Player striker,
+                Player nonStriker)
+                => new Faker<Ball>()
+                    .CustomInstantiator(f => new Ball(
+                        bowler,
+                        striker,
+                        nonStriker,
+                        runs: f.Random.Number(0, 9),
+                        noBall: true,
+                        wideBall: false));
         }
     }
 }
