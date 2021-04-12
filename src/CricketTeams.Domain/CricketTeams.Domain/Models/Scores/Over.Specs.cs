@@ -280,5 +280,30 @@
             //Assert
             act.Should().Throw<InvalidBallException>();
         }
+
+        [Fact]
+        public void UpdateBastmanWhoIsAlreadyOutShouldThrowException() 
+        {
+            //Arrange
+            var ball = BallFakes.Data.GetBallWithStrikerDismiss(this._bowler,this._striker,this._nonStriker);
+            this._over.UpdateCurrentBallWithDismissedBatsman(
+                true,
+                ball.Striker,
+                ball.BowlingTeamPlayer!,
+                ball.DismissedBatsman!,
+                ball.OutType!);
+
+            //Act
+            Action act = ()
+                => this._over.UpdateCurrentBallWithDismissedBatsman(
+                    true, 
+                    ball.Striker, 
+                    ball.BowlingTeamPlayer!, 
+                    ball.DismissedBatsman!, 
+                    ball.OutType!);
+
+            //Assert
+            act.Should().Throw<InvalidOverException>();
+        }
     }
 }

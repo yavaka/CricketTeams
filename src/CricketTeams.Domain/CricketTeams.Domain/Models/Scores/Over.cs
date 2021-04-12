@@ -39,21 +39,18 @@
 
         public Over UpdateCurrentBallWithRuns(int runs)
         {
-            AddLastBall();
-
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(this.Bowler, this.Striker, this.NonStriker, runs);
 
             UpdateOverStats();
+            EndOver();
 
             return this;
         }
 
         public Over UpdateCurrentBallWithSix()
         {
-            AddLastBall();
-
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(
@@ -64,14 +61,13 @@
                 four: false);
 
             UpdateOverStats();
+            EndOver();
 
             return this;
         }
 
         public Over UpdateCurrentBallWithFour()
         {
-            AddLastBall();
-
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(
@@ -82,14 +78,13 @@
                 four: true);
 
             UpdateOverStats();
+            EndOver();
 
             return this;
         }
 
         public Over UpdateCurrentBallWithNoBall(int runs)
         {
-            AddLastBall();
-
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(
@@ -101,14 +96,13 @@
                 wideBall: false);
 
             UpdateOverStats();
+            EndOver();
 
             return this;
         }
 
         public Over UpdateCurrentBallWithWideBall(int runs)
         {
-            AddLastBall();
-
             ValidateIsOverEnd();
 
             this.CurrentBall = new Ball(
@@ -120,6 +114,7 @@
                 wideBall: true);
 
             UpdateOverStats();
+            EndOver();
 
             return this;
         }
@@ -137,8 +132,7 @@
             Player dismissedBatsman,
             PlayerOutTypes batsmanOutType)
         {
-            AddLastBall();
-
+            ValidateIsNewBatsmanOut(newBatsman);
             ValidateIsOverEnd();
             ValidateIsNoBall();
 
@@ -177,23 +171,30 @@
                     batsmanOutType);
 
                 this.NonStriker = newBatsman;
-            }
 
+            }
             UpdateOverStats();
+            EndOver();
 
             return this;
         }
 
         private Over EndOver()
         {
-            this.IsOverEnd = true;
+            var totalBallsAllowed = MaxBallsPerOver + this.ExtraBalls;
+            if (totalBallsAllowed == this.Balls.Count)
+            {
+                this.IsOverEnd = true;
+            }
 
             return this;
         }
 
         private void UpdateOverStats()
         {
-            if (this.CurrentBall!.IsBatsmanOut)
+            AddLastBall();
+
+            if (this.Balls.Last().IsBatsmanOut)
             {
                 DismissBatsman();
             }
@@ -205,7 +206,7 @@
 
         private void DismissBatsman()
         {
-            var dismissedBatsman = this.CurrentBall!.DismissedBatsman!;
+            var dismissedBatsman = this.Balls.Last().DismissedBatsman!;
 
             this.BatsmenOut.Add(dismissedBatsman);
         }
@@ -261,9 +262,9 @@
 
         private void AddLastBall()
         {
-            if (!(this.CurrentBall is null))
+            if (this.CurrentBall is not null)
             {
-                this.Balls.Add(CurrentBall!);
+                this.Balls.Add(CurrentBall);
             }
         }
 
@@ -272,14 +273,6 @@
             if (this.IsOverEnd)
             {
                 throw new InvalidOverException("Over ended.");
-            }
-
-            var totalBallsAllowed = (MaxBallsPerOver + this.ExtraBalls) - 1;
-            if (totalBallsAllowed == this.Balls.Count)
-            {
-                AddLastBall();
-                UpdateOverStats();
-                EndOver();
             }
         }
 
@@ -296,6 +289,14 @@
             if (striker == nonStriker)
             {
                 throw new InvalidOverException("Cannot add same striker and non striker.");
+            }
+        }
+
+        private void ValidateIsNewBatsmanOut(Player newBatsman)
+        {
+            if (this.BatsmenOut.Any(b => b == newBatsman))
+            {
+                throw new InvalidOverException($"{newBatsman.FullName} is already out.");
             }
         }
     }
