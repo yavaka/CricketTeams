@@ -174,7 +174,7 @@
             return this;
         }
 
-        public Inning EndInning()
+        private Inning EndInning()
         {
             if (this.Overs.Count == this.OversPerInning ||
                 AreAllBatsmenDismissed())
@@ -199,6 +199,8 @@
                     .ForEach(b => this.TotalBatsmenOut.Add(b));
             }
             AddLastOver();
+
+            ValidateIsInningEnd();
         }
 
         private void AddLastOver()
@@ -249,9 +251,8 @@
                 throw new InvalidOverException("Inning ended.");
             }
 
-            if (this.OversPerInning == this.Overs.Count)
+            if (this.OversPerInning - 1 == this.Overs.Count)
             {
-                AddLastOver();
                 UpdateInningStat();
                 EndInning();
             }
@@ -312,7 +313,7 @@
 
         private void ValidateOversPerInning(int oversPerInning)
         {
-            IReadOnlyCollection<int> allowedOversPerInning = new int[] { 10, 15, 20 };
+            IReadOnlyCollection<int> allowedOversPerInning = new int[] { 5, 10, 15, 20 };
 
             if (!allowedOversPerInning.Any(o => o == oversPerInning))
             {

@@ -2,94 +2,239 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
+    using CricketTeams.Domain.Models.Teams;
     using System.Collections.Generic;
 
     public class Score : Entity<int>
     {
         public Score(
+            Team teamA,
+            Team teamB,
             int oversPerInning,
-            int numberOfInnings,
-            Inning currentInning)
+            int numberOfInnings)
         {
+            ValidateTeams(teamA, teamB);
+            this.TeamA = teamA;
+            this.TeamB = teamB;
             this.OversPerInning = oversPerInning;
             this.NumberOfInnings = numberOfInnings;
-            this.CurrentInning = currentInning;
-            this.Innings = new Inning[this.NumberOfInnings];
+            this.Innings = new List<Inning>();
         }
 
+        public Team TeamA { get; private set; }
+        public Team TeamB { get; private set; }
         public int OversPerInning { get; private set; }
         public int NumberOfInnings { get; set; }
-        public Inning CurrentInning { get; private set; }
+        public Inning? CurrentInning { get; private set; }
         public ICollection<Inning> Innings { get; private set; }
-        public bool IsMatchEnd { get; private set; } = false;
+        public int TotalScoreTeamA { get; private set; }
+        public int TotalScoreTeamB { get; private set; }
+        public bool IsMatchEnd { get; private set; }
 
-        public Score UpdateBall(Ball ball)
+        #region Over methods
+
+        public Score UpdateCurrentBallWithRuns(int runs)
         {
-            this.CurrentInning.UpdateBall(ball);
+            ValidateIsCurrentInningSet();
+            ValidateIsMatchEnd();
+
+            this.CurrentInning!.UpdateCurrentBallWithRuns(runs);
+
+            ValidateIsInningEnd();
+            
+            return this;
+        }
+
+        public Score UpdateCurrentBallWithSix()
+        {
+            ValidateIsCurrentInningSet();
+            ValidateIsMatchEnd();
+
+            this.CurrentInning!.UpdateCurrentBallWithSix();
+
+            ValidateIsInningEnd();
 
             return this;
         }
 
-        /// <summary>
-        /// Update ball when there is a batsman out
-        /// </summary>
-        /// <param name="ball"></param>
-        /// <param name="newBatsman"></param>
-        /// <returns></returns>
-        public Score UpdateBall(Ball ball, Player newBatsman)
+        public Score UpdateCurrentBallWithFour()
         {
-            this.CurrentInning.UpdateBall(ball, newBatsman);
+            ValidateIsCurrentInningSet();
+            ValidateIsMatchEnd();
+
+            this.CurrentInning!.UpdateCurrentBallWithFour();
+
+            ValidateIsInningEnd();
 
             return this;
         }
 
-        public Score UpdateOver(Over over)
+        public Score UpdateCurrentBallWithNoBall(int runs)
         {
-            this.CurrentInning.UpdateCurrentOver(over);
+            ValidateIsCurrentInningSet();
+            ValidateIsMatchEnd();
+
+            this.CurrentInning!.UpdateCurrentBallWithNoBall(runs);
+
+            ValidateIsInningEnd();
 
             return this;
         }
 
-        public Score UpdateCurrentInning(Inning inning)
+        public Score UpdateCurrentBallWithWideBall(int runs)
         {
-            if (this.Innings.Count > this.NumberOfInnings)
+            ValidateIsCurrentInningSet();
+            ValidateIsMatchEnd();
+
+            this.CurrentInning!.UpdateCurrentBallWithWideBall(runs);
+
+            ValidateIsInningEnd();
+
+            return this;
+        }
+
+        public Score UpdateCurrentBallWithDismissedBatsman(
+            bool isStrikerOut,
+            Player newBatsman,
+            Player bowlingTeamPlayer,
+            Player dismissedBatsman,
+            PlayerOutTypes batsmanOutType)
+        {
+            ValidateIsCurrentInningSet();
+            ValidateIsMatchEnd();
+
+            this.CurrentInning!.UpdateCurrentBallWithDismissedBatsman(
+                isStrikerOut,
+                newBatsman,
+                bowlingTeamPlayer,
+                dismissedBatsman,
+                batsmanOutType);
+
+            ValidateIsInningEnd();
+
+            return this;
+        }
+
+        #endregion
+
+        public Score UpdateCurrentOver(Player bowler, Player striker, Player nonStriker)
+        {
+            ValidateIsCurrentInningSet();
+            ValidateIsMatchEnd();
+
+            this.CurrentInning!.UpdateCurrentOver(bowler, striker, nonStriker);
+
+            return this;
+        }
+
+        public Score UpdateCurrentOverWithBatsman(Player bowler, Player newBatsman)
+        {
+            ValidateIsCurrentInningSet();
+            ValidateIsMatchEnd();
+
+            this.CurrentInning!.UpdateCurrentOverWithBatsman(bowler, newBatsman);
+
+            return this;
+        }
+
+        public Score UpdateCurrentInning(Team battingTeam, Team bowlingTeam)
+        {
+            if (this.CurrentInning is not null)
+            {
+                ValidateIsMatchEnd();
+
+                if (this.CurrentInning.BattingTeam == TeamA)
+                {
+                    this.CurrentInning = new Inning(
+                        battingTeam: TeamB,
+                        bowlingTeam: TeamA,
+                        this.OversPerInning);
+                }
+                else
+                {
+                    this.CurrentInning = new Inning(
+                        battingTeam: TeamA,
+                        bowlingTeam: TeamB,
+                        this.OversPerInning);
+                }
+            }
+            else
+            {
+                this.CurrentInning = new Inning(battingTeam, bowlingTeam, this.OversPerInning);
+            }
+            return this;
+        }
+
+        private void UpdateScoreStat()
+        {
+            if (this.CurrentInning!.BattingTeam == this.TeamA)
+            {
+                this.TotalScoreTeamA = this.CurrentInning!.TotalRuns;
+            }
+            else if (this.CurrentInning!.BattingTeam == this.TeamB)
+            {
+                this.TotalScoreTeamB = this.CurrentInning!.TotalRuns;
+            }
+
+            AddLastInning();
+
+            ValidateIsMatchEnd();
+        }
+
+        private void EndMatch()
+        {
+            if (this.Innings.Count == this.NumberOfInnings)
+            {
+                this.IsMatchEnd = true;
+            }
+        }
+
+        private void AddLastInning()
+        {
+            if (this.CurrentInning is not null)
+            {
+                this.Innings.Add(this.CurrentInning);
+            }
+        }
+
+        private void ValidateIsMatchEnd()
+        {
+            if (this.IsMatchEnd)
+            {
+                throw new InvalidOverException("Match ended.");
+            }
+
+            if (this.NumberOfInnings == this.Innings.Count)
             {
                 EndMatch();
-                throw new InvalidScoreException($"Max innings for this match was reached, Match was ended.");
             }
-            EndInning();
-
-            this.CurrentInning = inning;
-
-            return this;
         }
 
-        public Score EndMatch()
+        private void ValidateIsInningEnd()
         {
-            if (this.Innings.Count < this.NumberOfInnings)
+            if (/* Check overs */this.CurrentInning!.Overs.Count == this.OversPerInning &&
+                /* Check balls */this.CurrentInning!.CurrentOver!.Balls.Count == 6 + this.CurrentInning!.CurrentOver!.ExtraBalls)
             {
-                throw new InvalidScoreException($"Match still in progress.");
+                UpdateScoreStat();
             }
-
-            this.IsMatchEnd = true;
-
-            return this;
         }
 
-        private void EndInning()
+        private void ValidateTeams(Team teamA, Team teamB)
         {
-            if (this.CurrentInning == default!)
+            if (teamA == teamB)
             {
-                throw new InvalidInningException($"Set value of {nameof(this.CurrentInning)}");
+                throw new InvalidScoreException($"Two same teams cannot compete against each other.");
             }
-
-            this.CurrentInning.EndInning();
-
-            AddInning();
         }
 
-        private void AddInning()
-            => this.Innings.Add(this.CurrentInning);
+        private void ValidateIsCurrentInningSet()
+        {
+            if (this.CurrentInning is null)
+            {
+                throw new InvalidScoreException($"{nameof(this.CurrentInning)} is not initialised. Use {nameof(UpdateCurrentInning)} method.");
+            }
+        }
     }
 }
