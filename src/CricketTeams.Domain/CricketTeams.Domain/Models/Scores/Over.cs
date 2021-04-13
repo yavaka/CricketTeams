@@ -179,15 +179,13 @@
             return this;
         }
 
-        private Over EndOver()
+        private void EndOver()
         {
             var totalBallsAllowed = MaxBallsPerOver + this.ExtraBalls;
             if (totalBallsAllowed == this.Balls.Count)
             {
                 this.IsOverEnd = true;
             }
-
-            return this;
         }
 
         private void UpdateOverStats()
@@ -273,6 +271,10 @@
             if (this.IsOverEnd)
             {
                 throw new InvalidOverException("Over ended.");
+            }
+            else
+            {
+                EndOver();
             }
         }
 

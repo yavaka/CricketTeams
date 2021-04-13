@@ -1,7 +1,6 @@
 ﻿namespace CricketTeams.Domain.Models.Scores
 {
     using CricketTeams.Domain.Exceptions;
-    using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
     using FakeItEasy;
     using FluentAssertions;
@@ -76,27 +75,27 @@
             this._score.UpdateCurrentInning(this._score.TeamB, this._score.TeamA);
 
             //Assert
-            this._score.Innings.Last().BowlingTeam.Id
+            this._score.Innings.First().BowlingTeam.Id
                 .Should()
                 .Be(this._score.TeamB.Id);
- 
-            this._score.Innings.Last().BattingTeam.Id
+
+            this._score.Innings.First().BattingTeam.Id
                 .Should()
                 .Be(this._score.TeamA.Id);
 
             this._score.TotalScoreTeamA
                 .Should()
-                .Be(this._score.Innings.Last().TotalRuns);
+                .Be(this._score.Innings.First().TotalRuns);
         }
 
         [Fact]
-        public void EndMatchShouldSetScoreOfTeamAAndBAndContainTwoInnings() 
+        public void EndMatchShouldSetScoreOfTeamAAndBAndContainTwoInnings()
         {
             //Arrange
             this._score = ScoreFakes.Data.GetScoreWithEndedInning();
 
             this._score.UpdateCurrentInning(this._score.TeamB, this._score.TeamA);
-            
+
             var striker = this._score.TeamB.Players.Batsmen.First(i => i.Id == 1);
             var nonStriker = this._score.TeamB.Players.Batsmen.First(i => i.Id == 2);
             var bowler = this._score.TeamA.Players.Bowlers.First();

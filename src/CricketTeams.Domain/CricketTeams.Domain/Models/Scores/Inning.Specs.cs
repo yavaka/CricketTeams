@@ -56,12 +56,10 @@
         {
             //Arrange
             this._inning.UpdateCurrentOver(this._bowler, this._striker, this._nonStriker);
-            var expectedOver = new Over(this._bowler, this._striker, this._nonStriker);
 
             for (int i = 0; i < 6; i++)
             {
-                this._inning.CurrentOver!.UpdateCurrentBallWithRuns(i);
-                expectedOver.UpdateCurrentBallWithRuns(i);
+                this._inning.UpdateCurrentBallWithRuns(i);
             }
 
             //Act
@@ -70,26 +68,27 @@
             this._inning.UpdateCurrentOver(newBowler, this._striker, this._nonStriker);
 
             //Assert
-            var lastOver = this._inning.Overs.Last();
+            var lastOver = this._inning.Overs.First();
 
             this._inning.TotalRuns
                 .Should()
-                .Be(expectedOver.TotalRuns);
+                .Be(15);
 
-            lastOver.Striker
+            lastOver.Striker.Id
                 .Should()
-                .Be(expectedOver.Striker);
+                .Be(11);
 
-            lastOver.NonStriker
+            lastOver.NonStriker.Id
                 .Should()
-                .Be(expectedOver.NonStriker);
+                .Be(1);
 
-            lastOver.Bowler.Should()
-                .Be(expectedOver.Bowler);
+            lastOver.Bowler.Id
+                .Should()
+                .Be(7);
 
             lastOver.IsOverEnd
                 .Should()
-                .Be(expectedOver.IsOverEnd);
+                .BeTrue();
         }
 
         [Fact]
@@ -185,21 +184,7 @@
         {
             //Act 
             Action act = ()
-                => new Inning(this._teamA, this._teamB, 5);
-
-            //Assert
-            act.Should().Throw<InvalidInningException>();
-        }
-
-        [Fact]
-        public void UpdateCurrentOverBeforeOverEndShouldThrowException() 
-        {
-            //Arrange
-            this._inning.UpdateCurrentOver(this._bowler, this._striker, this._nonStriker);
-
-            //Act
-            Action act = ()
-                => this._inning.UpdateCurrentOver(this._bowler, this._striker, this._nonStriker);
+                => new Inning(this._teamA, this._teamB, 2);
 
             //Assert
             act.Should().Throw<InvalidInningException>();
@@ -274,33 +259,5 @@
             //Assert
             this._inning.IsInningEnd.Should().BeTrue();
         }
-
-        //[Fact]
-        //public void UpdateBallWith()
-        //{
-        //    //Arrange
-
-        //    //Act
-
-        //    //Assert
-        //}
-
-        //[Fact]
-        //public void TestNameException()
-        //{
-        //    //Act
-
-        //    //Assert
-        //}
-
-        //[Fact]
-        //public void TestName() 
-        //{
-        //    //Arrange
-
-        //    //Act
-
-        //    //Assert
-        //}
     }
 }

@@ -5,6 +5,7 @@
     using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -40,8 +41,11 @@
         public Inning UpdateCurrentBallWithRuns(int runs)
         {
             ValidateIsOverSet();
+            ValidateIsInningEnd();
 
             this.CurrentOver!.UpdateCurrentBallWithRuns(runs);
+
+            ValidateIsCurrentOverEnd();
 
             return this;
         }
@@ -49,8 +53,11 @@
         public Inning UpdateCurrentBallWithSix()
         {
             ValidateIsOverSet();
+            ValidateIsInningEnd();
 
             this.CurrentOver!.UpdateCurrentBallWithSix();
+
+            ValidateIsCurrentOverEnd();
 
             return this;
         }
@@ -58,8 +65,11 @@
         public Inning UpdateCurrentBallWithFour()
         {
             ValidateIsOverSet();
+            ValidateIsInningEnd();
 
             this.CurrentOver!.UpdateCurrentBallWithFour();
+            
+            ValidateIsCurrentOverEnd();
 
             return this;
         }
@@ -67,8 +77,11 @@
         public Inning UpdateCurrentBallWithNoBall(int runs)
         {
             ValidateIsOverSet();
+            ValidateIsInningEnd();
 
             this.CurrentOver!.UpdateCurrentBallWithNoBall(runs);
+
+            ValidateIsCurrentOverEnd();
 
             return this;
         }
@@ -76,8 +89,11 @@
         public Inning UpdateCurrentBallWithWideBall(int runs)
         {
             ValidateIsOverSet();
+            ValidateIsInningEnd();
 
             this.CurrentOver!.UpdateCurrentBallWithWideBall(runs);
+
+            ValidateIsCurrentOverEnd();
 
             return this;
         }
@@ -92,11 +108,11 @@
             ValidateIsOverSet();
             if (AreAllBatsmenDismissed())
             {
-                EndInning();
-                UpdateInningStat();
+                throw new InvalidInningException($"All batsmen dismissed. Inning ended.");
             }
             else
             {
+                ValidateIsInningEnd();
                 ValidateBatsman(newBatsman);
                 ValidateBowlingTeamPlayer(bowlingTeamPlayer);
 
@@ -107,9 +123,10 @@
                     dismissedBatsman,
                     batsmanOutType);
 
+                this.TotalBatsmenOut.Add(this.CurrentOver!.BatsmenOut.Last());
+
                 if (AreAllBatsmenDismissed())
                 {
-                    EndInning();
                     UpdateInningStat();
                 }
             }
@@ -124,15 +141,14 @@
         {
             Validate(bowler, striker, nonStriker);
 
-            if (this.CurrentOver is not null)
+            if (this.CurrentOver is not null && IsCurrentOverEnd())
             {
                 // Create new over with batsmen from the last ball 
                 // of the previous over if one was not out.
                 var lastBall = this.CurrentOver.Balls.Last();
                 if (lastBall.IsBatsmanOut is false)
                 {
-                    UpdateInningStat();
-                    this.CurrentOver = new Over(bowler, lastBall.Striker, lastBall.NonStriker);
+                    this.CurrentOver = new Over(bowler, this.CurrentOver.Striker, this.CurrentOver.NonStriker);
                 }
                 else
                 {
@@ -143,6 +159,8 @@
             {
                 this.CurrentOver = new Over(bowler, striker, nonStriker);
             }
+            AddLastOver();
+
             return this;
         }
 
@@ -174,31 +192,18 @@
             return this;
         }
 
-        private Inning EndInning()
+        private void EndInning()
         {
-            if (this.Overs.Count == this.OversPerInning ||
+            if ((this.Overs.Count == this.OversPerInning && CurrentOver!.Balls.Count == 6 + this.CurrentOver!.ExtraBalls) ||
                 AreAllBatsmenDismissed())
             {
                 this.IsInningEnd = true;
             }
-            else
-            {
-                throw new InvalidInningException($"Inning still in progress, {this.OversPerInning - this.Overs.Count}");
-            }
-            return this;
         }
 
         private void UpdateInningStat()
         {
-            this.TotalRuns = this.TotalRuns + this.CurrentOver!.TotalRuns;
-
-            if (this.CurrentOver.BatsmenOut.Count > 0)
-            {
-                this.CurrentOver.BatsmenOut
-                    .ToList()
-                    .ForEach(b => this.TotalBatsmenOut.Add(b));
-            }
-            AddLastOver();
+            this.TotalRuns += this.CurrentOver!.TotalRuns;
 
             ValidateIsInningEnd();
         }
@@ -225,10 +230,6 @@
                     EndInning();
                     UpdateInningStat();
                 }
-                else
-                {
-                    ValidateIsCurrentOverEnd();
-                }
             }
             if (bowler is not null)
             {
@@ -250,18 +251,15 @@
             {
                 throw new InvalidOverException("Inning ended.");
             }
-
-            if (this.OversPerInning - 1 == this.Overs.Count)
+            else
             {
-                UpdateInningStat();
                 EndInning();
             }
         }
 
         private bool AreAllBatsmenDismissed()
         {
-            var dismissedBatsmen = this.TotalBatsmenOut.Count + this.CurrentOver!.BatsmenOut.Count;
-            if (dismissedBatsmen == this.BattingTeam.Players.Batsmen.Count - 1)
+            if (this.TotalBatsmenOut.Count == this.BattingTeam.Players.Batsmen.Count - 1)
             {
                 return true;
             }
@@ -305,9 +303,9 @@
 
         private void ValidateIsCurrentOverEnd()
         {
-            if (!this.CurrentOver!.IsOverEnd)
+            if (this.CurrentOver!.IsOverEnd)
             {
-                throw new InvalidInningException("Over in progress.");
+                UpdateInningStat();
             }
         }
 
@@ -327,6 +325,15 @@
             {
                 throw new InvalidInningException($"Current over not initialised. Use {nameof(UpdateCurrentOver)} method.");
             }
+        }
+
+        private bool IsCurrentOverEnd()
+        {
+            if (this.CurrentOver!.Balls.Count == 6 + this.CurrentOver!.ExtraBalls)
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion

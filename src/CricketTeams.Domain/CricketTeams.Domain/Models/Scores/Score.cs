@@ -5,6 +5,7 @@
     using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
+    using System;
     using System.Collections.Generic;
 
     public class Score : Entity<int>
@@ -42,8 +43,8 @@
 
             this.CurrentInning!.UpdateCurrentBallWithRuns(runs);
 
-            ValidateIsInningEnd();
-            
+            EndInning();
+
             return this;
         }
 
@@ -54,7 +55,7 @@
 
             this.CurrentInning!.UpdateCurrentBallWithSix();
 
-            ValidateIsInningEnd();
+            EndInning();
 
             return this;
         }
@@ -66,7 +67,7 @@
 
             this.CurrentInning!.UpdateCurrentBallWithFour();
 
-            ValidateIsInningEnd();
+            EndInning();
 
             return this;
         }
@@ -78,7 +79,7 @@
 
             this.CurrentInning!.UpdateCurrentBallWithNoBall(runs);
 
-            ValidateIsInningEnd();
+            EndInning();
 
             return this;
         }
@@ -90,7 +91,7 @@
 
             this.CurrentInning!.UpdateCurrentBallWithWideBall(runs);
 
-            ValidateIsInningEnd();
+            EndInning();
 
             return this;
         }
@@ -112,7 +113,7 @@
                 dismissedBatsman,
                 batsmanOutType);
 
-            ValidateIsInningEnd();
+            EndInning();
 
             return this;
         }
@@ -141,6 +142,8 @@
 
         public Score UpdateCurrentInning(Team battingTeam, Team bowlingTeam)
         {
+            ValidateIsLastInningEnd();
+
             if (this.CurrentInning is not null)
             {
                 ValidateIsMatchEnd();
@@ -164,7 +167,17 @@
             {
                 this.CurrentInning = new Inning(battingTeam, bowlingTeam, this.OversPerInning);
             }
+            AddLastInning();
+
             return this;
+        }
+
+        private void ValidateIsLastInningEnd()
+        {
+            if (this.CurrentInning is not null && !IsLastInningEnd())
+            {
+                throw new InvalidScoreException("Inning still in progress.");
+            }
         }
 
         private void UpdateScoreStat()
@@ -178,17 +191,26 @@
                 this.TotalScoreTeamB = this.CurrentInning!.TotalRuns;
             }
 
-            AddLastInning();
-
             ValidateIsMatchEnd();
         }
 
         private void EndMatch()
         {
-            if (this.Innings.Count == this.NumberOfInnings)
+            if (this.Innings.Count == this.NumberOfInnings &&
+                IsLastInningEnd())
             {
                 this.IsMatchEnd = true;
             }
+        }
+
+        private bool IsLastInningEnd()
+        {
+            if (/* Check overs */this.CurrentInning!.Overs.Count == this.OversPerInning &&
+                /* Check balls */this.CurrentInning!.CurrentOver!.Balls.Count == 6 + this.CurrentInning!.CurrentOver!.ExtraBalls)
+            {
+                return true;
+            }
+            return false;
         }
 
         private void AddLastInning()
@@ -205,17 +227,15 @@
             {
                 throw new InvalidOverException("Match ended.");
             }
-
-            if (this.NumberOfInnings == this.Innings.Count)
+            else
             {
                 EndMatch();
             }
         }
 
-        private void ValidateIsInningEnd()
+        private void EndInning()
         {
-            if (/* Check overs */this.CurrentInning!.Overs.Count == this.OversPerInning &&
-                /* Check balls */this.CurrentInning!.CurrentOver!.Balls.Count == 6 + this.CurrentInning!.CurrentOver!.ExtraBalls)
+            if (IsLastInningEnd())
             {
                 UpdateScoreStat();
             }
