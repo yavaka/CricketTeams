@@ -21,29 +21,17 @@
         {
             public static Match GetMatch(int id = 1)
             {
-                var teamA = A.Dummy<Team>();
-                var teamB = A.Dummy<Team>();
+                var teamA = A.Dummy<Team>().SetId(1);
+                var teamB = A.Dummy<Team>().SetId(2);
 
                 var match = new Faker<Match>()
                     .CustomInstantiator(f => new Match(
                         teamA,
                         teamB,
-                        default!,
-                        default!,
+                        2,
+                        5,
                         A.Dummy<Umpire>(),
-                        A.Dummy<Umpire>(),
-                        A.Dummy<Score>(),
-                        new Statistic(
-                            f.Date.Recent(),
-                            teamB.Players.AllPlayers
-                                .Select(i =>i.Id)
-                                .FirstOrDefault(i => i == f.Random.Number(1,11)),
-                            teamB.Id,
-                            f.Random.Number(100, 250),
-                            teamA.Id,
-                            f.Random.Number(50, 99),
-                            teamA.Id,
-                            TossDecisions.Batting),
+                        A.Dummy<Umpire>().SetId(2),
                         A.Dummy<Stadium>()))
                     .Generate()
                     .SetId(id);

@@ -1,6 +1,7 @@
 ﻿namespace CricketTeams.Domain.Models.Scores
 {
     using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Teams;
     using FakeItEasy;
     using FluentAssertions;
@@ -21,7 +22,7 @@
         public void UpdateCurrentInningShouldSetInning()
         {
             //Act
-            this._score.UpdateCurrentInning(this._score.TeamA, this._score.TeamB);
+            this._score.UpdateCurrentInning();
 
             var expectedInning = new Inning(
                         this._score.TeamA,
@@ -45,7 +46,7 @@
 
             //Act
             Action act = ()
-                => new Score(team, team, 5, 2);
+                => new Score(1, TossDecisions.Batting,team, team, 5, 2);
 
             //Assert
             act.Should().Throw<InvalidScoreException>();
@@ -55,11 +56,11 @@
         public void UpdateInningBeforeEndShouldThrowException()
         {
             //Arrange
-            this._score.UpdateCurrentInning(this._score.TeamA, this._score.TeamB);
+            this._score.UpdateCurrentInning();
 
             //Act
             Action act = ()
-                => this._score.UpdateCurrentInning(this._score.TeamA, this._score.TeamB);
+                => this._score.UpdateCurrentInning();
 
             //Assert
             act.Should().Throw<InvalidScoreException>();
@@ -72,7 +73,7 @@
             this._score = ScoreFakes.Data.GetScoreWithEndedInning();
 
             //Act
-            this._score.UpdateCurrentInning(this._score.TeamB, this._score.TeamA);
+            this._score.UpdateCurrentInning();
 
             //Assert
             this._score.Innings.First().BowlingTeam.Id
@@ -94,7 +95,7 @@
             //Arrange
             this._score = ScoreFakes.Data.GetScoreWithEndedInning();
 
-            this._score.UpdateCurrentInning(this._score.TeamB, this._score.TeamA);
+            this._score.UpdateCurrentInning();
 
             var striker = this._score.TeamB.Players.Batsmen.First(i => i.Id == 1);
             var nonStriker = this._score.TeamB.Players.Batsmen.First(i => i.Id == 2);

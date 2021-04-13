@@ -2,6 +2,8 @@
 {
     using Bogus;
     using CricketTeams.Domain.Common;
+    using CricketTeams.Domain.Models.Matches;
+    using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
     using FakeItEasy;
     using System;
@@ -19,11 +21,16 @@
         {
             private static Team teamA = A.Dummy<Team>().SetId(1);
             private static Team teamB = A.Dummy<Team>().SetId(2);
+            private static Player striker = teamA.Players.Batsmen.First(i => i.Id == 1);
+            private static Player nonStriker = teamA.Players.Batsmen.First(i => i.Id == 2);
+            private static Player bowler = teamB.Players.Bowlers.First();
+            private static Player secondBowler = teamB.Players.Bowlers.Last();
 
             public static Score GetScore(int id = 1)
-            {
-                var score = new Faker<Score>()
+                => new Faker<Score>()
                     .CustomInstantiator(f => new Score(
+                        tossWinnerTeamId: 1,
+                        TossDecisions.Batting,
                         teamA,
                         teamB,
                         oversPerInning: 5,
@@ -31,25 +38,17 @@
                     .Generate()
                     .SetId(id);
 
-                return score;
-            }
-
             public static Score GetScoreWithEndedInning(int id = 1)
             {
                 var score = GetScore(id);
 
-                var striker = teamA.Players.Batsmen.First(i => i.Id == 1);
-                var nonStriker = teamA.Players.Batsmen.First(i => i.Id == 2);
-                var bowler = teamB.Players.Bowlers.First();
-                var secondBowler = teamB.Players.Bowlers.Last();
-
-                score.UpdateCurrentInning(teamA, teamB);
+                score.UpdateCurrentInning();
 
                 for (int over = 0; over < 5; over++)
                 {
                     score.UpdateCurrentOver(
-                        over % 2 == 0 ? bowler : secondBowler, 
-                        striker, 
+                        over % 2 == 0 ? bowler : secondBowler,
+                        striker,
                         nonStriker);
 
                     for (int ball = 0; ball < 6; ball++)
@@ -57,7 +56,27 @@
                         score.UpdateCurrentBallWithRuns(ball);
                     }
                 }
+                return score;
+            }
 
+            public static Score GetScoreWithEndedMatch(int id = 1) 
+            {
+                var score = GetScoreWithEndedInning(id);
+
+                score.UpdateCurrentInning();
+
+                for (int over = 0; over < 5; over++)
+                {
+                    score.UpdateCurrentOver(
+                        over % 2 == 0 ? secondBowler : bowler,
+                        striker,
+                        nonStriker);
+
+                    for (int ball = 0; ball < 6; ball++)
+                    {
+                        score.UpdateCurrentBallWithRuns(ball);
+                    }
+                }
                 return score;
             }
         }

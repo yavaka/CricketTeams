@@ -11,12 +11,16 @@
     public class Score : Entity<int>
     {
         public Score(
+            int tossWinnerTeamId,
+            TossDecisions tossDecision,
             Team teamA,
             Team teamB,
             int oversPerInning,
             int numberOfInnings)
         {
             ValidateTeams(teamA, teamB);
+            this.TossWinnerTeamId = tossWinnerTeamId;
+            this.TossDecision = tossDecision;
             this.TeamA = teamA;
             this.TeamB = teamB;
             this.OversPerInning = oversPerInning;
@@ -24,6 +28,8 @@
             this.Innings = new List<Inning>();
         }
 
+        public int TossWinnerTeamId { get; private set; }
+        public TossDecisions TossDecision { get; private set; }
         public Team TeamA { get; private set; }
         public Team TeamB { get; private set; }
         public int OversPerInning { get; private set; }
@@ -120,6 +126,8 @@
 
         #endregion
 
+        #region Inning methods
+
         public Score UpdateCurrentOver(Player bowler, Player striker, Player nonStriker)
         {
             ValidateIsCurrentInningSet();
@@ -140,7 +148,9 @@
             return this;
         }
 
-        public Score UpdateCurrentInning(Team battingTeam, Team bowlingTeam)
+        #endregion
+
+        public Score UpdateCurrentInning()
         {
             ValidateIsLastInningEnd();
 
@@ -165,18 +175,37 @@
             }
             else
             {
-                this.CurrentInning = new Inning(battingTeam, bowlingTeam, this.OversPerInning);
+                CreateInning();
             }
             AddLastInning();
 
             return this;
         }
 
-        private void ValidateIsLastInningEnd()
+        private void CreateInning()
         {
-            if (this.CurrentInning is not null && !IsLastInningEnd())
+            if (this.TossDecision == TossDecisions.Batting)
             {
-                throw new InvalidScoreException("Inning still in progress.");
+                //teamA - batting
+                if (this.TeamA.Id == this.TossWinnerTeamId)
+                {
+                    this.CurrentInning = new Inning(this.TeamA, this.TeamB, this.OversPerInning);
+                }
+                else //teamB - batting
+                {
+                    this.CurrentInning = new Inning(this.TeamB, this.TeamA, this.OversPerInning);
+                }
+            }
+            else
+            {
+                if (this.TeamA.Id == this.TossWinnerTeamId)
+                {
+                    this.CurrentInning = new Inning(this.TeamB, this.TeamA, this.OversPerInning);
+                }
+                else
+                {
+                    this.CurrentInning = new Inning(this.TeamA, this.TeamB, this.OversPerInning);
+                }
             }
         }
 
@@ -221,6 +250,16 @@
             }
         }
 
+        private void EndInning()
+        {
+            if (IsLastInningEnd())
+            {
+                UpdateScoreStat();
+            }
+        }
+
+        #region Validations
+
         private void ValidateIsMatchEnd()
         {
             if (this.IsMatchEnd)
@@ -230,14 +269,6 @@
             else
             {
                 EndMatch();
-            }
-        }
-
-        private void EndInning()
-        {
-            if (IsLastInningEnd())
-            {
-                UpdateScoreStat();
             }
         }
 
@@ -256,5 +287,15 @@
                 throw new InvalidScoreException($"{nameof(this.CurrentInning)} is not initialised. Use {nameof(UpdateCurrentInning)} method.");
             }
         }
+
+        private void ValidateIsLastInningEnd()
+        {
+            if (this.CurrentInning is not null && !IsLastInningEnd())
+            {
+                throw new InvalidScoreException("Inning still in progress.");
+            }
+        }
+
+        #endregion
     }
 }
