@@ -6,6 +6,5 @@ Cricket teams is a web-base application that allows its users to create cricket 
 - Entity Framework Core
 - ASP.NET Identity
 - React & Blazor
-# Features
-- Accounts - User should create an account in order to participate in a match or tournament.
 # Domain Driven Design
+### [Domain models](https://github.com/yavaka/CricketTeams/wiki/Domain-Models)
