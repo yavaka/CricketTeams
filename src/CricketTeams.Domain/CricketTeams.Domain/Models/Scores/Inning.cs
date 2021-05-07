@@ -12,8 +12,8 @@
     public class Inning : ValueObject
     {
         internal Inning(
-            Team battingTeam,
-            Team bowlingTeam,
+            Team battingTeam, //team A
+            Team bowlingTeam, // team B
             int oversPerInning)
         {
             ValidateOversPerInning(oversPerInning);

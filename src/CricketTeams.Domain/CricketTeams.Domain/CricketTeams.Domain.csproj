@@ -23,4 +23,8 @@
 	<ItemGroup>
 	  <PackageReference Include="Bogus" Version="33.0.2" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\Shared\" />
+	</ItemGroup>
 </Project>

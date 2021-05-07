@@ -19,6 +19,7 @@
             int numberOfInnings)
         {
             ValidateTeams(teamA, teamB);
+
             this.TossWinnerTeamId = tossWinnerTeamId;
             this.TossDecision = tossDecision;
             this.TeamA = teamA;

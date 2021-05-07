@@ -53,7 +53,7 @@
             this._over.UpdateCurrentBallWithRuns(3);
 
             //Assert
-            this._over.Striker
+            this._over.Striker // obj a == obj b
                 .Should()
                 .BeEquivalentTo(this._nonStriker);
 
