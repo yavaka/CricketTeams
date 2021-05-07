@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{175B8572-447
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CricketTeams.Startup", "..\CricketTeams.Startup\CricketTeams.Startup.csproj", "{D0D63E23-CC57-4FB6-98AE-43381AC048CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CricketTeams.Web", "CricketTeams.Web\CricketTeams.Web.csproj", "{25579908-F1A9-4B62-BD79-E7DE74F3DDED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{D0D63E23-CC57-4FB6-98AE-43381AC048CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0D63E23-CC57-4FB6-98AE-43381AC048CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0D63E23-CC57-4FB6-98AE-43381AC048CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25579908-F1A9-4B62-BD79-E7DE74F3DDED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25579908-F1A9-4B62-BD79-E7DE74F3DDED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25579908-F1A9-4B62-BD79-E7DE74F3DDED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25579908-F1A9-4B62-BD79-E7DE74F3DDED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +36,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0EA39C4F-17AF-4E94-BBBE-D713E00312C9} = {175B8572-447A-4623-94D6-8D67A6D8F0D6}
 		{D0D63E23-CC57-4FB6-98AE-43381AC048CC} = {175B8572-447A-4623-94D6-8D67A6D8F0D6}
+		{25579908-F1A9-4B62-BD79-E7DE74F3DDED} = {175B8572-447A-4623-94D6-8D67A6D8F0D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BB2EA00D-B810-428F-BBBD-B4E0C0FDC84B}
