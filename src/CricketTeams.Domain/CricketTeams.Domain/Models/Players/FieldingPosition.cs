@@ -6,7 +6,7 @@
     using static ModelConstants.Common;
     using static ModelConstants.FieldingPosition;
 
-    public class FieldingPosition : Entity<int>
+    public class FieldingPosition : ValueObject
     {
         internal FieldingPosition(string positionName, string description)
         {
