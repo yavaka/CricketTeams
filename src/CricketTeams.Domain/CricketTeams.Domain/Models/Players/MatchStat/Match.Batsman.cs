@@ -2,20 +2,41 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Models.Matches;
-    using System.Collections.Generic;
 
     public class MatchBatsman : ValueObject
     {
+        /// <summary>
+        /// Dismissed batsman
+        /// </summary>
+        /// <param name="numberOfSix"></param>
+        /// <param name="numberOfFour"></param>
+        /// <param name="isPlayerOut"></param>
+        /// <param name="playerOut"></param>
         internal MatchBatsman(
             int numberOfSix,
             int numberOfFour,
             bool isPlayerOut,
-            KeyValuePair<Player, PlayerOutTypes> playerOut)
+            Player fielder,
+            PlayerOutTypes playerOutType)
         {
             this.NumberOfSix = numberOfSix;
             this.NumberOfFour = numberOfFour;
             this.IsPlayerOut = isPlayerOut;
-            this.PlayerOut = playerOut;
+            this.Fielder = fielder;
+            this.PlayerOutType = playerOutType;
+        }
+
+        /// <summary>
+        /// Not dismissed batsman
+        /// </summary>
+        /// <param name="numberOfSix"></param>
+        /// <param name="numberOfFour"></param>
+        internal MatchBatsman(
+            int numberOfSix,
+            int numberOfFour)
+        {
+            this.NumberOfSix = numberOfSix;
+            this.NumberOfFour = numberOfFour;
         }
 
         private MatchBatsman()
@@ -23,7 +44,8 @@
             this.NumberOfSix = default!;
             this.NumberOfFour = default!;
             this.IsPlayerOut = false;
-            this.PlayerOut = default!;
+            this.Fielder = default!;
+            this.PlayerOutType = default!;
         }
 
         public int TotalRuns { get; private set; }
@@ -37,9 +59,10 @@
         public int NumberOfFour { get; private set; }
         public bool IsPlayerOut { get; private set; }
         /// <summary>
-        /// Player who took out this player and the type of out 
+        /// Player who dismissed this batsman
         /// </summary>
-        public KeyValuePair<Player, PlayerOutTypes> PlayerOut { get; set; }
+        public Player? Fielder { get; private set; }
+        public PlayerOutTypes? PlayerOutType { get; private set; }
 
         public MatchBatsman IncreaseSix()
         {
@@ -57,9 +80,10 @@
             return this;
         }
 
-        public MatchBatsman DismissPlayer(KeyValuePair<Player, PlayerOutTypes> playerOut)
+        public MatchBatsman DismissPlayer(Player fielder, PlayerOutTypes playerOutType)
         {
-            this.PlayerOut = playerOut;
+            this.Fielder = fielder;
+            this.PlayerOutType = playerOutType;
             this.IsPlayerOut = true;
 
             return this;

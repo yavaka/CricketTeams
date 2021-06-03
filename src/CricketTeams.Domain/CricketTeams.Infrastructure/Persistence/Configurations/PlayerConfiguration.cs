@@ -7,6 +7,9 @@
     using static Domain.Models.ModelConstants.Common;
     using static Domain.Models.ModelConstants.BowlingStyle;
     using static Domain.Models.ModelConstants.FieldingPosition;
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using CricketTeams.Domain.Models.Matches;
 
     internal class PlayerConfiguration : IEntityTypeConfiguration<Player>
     {
@@ -90,7 +93,9 @@
                      //Match stat owner
                      p.OwnsMany(m => m.Matches, m =>
                      {
-                         m.WithOwner();
+                         m.WithOwner().HasForeignKey("OwnerId");
+                         
+                         m.HasKey("Id");
 
                          m.Property(mId => mId.MatchId)
                           .IsRequired();
@@ -100,7 +105,11 @@
                          {
                              mb.WithOwner();
 
-                             //Player out config
+                             mb.Property(f => f!.NumberOfFour)
+                             .IsRequired();
+
+                             mb.Property(s => s!.NumberOfSix)
+                             .IsRequired();
                          });
 
                          //Match  owner
@@ -108,7 +117,8 @@
                          {
                              mbowler.WithOwner();
                          });
-
+                         
+                         //FieldingPosition owner
                          m.OwnsOne(mS => mS.FieldingPosition, fp =>
                          {
                              fp.WithOwner();
@@ -126,7 +136,12 @@
                                     .HasMaxLength(MaxDescriptionLength);
                              });
 
-                             //PlayerOut config
+                             // check that --------------------------------------------------------------------------------------------
+                             fp.Property(pOut => pOut!.PlayersOut)
+                                .HasConversion(
+                                    c => JsonConvert.SerializeObject(c),
+                                    c => JsonConvert.DeserializeObject<Dictionary<Player, PlayerOutTypes>>(c));
+
                          });
                      });
                  });
@@ -135,8 +150,10 @@
             builder
                 .OwnsMany(a => a.Achievements, a =>
                 {
-                    a.WithOwner();
-
+                    a.WithOwner().HasForeignKey("OwnerId");
+                    
+                    a.HasKey("Id");
+                    
                     a.Property(n => n.Name)
                      .IsRequired()
                      .HasMaxLength(MaxNameLength);
