@@ -5,7 +5,6 @@
     using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
-    using System;
     using System.Collections.Generic;
 
     public class Score : Entity<int>
@@ -35,11 +34,11 @@
         public Team TeamB { get; private set; }
         public int OversPerInning { get; private set; }
         public int NumberOfInnings { get; set; }
-        public Inning? CurrentInning { get; private set; }
-        public ICollection<Inning> Innings { get; private set; }
         public int TotalScoreTeamA { get; private set; }
         public int TotalScoreTeamB { get; private set; }
         public bool IsMatchEnd { get; private set; }
+        public Inning? CurrentInning { get; private set; }
+        public ICollection<Inning> Innings { get; private set; }
 
         #region Over methods
 

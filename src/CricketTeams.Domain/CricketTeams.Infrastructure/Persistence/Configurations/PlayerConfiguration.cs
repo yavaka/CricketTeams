@@ -1,15 +1,15 @@
 ﻿namespace CricketTeams.Infrastructure.Persistence.Configurations
 {
-    using CricketTeams.Domain.Models.Players;
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;
+    using CricketTeams.Domain.Models.Matches;
+    using CricketTeams.Domain.Models.Players;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     using static Domain.Models.ModelConstants.Common;
     using static Domain.Models.ModelConstants.BowlingStyle;
     using static Domain.Models.ModelConstants.FieldingPosition;
-    using Newtonsoft.Json;
-    using System.Collections.Generic;
-    using CricketTeams.Domain.Models.Matches;
 
     internal class PlayerConfiguration : IEntityTypeConfiguration<Player>
     {

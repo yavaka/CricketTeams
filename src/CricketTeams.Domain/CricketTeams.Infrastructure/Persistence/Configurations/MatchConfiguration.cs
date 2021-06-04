@@ -54,10 +54,10 @@
                 .HasForeignKey("SecondUmpireId")
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Score one to many
+            // Score one to one
             builder
                 .HasOne(m => m.Score)
-                .WithMany()
+                .WithOne()
                 .HasForeignKey("ScoreId")
                 .OnDelete(DeleteBehavior.Restrict);
 
