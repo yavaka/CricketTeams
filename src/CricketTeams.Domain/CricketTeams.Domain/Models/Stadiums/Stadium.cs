@@ -39,6 +39,13 @@
             return this;
         }
 
+        public Stadium UpdateAddress(string address) 
+        {
+            this.Address = address;
+
+            return this;
+        }
+
         public Stadium UpdateCapacity(int capacity) 
         {
             ValidateCapacity(capacity);

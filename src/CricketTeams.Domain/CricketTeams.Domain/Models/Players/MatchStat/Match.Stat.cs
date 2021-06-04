@@ -81,8 +81,7 @@
         /// <param name="outType">Type of how the player took out the batsman</param>
         public MatchStat BatsmanOut(Player fielder, PlayerOutTypes outType)
         {
-            this.Batsman!.DismissPlayer(
-                new KeyValuePair<Player, PlayerOutTypes>(fielder, outType));
+            this.Batsman!.DismissPlayer(fielder, outType);
 
             return this;
         }

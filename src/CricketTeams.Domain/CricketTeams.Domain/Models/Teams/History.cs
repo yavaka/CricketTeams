@@ -18,9 +18,9 @@
             this.MatchesIds = new List<int>();
         }
 
-        public ICollection<int> MatchesIds { get; private set; } 
         public int TotalWins{ get; private set; }
         public int TotalLoses{ get; private set; }
+        public ICollection<int> MatchesIds { get; private set; } 
 
         public History IncreaseWins() 
         {

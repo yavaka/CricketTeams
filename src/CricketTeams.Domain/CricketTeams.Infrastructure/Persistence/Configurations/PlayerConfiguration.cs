@@ -146,13 +146,11 @@
                      });
                  });
 
-            //Achievement owner
+            //Achievements owner
             builder
                 .OwnsMany(a => a.Achievements, a =>
                 {
                     a.WithOwner().HasForeignKey("OwnerId");
-                    
-                    a.HasKey("Id");
                     
                     a.Property(n => n.Name)
                      .IsRequired()
