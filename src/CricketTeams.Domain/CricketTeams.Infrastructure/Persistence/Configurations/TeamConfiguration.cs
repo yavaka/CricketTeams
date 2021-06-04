@@ -30,14 +30,6 @@
                 .OwnsOne(t => t.Players, p =>
                 {
                     p.WithOwner();
-
-                    // Captain
-                    p.Property(c => c.Captain)
-                        .IsRequired();
-
-                    // Wicketkeeper
-                    p.Property(w => w.WicketKeeper)
-                        .IsRequired();
                 });
 
             // Coach owner
