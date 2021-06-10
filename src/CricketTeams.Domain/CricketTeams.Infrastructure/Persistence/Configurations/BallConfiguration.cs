@@ -4,9 +4,9 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class OverConfiguration : IEntityTypeConfiguration<Over>
+    public class BallConfiguration : IEntityTypeConfiguration<Ball>
     {
-        public void Configure(EntityTypeBuilder<Over> builder)
+        public void Configure(EntityTypeBuilder<Ball> builder)
         {
             // Bowler
             builder
@@ -22,13 +22,6 @@
             builder
                 .Property(o => o.NonStriker)
                 .IsRequired();
-
-            // Balls
-            builder
-                .OwnsMany(o => o.Balls, b => 
-                {
-                    b.WithOwner().HasForeignKey("OwnerId");
-                });
         }
     }
 }
