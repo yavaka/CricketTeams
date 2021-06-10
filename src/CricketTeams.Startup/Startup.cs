@@ -1,5 +1,6 @@
 namespace CricketTeams.Startup
 {
+    using CricketTeams.Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -9,16 +10,13 @@ namespace CricketTeams.Startup
     
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddInfrastructure(this.Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
