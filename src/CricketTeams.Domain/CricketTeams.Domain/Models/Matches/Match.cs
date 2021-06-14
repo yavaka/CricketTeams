@@ -31,14 +31,14 @@
         }
 
         private Match(
-            Team teamA,
-            Team teamB)
+            int numberOfInnings,
+            int oversPerInning)
         {
-            this.TeamA = teamA;
-            this.TeamB = teamB;
+            this.OversPerInning = numberOfInnings;
+            this.NumberOfInnings = oversPerInning;
 
-            this.OversPerInning = default!;
-            this.NumberOfInnings = default!;
+            this.TeamA = default!;
+            this.TeamB = default!;
             this.FirstUmpire = default!;
             this.SecondUmpire = default!;
             this.Score = default!;

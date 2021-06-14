@@ -16,15 +16,21 @@
 
             this.FieldingPosition = fieldingPosition;
 
-            this.PlayersOut = new Dictionary<Player, PlayerOutTypes>();
+            this.PlayersOut = new List<PlayerOut>();
+        }
+
+        private MatchFieldingPosition() 
+        {
+            this.FieldingPosition = default!;
+            this.PlayersOut = default!;
         }
 
         public FieldingPosition FieldingPosition { get; private set; }
-        public IDictionary<Player, PlayerOutTypes> PlayersOut { get; private set; }
+        public ICollection<PlayerOut> PlayersOut { get; private set; }
 
         public MatchFieldingPosition PlayerOut(Player player, PlayerOutTypes outType)
         {
-            this.PlayersOut.Add(player, outType);
+            this.PlayersOut.Add(new PlayerOut(player, outType));
 
             return this;
         }

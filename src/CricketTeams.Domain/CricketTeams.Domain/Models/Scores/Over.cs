@@ -9,7 +9,7 @@
 
     using static ModelConstants.Over;
 
-    public class Over : ValueObject
+    public class Over : Entity<int>
     {
         internal Over(
             Player bowler,
@@ -25,6 +25,15 @@
             this.BatsmenOut = new List<Player>();
 
             this.CurrentBall = default!;
+        }
+
+        private Over() 
+        {
+            this.Bowler = default!;
+            this.Striker = default!;
+            this.NonStriker = default!;
+            this.Balls = default!;
+            this.BatsmenOut = default!;
         }
 
         public Player Bowler { get; set; }

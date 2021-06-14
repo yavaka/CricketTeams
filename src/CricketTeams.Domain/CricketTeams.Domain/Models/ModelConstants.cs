@@ -60,7 +60,7 @@
             public const int MaxOvers = 20;
         }
 
-        public class Over
+        public static class Over
         {
             public const int MaxBallsPerOver = 6;
         }

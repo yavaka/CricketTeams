@@ -3,11 +3,10 @@
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Players;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public class Players : ValueObject
+    public class Players : Entity<int>
     {
         internal Players(Player captain, Player wicketKeeper, Player twelfth)
         {
@@ -20,11 +19,10 @@
             this.AllRounders = new List<Player>();
         }
 
-        private Players(Player captain, Player wicketKeeper)
+        private Players()
         {
-            this.Captain = captain;
-            this.WicketKeeper = wicketKeeper;
-
+            this.Captain = default!;
+            this.WicketKeeper = default!;
             this.Twelfth = default!;
             this.Batsmen = default!;
             this.Bowlers = default!;

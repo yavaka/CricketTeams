@@ -2,11 +2,7 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Models.Matches;
-    using System;
-    using System.Collections.Generic;
     
-    using static Models.ModelConstants.MatchStat;
-
     public class MatchStat : ValueObject
     {
         internal MatchStat(
@@ -15,8 +11,6 @@
             MatchBowler bowler, 
             MatchFieldingPosition fieldingPosition)
         {
-            ValidateMatchId(matchId);
-
             this.MatchId = matchId;
             this.Batsman = matchBatsman;
             this.Bowler = bowler;
@@ -30,11 +24,6 @@
             this.Batsman = default!;
             this.Bowler = default!;
             this.FieldingPosition = default!;
-        }
-
-        private void ValidateMatchId(int matchId)
-        {
-            // TODO: Should check is there any matches with this id
         }
 
         public int MatchId { get; private set; }

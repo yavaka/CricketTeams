@@ -7,7 +7,7 @@
 
     using static ModelConstants.Ball;
 
-    public class Ball : ValueObject
+    public class Ball : Entity<int>
     {
         /// <summary>
         /// When one of the batsmen is out
@@ -90,6 +90,13 @@
             this.Runs = runs;
             this.NoBall = noBall;
             this.WideBall = wideBall;
+        }
+
+        private Ball()
+        {
+            this.Bowler = default!;
+            this.Striker = default!;
+            this.NonStriker = default!;
         }
 
         public Player Bowler { get; set; }

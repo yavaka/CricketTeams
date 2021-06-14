@@ -19,6 +19,14 @@
             this.SponsorType = sponsorType;
         }
 
+        private Sponsor(string name, string websiteUrl) 
+        {
+            this.Name = name;
+            this.WebsiteUrl = websiteUrl;
+
+            this.SponsorType = default!;
+        }
+
         public string Name { get; private set; }
         public string WebsiteUrl { get; private set; }
         public SponsorTypes SponsorType { get; private set; }

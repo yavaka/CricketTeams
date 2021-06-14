@@ -17,6 +17,14 @@
             this.BowlingType = bowlingType;
         }
 
+        private BowlingStyle(string styleName, string description) 
+        {
+            this.StyleName = styleName;
+            this.Description = description;
+
+            this.BowlingType = default!;
+        }
+
         public string StyleName { get; private set; }
         public BowlingTypes BowlingType { get; private set; }
         public string Description { get; private set; }

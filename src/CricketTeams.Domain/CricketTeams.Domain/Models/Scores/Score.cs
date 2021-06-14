@@ -28,6 +28,21 @@
             this.Innings = new List<Inning>();
         }
 
+        private Score(
+            int tossWinnerTeamId, 
+            int oversPerInning,
+            int numberOfInnings) 
+        {
+            this.TossWinnerTeamId = tossWinnerTeamId;
+            this.OversPerInning = oversPerInning;
+            this.NumberOfInnings = numberOfInnings;
+
+            this.TossDecision = default!;
+            this.TeamA = default!;
+            this.TeamB = default!;
+            this.Innings = default!;
+        }
+
         public int TossWinnerTeamId { get; private set; }
         public TossDecisions TossDecision { get; private set; }
         public Team TeamA { get; private set; }

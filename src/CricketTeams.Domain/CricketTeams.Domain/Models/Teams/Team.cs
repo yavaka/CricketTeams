@@ -32,17 +32,13 @@
             this.Achievements = new List<Achievement>();
         }
 
-        private Team(
-            string name,
-            string logoUrl,
-            Players players,
-            Coach coach)
+        private Team(string name, string logoUrl)
         {
             this.Name = name;
             this.LogoUrl = logoUrl;
-            this.Players = players;
-            this.Coach = coach;
 
+            this.Players = default!;
+            this.Coach = default!;
             this.Stadium = default!;
             this.History = default!;
             this.Sponsors = default!;

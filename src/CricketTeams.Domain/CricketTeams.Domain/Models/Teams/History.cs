@@ -2,6 +2,7 @@
 {
     using CricketTeams.Domain.Common;
     using CricketTeams.Domain.Exceptions;
+    using CricketTeams.Domain.Models.Matches;
     using System.Collections.Generic;
 
     public class History : ValueObject
@@ -15,12 +16,12 @@
 
             this.TotalWins = totalWins;
             this.TotalLoses = totalLoses;
-            this.MatchesIds = new List<int>();
+            this.Matches = new List<Match>();
         }
 
         public int TotalWins{ get; private set; }
         public int TotalLoses{ get; private set; }
-        public ICollection<int> MatchesIds { get; private set; } 
+        public ICollection<Match> Matches { get; private set; } 
 
         public History IncreaseWins() 
         {
@@ -36,11 +37,9 @@
             return this;
         }
 
-        public History AddMatchId(int id) 
+        public History AddMatch(Match match) 
         {
-            Validate(id, nameof(this.MatchesIds));
-
-            this.MatchesIds.Add(id);
+            this.Matches.Add(match);
 
             return this;
         }

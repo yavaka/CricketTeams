@@ -5,11 +5,10 @@
     using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public class Inning : ValueObject
+    public class Inning : Entity<int>
     {
         internal Inning(
             Team battingTeam, //team A
@@ -25,6 +24,17 @@
             this.Overs = new List<Over>();
 
             this.CurrentOver = default!;
+        }
+
+        private Inning(int oversPerInning)
+        {
+            this.OversPerInning = oversPerInning;
+
+            this.BattingTeam = default!;
+            this.BowlingTeam = default!;
+            this.CurrentOver = default!;
+            this.Overs = default!;
+            this.TotalBatsmenOut = default!;
         }
 
         public Team BattingTeam { get; private set; }
@@ -68,7 +78,7 @@
             ValidateIsInningEnd();
 
             this.CurrentOver!.UpdateCurrentBallWithFour();
-            
+
             ValidateIsCurrentOverEnd();
 
             return this;

@@ -14,6 +14,13 @@
             this.TossDecision = tossDecision;
         }
 
+        private Statistic(int tossWinnerTeamId) 
+        {
+            this.TossWinnerTeamId = tossWinnerTeamId;
+
+            this.TossDecision = default!; 
+        }
+
         public DateTime Date { get; private set; }
         public int ManOfTheMatchId { get; private set; }
         public int WinningTeamId { get; private set; }
