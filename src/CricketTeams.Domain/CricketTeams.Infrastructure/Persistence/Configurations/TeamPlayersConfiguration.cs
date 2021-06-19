@@ -5,9 +5,9 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    internal class TeamPlayersConfiguration : IEntityTypeConfiguration<Players>
+    internal class TeamPlayersConfiguration : IEntityTypeConfiguration<TeamPlayers>
     {
-        public void Configure(EntityTypeBuilder<Players> builder)
+        public void Configure(EntityTypeBuilder<TeamPlayers> builder)
         {
             builder
                 .HasKey(i => i.Id);
@@ -16,45 +16,41 @@
             builder
                 .HasOne(c => c.Captain)
                 .WithOne()
-                .HasForeignKey<Player>(i => i.Id)
-                .HasConstraintName("FK_Captain_Id")
-                .IsRequired()
+                .HasForeignKey<Player>("CaptainId")
+                .HasConstraintName("FK_CaptainId")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Wicketkeeper one to many
             builder
                 .HasOne(w => w.WicketKeeper)
                 .WithOne()
-                .HasForeignKey<Player>(i => i.Id)
-                .HasConstraintName("FK_WicketKeeper_Id")
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Twelft man one to many
-            builder
-                .HasOne(t => t.Twelfth)
-                .WithOne()
-                .HasForeignKey<Player>(i => i.Id)
-                .HasConstraintName("FK_Twelfth_Id")
+                .HasForeignKey<Player>("WicketKeeperId")
+                .HasConstraintName("FK_WicketKeeperId")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Batsmen many to one
             builder
                 .HasMany(b => b.Batsmen)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Restrict);
+                .Metadata
+                .PrincipalToDependent
+                .SetField("_batsmen");
 
             // Bowlers many to one
             builder
                 .HasMany(b => b.Bowlers)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Restrict);
+                .Metadata
+                .PrincipalToDependent
+                .SetField("_bowlers");
 
             // All rounders many to one
             builder
                 .HasMany(a => a.AllRounders)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Restrict);
+                .Metadata
+                .PrincipalToDependent
+                .SetField("_allRounders");
 
             // All players not mapped
             builder.Ignore(ap => ap.AllPlayers);

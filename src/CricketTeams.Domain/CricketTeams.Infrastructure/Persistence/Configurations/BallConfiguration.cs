@@ -4,24 +4,41 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class BallConfiguration : IEntityTypeConfiguration<Ball>
+    internal class BallConfiguration : IEntityTypeConfiguration<Ball>
     {
         public void Configure(EntityTypeBuilder<Ball> builder)
         {
             // Bowler
             builder
-                .Property(o => o.Bowler)
-                .IsRequired();
+                .HasOne(b => b.Bowler)
+                .WithMany()
+                .HasForeignKey("BowlerId")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Striker
             builder
-                .Property(o => o.Striker)
-                .IsRequired();
+               .HasOne(s => s.Striker)
+               .WithMany()
+               .HasForeignKey("StrikerId")
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
 
             // Non striker
             builder
-                .Property(o => o.NonStriker)
-                .IsRequired();
+               .HasOne(ns => ns.NonStriker)
+               .WithMany()
+               .HasForeignKey("NonStrikerId")
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
+
+            // Out type owner
+            builder.OwnsOne(ot => ot.OutType, outType =>
+            {
+                outType.WithOwner();
+
+                outType.Property(v => v!.Value);
+            });
         }
     }
 }

@@ -10,7 +10,7 @@
         public void Configure(EntityTypeBuilder<Umpire> builder)
         {
             // Id
-            builder.HasKey("Id");
+            builder.HasKey(u =>u.Id);
 
             // First name
             builder

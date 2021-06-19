@@ -14,7 +14,7 @@
         public Team(
             string name,
             string logoUrl,
-            Players players,
+            TeamPlayers players,
             Stadium stadium,
             Coach coach,
             History history)
@@ -29,10 +29,11 @@
             this.History = history;
 
             this.Sponsors = new List<Sponsor>();
-            this.Achievements = new List<Achievement>();
         }
 
-        private Team(string name, string logoUrl)
+        private Team(
+            string name,
+            string logoUrl)
         {
             this.Name = name;
             this.LogoUrl = logoUrl;
@@ -42,19 +43,17 @@
             this.Stadium = default!;
             this.History = default!;
             this.Sponsors = default!;
-            this.Achievements = default!;
         }
 
         #region Properties
 
         public string Name { get; private set; }
         public string LogoUrl { get; private set; }
-        public Players Players { get; private set; }
+        public TeamPlayers Players { get; private set; }
         public Coach Coach { get; private set; }
         public Stadium? Stadium { get; private set; }
         public History? History { get; private set; }
         public ICollection<Sponsor> Sponsors { get; private set; }
-        public ICollection<Achievement> Achievements { get; private set; }
 
         #endregion
 
@@ -80,7 +79,7 @@
             return this;
         }
 
-        public Team UpdatePlayers(Players players)
+        public Team UpdatePlayers(TeamPlayers players)
         {
             this.Players = players;
 
@@ -158,19 +157,6 @@
             var sponsor = new Sponsor(name, websiteUrl, sponsorType);
 
             this.Sponsors.Add(sponsor);
-
-            return this;
-        }
-
-        public Team AddAchievement(
-           string name,
-           string description,
-           string imageUrl,
-           AchievementTypes achievementType)
-        {
-            var achievement = new Achievement(name, description, imageUrl, achievementType);
-
-            this.Achievements.Add(achievement);
 
             return this;
         }

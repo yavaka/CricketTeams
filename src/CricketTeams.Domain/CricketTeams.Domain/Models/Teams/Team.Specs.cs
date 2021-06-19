@@ -63,7 +63,7 @@
         public void UpdatePlayersShouldSetPlayers()
         {
             //Arrange
-            var players = A.Dummy<Players>();
+            var players = A.Dummy<TeamPlayers>();
 
             //Act
             this._team.UpdatePlayers(players);
@@ -279,64 +279,6 @@
 
             //Assert
             act.Should().Throw<InvalidSponsorException>();
-        }
-
-        [Fact]
-        public void AddAchievementShouldAddAchievement()
-        {
-            //Arrange
-            var achievement = A.Dummy<Achievement>();
-
-            //Act
-            this._team.Achievements.Add(achievement);
-
-            //Assert
-            this._team.Achievements.Should().Contain(achievement);
-        }
-
-        [Fact]
-        public void AddAchievementWithInvalidNameShouldThrowException()
-        {
-            //Act
-            Action act = ()
-                => this._team.AddAchievement(
-                    "invalid name should throw exception",
-                    "invalid name",
-                    "http://invalid.name",
-                    AchievementTypes.Trophy);
-
-            //Assert
-            act.Should().Throw<InvalidAchievementException>();
-        }
-
-        [Fact]
-        public void AddAchievementWithInvalidDescriptionShouldThrowException()
-        {
-            //Act
-            Action act = ()
-                => this._team.AddAchievement(
-                    "invalid description",
-                    "inv",
-                    "http://invalid.description",
-                    AchievementTypes.Trophy);
-
-            //Assert
-            act.Should().Throw<InvalidAchievementException>();
-        }
-
-        [Fact]
-        public void AddAchievementWithInvalidImageUrlShouldThrowException()
-        {
-            //Act
-            Action act = ()
-                => this._team.AddAchievement(
-                    "invalid image url",
-                    "invalid image url should throw exception",
-                    "invalid.url",
-                    AchievementTypes.Trophy);
-
-            //Assert
-            act.Should().Throw<InvalidAchievementException>();
         }
     }
 }

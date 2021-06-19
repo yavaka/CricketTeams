@@ -11,6 +11,9 @@
 
     public class Over : Entity<int>
     {
+        private List<Ball> _balls;
+        private List<Player> _batsmenOut;
+
         internal Over(
             Player bowler,
             Player striker,
@@ -21,8 +24,8 @@
             this.Bowler = bowler;
             this.Striker = striker;
             this.NonStriker = nonStriker;
-            this.Balls = new List<Ball>();
-            this.BatsmenOut = new List<Player>();
+            this._balls = new List<Ball>();
+            this._batsmenOut = new List<Player>();
 
             this.CurrentBall = default!;
         }
@@ -32,8 +35,8 @@
             this.Bowler = default!;
             this.Striker = default!;
             this.NonStriker = default!;
-            this.Balls = default!;
-            this.BatsmenOut = default!;
+            this._balls = default!;
+            this._batsmenOut = default!;
         }
 
         public Player Bowler { get; set; }
@@ -42,9 +45,11 @@
         public int TotalRuns { get; private set; }
         public int ExtraBalls { get; private set; }
         public Ball? CurrentBall { get; private set; }
-        public ICollection<Ball> Balls { get; private set; }
-        public ICollection<Player> BatsmenOut { get; private set; }
         public bool IsOverEnd { get; private set; }
+        public IReadOnlyCollection<Ball> Balls
+            => this._balls.ToList().AsReadOnly();
+        public IReadOnlyCollection<Player> BatsmenOut
+            => this._batsmenOut.ToList().AsReadOnly();
 
         public Over UpdateCurrentBallWithRuns(int runs)
         {
@@ -215,7 +220,7 @@
         {
             var dismissedBatsman = this.Balls.Last().DismissedBatsman!;
 
-            this.BatsmenOut.Add(dismissedBatsman);
+            this._batsmenOut.Add(dismissedBatsman);
         }
 
         private void CalculateRuns()
@@ -271,7 +276,7 @@
         {
             if (this.CurrentBall is not null)
             {
-                this.Balls.Add(CurrentBall);
+                this._balls.Add(CurrentBall);
             }
         }
 

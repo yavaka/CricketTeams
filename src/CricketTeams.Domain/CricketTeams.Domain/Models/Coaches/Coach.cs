@@ -34,8 +34,6 @@
             this.PhotoUrl = photoUrl;
             this.BattingStyle = battingStyle;
             this.BowlingStyle = bowlingStyle;
-
-            this.Achievements = new List<Achievement>();
         }
 
         private Coach(
@@ -55,7 +53,6 @@
 
             this.BattingStyle = default!;
             this.BowlingStyle = default!;
-            this.Achievements = default!;
         }
 
         #region Properties
@@ -69,8 +66,7 @@
         public string PhotoUrl { get; private set; }
         public BattingStyle? BattingStyle { get; private set; }
         public BowlingStyle? BowlingStyle { get; private set; }
-        public ICollection<Achievement> Achievements { get; private set; }
-
+        
         #endregion
 
         #region Update & Add methods
@@ -145,19 +141,6 @@
             ValidateBowlingStyle(bowlingStyle);
 
             this.BowlingStyle = bowlingStyle;
-
-            return this;
-        }
-
-        public Coach AddAchievement(
-            string name,
-            string description,
-            string imageUrl,
-            AchievementTypes achievementType)
-        {
-            var achievement = new Achievement(name, description, imageUrl, achievementType);
-
-            this.Achievements.Add(achievement);
 
             return this;
         }

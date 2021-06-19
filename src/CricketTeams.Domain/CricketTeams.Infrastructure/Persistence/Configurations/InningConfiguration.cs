@@ -5,10 +5,13 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using static CricketTeams.Domain.Models.ModelConstants.Match;
 
-    internal class InningConfiguration : IEntityTypeConfiguration<Inning>
+    public class InningConfiguration : IEntityTypeConfiguration<Inning>
     {
         public void Configure(EntityTypeBuilder<Inning> builder)
         {
+            builder
+                .HasKey(i => i.Id);
+
             // Batting team one to many
             builder
                 .HasOne(i => i.BattingTeam)
@@ -31,12 +34,25 @@
                 .HasMaxLength(MaxOvers)
                 .IsRequired();
 
-            // Overs owner
+            // Total batsmen out many to one
             builder
-                .OwnsMany(i => i.Overs, o => 
-                {
-                    o.WithOwner().HasForeignKey("OwnerId");
-                });
+                .HasMany(i => i.BatsmenOut)
+                .WithOne()
+                .Metadata
+                .PrincipalToDependent
+                .SetField("_batsmenOut");
+
+            // Overs many to one
+            builder
+                .HasMany(i => i.Overs)
+                .WithOne()
+                .Metadata
+                .PrincipalToDependent
+                .SetField("_overs");
+
+            // Ignore current over prop
+            builder
+                .Ignore("CurrentOver");
         }
     }
 }

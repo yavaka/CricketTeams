@@ -174,7 +174,7 @@
                 this._inning.BattingTeam.Players.Batsmen.First(i =>i.Id == 8));
 
             //Assert
-            this._inning.TotalBatsmenOut.Count
+            this._inning.BatsmenOut.Count
                 .Should()
                 .Be(6);
         }

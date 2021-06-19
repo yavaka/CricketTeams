@@ -38,8 +38,6 @@
             this.BowlingStyle = bowlingStyle;
             this.FieldingPosition = fieldingPosition;
             this.History = history;
-
-            this.Achievements = new List<Achievement>();
         }
 
         private Player(
@@ -59,7 +57,6 @@
             this.BowlingStyle = default!;
             this.FieldingPosition = default!;
             this.History = default!;
-            this.Achievements = default!;
         }
 
         #region Properties
@@ -73,7 +70,7 @@
         public BattingStyle? BattingStyle { get; private set; }
         public BowlingStyle? BowlingStyle { get; private set; }
         public FieldingPosition? FieldingPosition { get; private set; }
-        public ICollection<Achievement> Achievements { get; private set; }
+
         #endregion
 
         #region Add & Update methods
@@ -147,19 +144,6 @@
         public Player UpdateHistory(History history)
         {
             this.History = history;
-
-            return this;
-        }
-
-        public Player AddAchievement(
-            string name,
-            string description,
-            string imageUrl,
-            AchievementTypes achievementType)
-        {
-            var achievement = new Achievement(name, description, imageUrl, achievementType);
-
-            this.Achievements.Add(achievement);
 
             return this;
         }

@@ -6,25 +6,25 @@
     using System;
     using System.Linq;
 
-    public class PlayersFakes : IDummyFactory
+    public class TeamPlayersFakes : IDummyFactory
     {
         public Priority Priority => Priority.Default;
 
-        public bool CanCreate(Type type) => type == typeof(Players);
+        public bool CanCreate(Type type) => type == typeof(TeamPlayers);
 
         public object? Create(Type type) => Data.GetPlayers();
 
         public static class Data
         {
-            public static Players GetPlayers()
+            public static TeamPlayers GetPlayers()
             {
                 var restOfPlayers = PlayerFakes.Data.GetPlayers(3,9);
                 var captain = PlayerFakes.Data.GetPlayer(1);
                 var wicketKeeper = PlayerFakes.Data.GetPlayer(2);
                 var twelftman = PlayerFakes.Data.GetPlayer(12);
 
-                var players = new Faker<Players>()
-                    .CustomInstantiator(f => new Players(
+                var players = new Faker<TeamPlayers>()
+                    .CustomInstantiator(f => new TeamPlayers(
                         captain,
                         wicketKeeper,
                         twelftman)).Generate();

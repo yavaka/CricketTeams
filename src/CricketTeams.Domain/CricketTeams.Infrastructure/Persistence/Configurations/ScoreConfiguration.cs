@@ -46,12 +46,17 @@
                 .HasMaxLength(MaxOvers)
                 .IsRequired();
 
-            // Innings owner
+            // Innings many to one
             builder
-                .OwnsMany(s => s.Innings, i => 
-                {
-                    i.WithOwner().HasForeignKey("OwnerId");
-                });
+                .HasMany(s => s.Innings)
+                .WithOne()
+                .Metadata
+                .PrincipalToDependent
+                .SetField("_innings");
+
+            // Ignore current inning prop
+            builder
+                .Ignore("CurrentInning");
         }
     }
 }

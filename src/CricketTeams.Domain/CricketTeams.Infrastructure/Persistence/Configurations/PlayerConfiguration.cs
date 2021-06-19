@@ -1,14 +1,11 @@
 ﻿namespace CricketTeams.Infrastructure.Persistence.Configurations
 {
-    using Newtonsoft.Json;
-    using System.Collections.Generic;
-    using Microsoft.EntityFrameworkCore;
-    using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
+    using CricketTeams.Domain.Models.Teams;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    using static Domain.Models.ModelConstants.Common;
     using static Domain.Models.ModelConstants.BowlingStyle;
+    using static Domain.Models.ModelConstants.Common;
     using static Domain.Models.ModelConstants.FieldingPosition;
 
     internal class PlayerConfiguration : IEntityTypeConfiguration<Player>
@@ -18,20 +15,24 @@
             builder
                 .HasKey(p => p.Id);
 
+            // First name
             builder
                 .Property(p => p.FirstName)
                 .IsRequired()
                 .HasMaxLength(MaxNameLength);
 
+            // Last name
             builder
                 .Property(p => p.LastName)
                 .IsRequired()
                 .HasMaxLength(MaxNameLength);
 
+            // Age
             builder
                 .Property(p => p.Age)
                 .HasMaxLength(MaxAge);
 
+            // Photo url
             builder
                 .Property(p => p.PhotoUrl)
                 .HasMaxLength(MaxUrlLength);
@@ -93,9 +94,7 @@
                      //Match stat owner
                      p.OwnsMany(m => m.Matches, m =>
                      {
-                         m.WithOwner().HasForeignKey("OwnerId");
-                         
-                         m.HasKey("Id");
+                         m.WithOwner();
 
                          m.Property(mId => mId.MatchId)
                           .IsRequired();
@@ -110,14 +109,21 @@
 
                              mb.Property(s => s!.NumberOfSix)
                              .IsRequired();
+
+                             mb.OwnsOne(ot => ot!.PlayerOutType, po =>
+                             {
+                                 po.WithOwner();
+
+                                 po.Property(v => v!.Value);
+                             });
                          });
 
-                         //Match  owner
+                         //Bowler  owner
                          m.OwnsOne(mS => mS.Bowler, mbowler =>
                          {
                              mbowler.WithOwner();
                          });
-                         
+
                          //FieldingPosition owner
                          m.OwnsOne(mS => mS.FieldingPosition, fp =>
                          {
@@ -136,41 +142,24 @@
                                     .HasMaxLength(MaxDescriptionLength);
                              });
 
-                             // check that --------------------------------------------------------------------------------------------
-                             fp.Property(pOut => pOut!.PlayersOut)
-                                .HasConversion(
-                                    c => JsonConvert.SerializeObject(c),
-                                    c => JsonConvert.DeserializeObject<Dictionary<Player, PlayerOutTypes>>(c));
+                             fp.OwnsMany(po => po!.PlayersOut, p =>
+                             {
+                                 p.WithOwner();
 
+                                 p.HasOne(d => d.DismissedPlayer)
+                                    .WithOne()
+                                    .OnDelete(DeleteBehavior.Restrict);
+
+                                 p.OwnsOne(p => p.PlayerOutType, ot =>
+                                 {
+                                     ot.WithOwner();
+
+                                     ot.Property(v => v.Value);
+                                 });
+                             });
                          });
                      });
                  });
-
-            //Achievements owner
-            builder
-                .OwnsMany(a => a.Achievements, a =>
-                {
-                    a.WithOwner().HasForeignKey("OwnerId");
-                    
-                    a.Property(n => n.Name)
-                     .IsRequired()
-                     .HasMaxLength(MaxNameLength);
-
-                    a.Property(n => n.Description)
-                     .IsRequired()
-                     .HasMaxLength(MaxDescriptionLength);
-
-                    a.Property(n => n.ImageUrl)
-                     .HasMaxLength(MaxUrlLength);
-
-                    //Achievement type owner
-                    a.OwnsOne(at => at.AchievementType, at =>
-                    {
-                        at.WithOwner();
-
-                        at.Property(v => v.Value);
-                    });
-                });
         }
     }
 }

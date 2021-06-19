@@ -6,81 +6,88 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class Players : Entity<int>
+    public class TeamPlayers : Entity<int>
     {
-        internal Players(Player captain, Player wicketKeeper, Player twelfth)
+        private List<Player> _batsmen;
+        private List<Player> _bowlers;
+        private List<Player> _allRounders;
+
+        internal TeamPlayers(Player captain, Player wicketKeeper, Player twelfth)
         {
             this.Captain = captain;
             this.WicketKeeper = wicketKeeper;
             this.Twelfth = twelfth;
 
-            this.Batsmen = new List<Player>();
-            this.Bowlers = new List<Player>();
-            this.AllRounders = new List<Player>();
+            this._batsmen = new List<Player>();
+            this._bowlers = new List<Player>();
+            this._allRounders = new List<Player>();
         }
 
-        private Players()
+        private TeamPlayers()
         {
             this.Captain = default!;
             this.WicketKeeper = default!;
             this.Twelfth = default!;
-            this.Batsmen = default!;
-            this.Bowlers = default!;
-            this.AllRounders = default!;
+            this._batsmen = default!;
+            this._bowlers = default!;
+            this._allRounders = default!;
         }
 
         public Player Captain { get; private set; }
         public Player WicketKeeper { get; private set; }
         public Player? Twelfth { get; private set; }
-        public ICollection<Player> Batsmen { get; private set; }
-        public ICollection<Player> Bowlers { get; private set; }
-        public ICollection<Player> AllRounders { get; private set; }
-        public ICollection<Player> AllPlayers => Batsmen;
+        public IReadOnlyCollection<Player> Batsmen
+            => this._batsmen.ToList().AsReadOnly();
+        public IReadOnlyCollection<Player> Bowlers
+            => this._bowlers.ToList().AsReadOnly();
+        public IReadOnlyCollection<Player> AllRounders
+            => this._allRounders.ToList().AsReadOnly();
+        public IReadOnlyCollection<Player> AllPlayers => Batsmen;
 
-        public Players UpdateCaptain(Player captain)
+        public TeamPlayers UpdateCaptain(Player captain)
         {
             this.Captain = captain;
 
             return this;
         }
 
-        public Players UpdateWicketKeeper(Player wicketKeeper)
+        public TeamPlayers UpdateWicketKeeper(Player wicketKeeper)
         {
             this.WicketKeeper = wicketKeeper;
 
             return this;
         }
 
-        public Players UpdateTwelfth(Player twelfth)
+        public TeamPlayers UpdateTwelfth(Player twelfth)
         {
             this.Twelfth = twelfth;
 
             return this;
         }
 
-        public Players AddBatsman(Player batsman)
+        public TeamPlayers AddBatsman(Player batsman)
         {
             ValidateIsBatsmanExist(batsman);
 
-            this.Batsmen.Add(batsman);
+            this._batsmen.Add(batsman);
 
             return this;
         }
 
-        public Players AddBowler(Player bowler)
+        public TeamPlayers AddBowler(Player bowler)
         {
             ValidateIsBowlerExist(bowler);
 
-            this.Bowlers.Add(bowler);
+            this._bowlers.Add(bowler);
 
             return this;
         }
 
-        public Players AddAllRounder(Player allRounder)
+        public TeamPlayers AddAllRounder(Player allRounder)
         {
             ValidateIsAllRounderExist(allRounder);
 
-            this.AllRounders.Add(allRounder);
+            this._allRounders.Add(allRounder);
 
             return this;
         }

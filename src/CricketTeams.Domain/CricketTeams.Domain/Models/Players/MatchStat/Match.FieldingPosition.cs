@@ -10,27 +10,30 @@
         private static readonly IEnumerable<FieldingPosition> AllowedFieldingPositions
              = new FieldingPositionData().GetData().Cast<FieldingPosition>();
 
+        private List<PlayerOut> _playersOut;
+
         internal MatchFieldingPosition(FieldingPosition fieldingPosition)
         {
             ValidateFieldingPosition(fieldingPosition);
 
             this.FieldingPosition = fieldingPosition;
 
-            this.PlayersOut = new List<PlayerOut>();
+            this._playersOut = new List<PlayerOut>();
         }
 
         private MatchFieldingPosition() 
         {
             this.FieldingPosition = default!;
-            this.PlayersOut = default!;
+            this._playersOut = default!;
         }
 
         public FieldingPosition FieldingPosition { get; private set; }
-        public ICollection<PlayerOut> PlayersOut { get; private set; }
+        public IReadOnlyCollection<PlayerOut> PlayersOut
+            => this._playersOut.ToList().AsReadOnly();
 
         public MatchFieldingPosition PlayerOut(Player player, PlayerOutTypes outType)
         {
-            this.PlayersOut.Add(new PlayerOut(player, outType));
+            this._playersOut.Add(new PlayerOut(player, outType));
 
             return this;
         }

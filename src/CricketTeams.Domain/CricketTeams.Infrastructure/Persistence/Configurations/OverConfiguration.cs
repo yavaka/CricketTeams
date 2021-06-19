@@ -4,31 +4,53 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class OverConfiguration : IEntityTypeConfiguration<Over>
+    internal class OverConfiguration : IEntityTypeConfiguration<Over>
     {
         public void Configure(EntityTypeBuilder<Over> builder)
         {
-            // Bowler
+            // Bowler one to many
             builder
-                .Property(o => o.Bowler)
-                .IsRequired();
+                .HasOne(o => o.Bowler)
+                .WithMany()
+                .HasForeignKey("BowlerId")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Striker
+            // Striker one to many
             builder
-                .Property(o => o.Striker)
-                .IsRequired();
+               .HasOne(o => o.Striker)
+               .WithMany()
+               .HasForeignKey("StrikerId")
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
 
-            // Non striker
+            // Non striker one to many
             builder
-                .Property(o => o.NonStriker)
-                .IsRequired();
+               .HasOne(o => o.NonStriker)
+               .WithMany()
+               .HasForeignKey("NonStrikerId")
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
 
-            // Balls
+            // Total batsmen out many to one
             builder
-                .OwnsMany(o => o.Balls, b => 
-                {
-                    b.WithOwner().HasForeignKey("OwnerId");
-                });
+                .HasMany(o => o.BatsmenOut)
+                .WithOne()
+                .Metadata
+                .PrincipalToDependent
+                .SetField("_batsmenOut");
+
+            // Balls many to one
+            builder
+                .HasMany(o => o.Balls)
+                .WithOne()
+                .Metadata
+                .PrincipalToDependent
+                .SetField("_balls");
+
+            // Ignore current ball prop
+            builder
+                .Ignore("CurrentBall");
         }
     }
 }

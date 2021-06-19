@@ -23,7 +23,7 @@
                     .CustomInstantiator(f => new Team(
                         f.Internet.UserName(),
                         f.Image.PlaceImgUrl(),
-                        A.Dummy<Players>(),
+                        A.Dummy<TeamPlayers>(),
                         A.Dummy<Stadium>(),
                         A.Dummy<Coach>(),
                         new History(1, 0)))

@@ -5,11 +5,15 @@
     using CricketTeams.Domain.Models.Matches;
     using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     public class Inning : Entity<int>
     {
+        private List<Over> _overs;
+        private List<Player> _batsmenOut;
+
         internal Inning(
             Team battingTeam, //team A
             Team bowlingTeam, // team B
@@ -20,21 +24,22 @@
             this.BattingTeam = battingTeam;
             this.BowlingTeam = bowlingTeam;
             this.OversPerInning = oversPerInning;
-            this.TotalBatsmenOut = new List<Player>();
-            this.Overs = new List<Over>();
+            
+            this._overs = new List<Over>();
+            this._batsmenOut = new List<Player>();
 
             this.CurrentOver = default!;
         }
 
-        private Inning(int oversPerInning)
+        private Inning(int oversPerInning) 
         {
             this.OversPerInning = oversPerInning;
 
             this.BattingTeam = default!;
             this.BowlingTeam = default!;
             this.CurrentOver = default!;
-            this.Overs = default!;
-            this.TotalBatsmenOut = default!;
+            this._overs = default!;
+            this._batsmenOut = default!;
         }
 
         public Team BattingTeam { get; private set; }
@@ -42,9 +47,11 @@
         public int OversPerInning { get; private set; }
         public int TotalRuns { get; private set; }
         public Over? CurrentOver { get; private set; }
-        public ICollection<Over> Overs { get; private set; }
-        public ICollection<Player> TotalBatsmenOut { get; private set; }
         public bool IsInningEnd { get; private set; } = false;
+        public IReadOnlyCollection<Over> Overs
+            => this._overs.ToList().AsReadOnly();
+        public IReadOnlyCollection<Player> BatsmenOut
+            => this._batsmenOut.ToList().AsReadOnly();
 
         #region Over methods
 
@@ -78,7 +85,7 @@
             ValidateIsInningEnd();
 
             this.CurrentOver!.UpdateCurrentBallWithFour();
-
+            
             ValidateIsCurrentOverEnd();
 
             return this;
@@ -133,7 +140,7 @@
                     dismissedBatsman,
                     batsmanOutType);
 
-                this.TotalBatsmenOut.Add(this.CurrentOver!.BatsmenOut.Last());
+                this._batsmenOut.Add(this.CurrentOver!.BatsmenOut.Last());
 
                 if (AreAllBatsmenDismissed())
                 {
@@ -222,7 +229,7 @@
         {
             if (this.CurrentOver is not null)
             {
-                this.Overs.Add(this.CurrentOver);
+                this._overs.Add(this.CurrentOver);
             }
         }
 
@@ -269,7 +276,7 @@
 
         private bool AreAllBatsmenDismissed()
         {
-            if (this.TotalBatsmenOut.Count == this.BattingTeam.Players.Batsmen.Count - 1)
+            if (this.BatsmenOut.Count == this.BattingTeam.Players.Batsmen.Count - 1)
             {
                 return true;
             }

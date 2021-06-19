@@ -70,35 +70,6 @@
                       .IsRequired();
                 });
             });
-
-            //Achievement owner
-            builder.OwnsMany(a => a.Achievements, a =>
-            {
-                a.WithOwner().HasForeignKey("OwnerId");
-
-                // Name
-                a.Property(n => n.Name)
-                 .IsRequired()
-                 .HasMaxLength(MaxNameLength);
-
-                // Description
-                a.Property(d => d.Description)
-                 .IsRequired()
-                 .HasMaxLength(MaxDescriptionLength);
-
-                // Image url
-                a.Property(iUrl => iUrl.ImageUrl)
-                 .HasMaxLength(MaxUrlLength);
-
-                //Achievement type owner
-                a.OwnsOne(at => at.AchievementType, at =>
-                {
-                    at.WithOwner();
-
-                    // Value
-                    at.Property(v => v.Value);
-                });
-            });
         }
     }
 }

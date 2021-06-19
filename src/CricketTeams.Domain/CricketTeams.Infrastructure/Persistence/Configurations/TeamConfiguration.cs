@@ -24,39 +24,21 @@
                 .Property(t => t.LogoUrl)
                 .HasMaxLength(MaxUrlLength);
 
-            // Players owner
-            builder
-                .OwnsOne(t => t.Players, p =>
-                {
-                    p.WithOwner();
-                });
-
-            // Coach one to one
-            builder
-                .HasOne(t => t.Coach)
-                .WithOne()
-                .HasForeignKey("CoachId")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Stadium one to one
-            builder
-                .HasOne(t => t.Stadium)
-                .WithOne()
-                .HasForeignKey("StadiumId")
-                .OnDelete(DeleteBehavior.Restrict);
-
             // History owner
             builder
-                .OwnsOne(t => t.History, h => 
+                .OwnsOne(t => t.History, h =>
                 {
                     h.WithOwner();
+
+                    h.Property(w => w!.TotalWins);
+                    h.Property(l => l!.TotalLoses);
                 });
 
             // Sponsors owner
             builder
-                .OwnsMany(t => t.Sponsors, s => 
+                .OwnsMany(t => t.Sponsors, s =>
                 {
-                    s.WithOwner().HasForeignKey("OwnerId");
+                    s.WithOwner().HasForeignKey("FK_Sponsor_Owned");
 
                     // Name
                     s.Property(n => n.Name)
@@ -68,40 +50,11 @@
                         .HasMaxLength(MaxUrlLength);
 
                     // Sponsor type
-                    s.OwnsOne(st => st.SponsorType, sType => 
+                    s.OwnsOne(st => st.SponsorType, sType =>
                     {
                         sType.WithOwner();
 
                         sType.Property(v => v!.Value);
-                    });
-                });
-
-            //Achievements owner
-            builder
-                .OwnsMany(t => t.Achievements, a =>
-                {
-                    a.WithOwner().HasForeignKey("OwnerId");
-
-                    // Name
-                    a.Property(n => n.Name)
-                     .IsRequired()
-                     .HasMaxLength(MaxNameLength);
-
-                    // Description
-                    a.Property(n => n.Description)
-                     .IsRequired()
-                     .HasMaxLength(MaxDescriptionLength);
-
-                    // Image url
-                    a.Property(n => n.ImageUrl)
-                     .HasMaxLength(MaxUrlLength);
-
-                    //Achievement type owner
-                    a.OwnsOne(at => at.AchievementType, at =>
-                    {
-                        at.WithOwner();
-
-                        at.Property(v => v.Value);
                     });
                 });
         }

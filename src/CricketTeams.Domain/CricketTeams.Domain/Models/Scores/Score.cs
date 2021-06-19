@@ -6,9 +6,12 @@
     using CricketTeams.Domain.Models.Players;
     using CricketTeams.Domain.Models.Teams;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Score : Entity<int>
     {
+        private List<Inning> _innings;
+
         public Score(
             int tossWinnerTeamId,
             TossDecisions tossDecision,
@@ -25,7 +28,7 @@
             this.TeamB = teamB;
             this.OversPerInning = oversPerInning;
             this.NumberOfInnings = numberOfInnings;
-            this.Innings = new List<Inning>();
+            this._innings = new List<Inning>();
         }
 
         private Score(
@@ -40,7 +43,7 @@
             this.TossDecision = default!;
             this.TeamA = default!;
             this.TeamB = default!;
-            this.Innings = default!;
+            this._innings = default!;
         }
 
         public int TossWinnerTeamId { get; private set; }
@@ -53,7 +56,8 @@
         public int TotalScoreTeamB { get; private set; }
         public bool IsMatchEnd { get; private set; }
         public Inning? CurrentInning { get; private set; }
-        public ICollection<Inning> Innings { get; private set; }
+        public IReadOnlyCollection<Inning> Innings
+            => this._innings.ToList().AsReadOnly();
 
         #region Over methods
 
@@ -261,7 +265,7 @@
         {
             if (this.CurrentInning is not null)
             {
-                this.Innings.Add(this.CurrentInning);
+                this._innings.Add(this.CurrentInning);
             }
         }
 

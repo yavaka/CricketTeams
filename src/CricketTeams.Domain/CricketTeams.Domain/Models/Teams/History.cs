@@ -4,8 +4,9 @@
     using CricketTeams.Domain.Exceptions;
     using CricketTeams.Domain.Models.Matches;
     using System.Collections.Generic;
+    using System.Linq;
 
-    public class History : ValueObject
+    public class History : Entity<int>
     {
         internal History(
             int totalWins,
@@ -16,12 +17,10 @@
 
             this.TotalWins = totalWins;
             this.TotalLoses = totalLoses;
-            this.Matches = new List<Match>();
         }
 
         public int TotalWins{ get; private set; }
         public int TotalLoses{ get; private set; }
-        public ICollection<Match> Matches { get; private set; } 
 
         public History IncreaseWins() 
         {
@@ -33,13 +32,6 @@
         public History IncreaseLoses() 
         {
             this.TotalLoses++;
-
-            return this;
-        }
-
-        public History AddMatch(Match match) 
-        {
-            this.Matches.Add(match);
 
             return this;
         }

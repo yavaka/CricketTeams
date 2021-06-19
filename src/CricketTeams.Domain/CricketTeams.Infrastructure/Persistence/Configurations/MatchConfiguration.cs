@@ -1,6 +1,7 @@
 ﻿namespace CricketTeams.Infrastructure.Persistence.Configurations
 {
     using CricketTeams.Domain.Models.Matches;
+    using CricketTeams.Domain.Models.Teams;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using static CricketTeams.Domain.Models.ModelConstants.Match;
@@ -52,13 +53,6 @@
                 .HasOne(m => m.SecondUmpire)
                 .WithMany()
                 .HasForeignKey("SecondUmpireId")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Score one to one
-            builder
-                .HasOne(m => m.Score)
-                .WithOne()
-                .HasForeignKey("ScoreId")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Stadium one to many
