@@ -1,7 +1,6 @@
 ﻿namespace CricketTeams.Infrastructure.Persistence.Configurations
 {
     using CricketTeams.Domain.Models.Matches;
-    using CricketTeams.Domain.Models.Teams;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using static CricketTeams.Domain.Models.ModelConstants.Match;

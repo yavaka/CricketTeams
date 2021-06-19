@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CricketTeams.Domain\CricketTeams.Infrastructure\CricketTeams.Infrastructure.csproj" />
-    <ProjectReference Include="..\CricketTeams.Domain\CricketTeams.Web\CricketTeams.Web.csproj" />
+    <ProjectReference Include="..\CricketTeams.Infrastructure\CricketTeams.Infrastructure.csproj" />
+    <ProjectReference Include="..\CricketTeams.Web\CricketTeams.Web.csproj" />
   </ItemGroup>
 
 </Project>

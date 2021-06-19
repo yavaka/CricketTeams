@@ -1,7 +1,6 @@
 ﻿namespace CricketTeams.Infrastructure.Persistence.Configurations
 {
     using CricketTeams.Domain.Models.Players;
-    using CricketTeams.Domain.Models.Teams;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using static Domain.Models.ModelConstants.BowlingStyle;

@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp5</TargetFramework>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CricketTeams.Domain\CricketTeams.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
