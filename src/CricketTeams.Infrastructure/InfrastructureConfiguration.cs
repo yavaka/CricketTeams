@@ -4,6 +4,8 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using CricketTeams.Application.Contracts;
+    using CricketTeams.Infrastructure.Persistence.Repositories;
 
     public static class InfrastructureConfiguration
     {
@@ -14,6 +16,7 @@
                 .AddDbContext<CricketTeamsDbContext>(opt => opt
                     .UseSqlServer(
                         configuration.GetConnectionString("DefaultConnection"),
-                        b =>b.MigrationsAssembly(typeof(CricketTeamsDbContext).Assembly.FullName)));
+                        b =>b.MigrationsAssembly(typeof(CricketTeamsDbContext).Assembly.FullName)))
+                .AddTransient(typeof(IRepository<>),typeof(DataRepository<>));
     }
 }
